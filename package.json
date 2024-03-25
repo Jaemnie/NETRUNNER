@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@xterm/xterm": "^5.4.0",
+    "jquery": "^3.7.1",
+    "prompt-sync": "^4.2.0",
+    "xterm-addon-fit": "^0.8.0"
+  }
+}
