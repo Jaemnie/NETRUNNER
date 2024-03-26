@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +11,7 @@
     <link rel="icon" href="/img/tabicon/netrunner.png" type="image/icon type">
     <script src="/node_modules/jquery/dist/jquery.js"></script>
     <script src="/node_modules/jqueryui/jquery-ui.js"></script>
-    <script src="/node_modules/@xterm/xterm/lib/terminal.js"></script>
+    <script src="/node_modules/@xterm/xterm/lib/terminal.js" type="module"></script>
     <script src="/node_modules/@xterm/xterm/lib/xterm.js"></script>
     <script src="/event/event.js"></script>
 
@@ -19,10 +20,10 @@
 <body>
     <div id="box">
         <div id="right">
-            <div id="side"> 
+            <div id="side">
                 <div id="tabs">
                     <ul>
-                        <img src = "img/tabicon/Sprite-0001.png" alt="icon1"  id="icon1">
+                        <img src="img/tabicon/Sprite-0001.png" alt="icon1" id="icon1">
                     </ul>
                 </div>
                 <div id="tabview">
@@ -47,9 +48,10 @@
         </div>
     </div>
     <script>
-    $(function() {
-        $("#accordion").accordion();
-    });
+        $(function () {
+            $("#accordion").accordion();
+        });
     </script>
 </body>
+
 </html>
