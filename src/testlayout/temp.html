@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>N E T R U N N E R</title>
+    <link rel="stylesheet" href="./message.css" />
+    <link rel="stylesheet" href="../../node_modules/@xterm/xterm/css/xterm.css">
+    <link rel="icon" href="../../src/img/tabicon/netrunner.png" type="image/icon type">
+    <script src="../../src/Javascripts/terminal.js" type="module"></script>
+    <script src="../../node_modules/@xterm/xterm/lib/xterm.js"></script>
+    <script src="../../event/event.js"></script>
+    <script src="./test.js" type="module"></script>
+</head>
+
+<body>
+    <main>
+        <nav class="main-menu">
+            <h1>App</h1>
+            <ul>
+                <li class="nav-item active">
+                    <b></b>
+                    <b></b>
+                    <a href="#">
+                        <i class="fa fa-house nav-icon"></i>
+                        <span class="nav-text">Home</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <b></b>
+                    <b></b>
+                    <a href="#">
+                        <i class="fa fa-user nav-icon"></i>
+                        <span class="nav-text">Profile</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <b></b>
+                    <b></b>
+                    <a href="#">
+                        <i class="fa fa-calendar-check nav-icon"></i>
+                        <span class="nav-text">Schedule</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <b></b>
+                    <b></b>
+                    <a href="#">
+                        <i class="fa fa-person-running nav-icon"></i>
+                        <span class="nav-text">Activities</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <b></b>
+                    <b></b>
+                    <a href="#">
+                        <i class="fa fa-sliders nav-icon"></i>
+                        <span class="nav-text">Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <section class="content">
+            <div>filesystem</div>
+            <div id="term" style="width: 100%; height: 100%;"></div>
+            <script>
+                $(function () {
+                    $("#accordion").accordion();
+                });
+            </script>
+        </section>
+    </main>
+</body>
+
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>N E T R U N N E R</title>
+    <link rel="stylesheet" href="/src/css/main.css" />
+    <link rel="stylesheet" href="/node_modules/@xterm/xterm/css/xterm.css">
+    <link rel="stylesheet" href="/node_modules/jqueryui/jquery-ui.css">
+    <link rel="icon" href="/src/img/tabicon/netrunner.png" type="image/icon type">
+    <script src="/node_modules/jquery/dist/jquery.js"></script>
+    <script src="/node_modules/jqueryui/jquery-ui.js"></script>
+    <script src="/src/Javascripts/terminal.js" type="module"></script>
+    <script src="/node_modules/@xterm/xterm/lib/xterm.js"></script>
+    <script src="/event/event.js"></script>
+</head>
+
+<body>
+    <div id="box">
+        <div id="right">
+            <div id="side">
+                <div id="tabs">
+                    <ul>
+                        <img src="img/tabicon/Sprite-0001.png" alt="icon1" id="icon1">
+                    </ul>
+                </div>
+                <div id="tabview">
+                    <div id="accordion">
+                        <h3>Section 1</h3>
+                        <div>
+                            <p>여기에 섹션 1의 내용이 들어갑니다.</p>
+                        </div>
+                        <h3>Section 2</h3>
+                        <div>
+                            <p>여기에 섹션 2의 내용이 들어갑니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="memo">memo</div>
+            <textarea id="memoInput" rows="4" cols="50" placeholder="메모를 입력하세요."></textarea>
+        </div>
+        <div id="left">
+            <div id="gui">filesystem</div>
+            <div id="term" style="width: 100%; height: 100%; overflow-y: hidden;"></div>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            $("#accordion").accordion();
+        });
+    </script>
+</body>
+
+</html>
