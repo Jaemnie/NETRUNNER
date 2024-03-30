@@ -4,44 +4,73 @@
     font-family: 'Consolas', 'Courier New', monospace;
 }
 
-html,
-body {
+html, body {
     height: 100%;
     width: 100%;
     background-color: #1e1e1e;
     color: #d4d4d4;
+    overflow: hidden;
+}
+/* 기본 아이콘 스타일 */
+#tabs img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto; /* 센터 정렬 */
+}
+
+/* 화면 너비가 768px 이하일 때 적용될 스타일 */
+@media (max-width: 768px) {
+    #tabs img {
+        max-width: 50%; /* 아이콘 크기를 줄임 */
+        height: auto;
+    }
 }
 
 #box {
     display: flex;
-    height: 100vh;
+    height: 57vh;
 }
 
-#box>div {
+#box > div {
     border: 1px solid #3c3c3c;
 }
 
-#right,
-#tabs {
+#right, #tabs {
     background-color: #252526;
-    width: 19%;
+    width: 30%;
 }
 
-#left,
-#gui {
+#left, #gui {
     background-color: #2d2d2d;
-    width: 80%;
+    width: 100%;
 }
 
-#right>div,
-#left>div,
-#side>div {
+#right > div, #left > div, #side > div {
     border: 1px solid #3c3c3c;
 }
+
+#tabview {
+    position: relative; /* 자식 요소인 #accordion에 대한 기준점을 설정 */
+    height: 100%;
+    width: 100%;
+}
+
+#accordion {
+    max-width: 100%; /* #tabview 너비를 초과하지 않도록 설정 */
+    max-height: 100%; /* #tabview 높이를 초과하지 않도록 설정 */
+    overflow: hidden; /* 내용이 넘칠 경우 스크롤바를 표시 */
+    box-sizing: border-box;
+    position: absolute; /* #tabview 내에서 절대 위치 설정 */
+    top: 0;
+    left: 0;
+}
+
+
 
 #side {
     display: flex;
-    height: 80%;
+    height: 100%;
 }
 
 ul {
@@ -60,22 +89,33 @@ ul {
     background-color: #333;
 }
 
-#memo textarea {
-    width: 100%;
-    height: 100%;
-    background-color: #2d2d2d;
-    color: #d4d4d4;
-    border: none;
-    outline: none;
+#memo {
+    margin-top: auto; /* #memo를 아래로 밀어내기 */
+    width: 100%; 
+    height: 8%;
+    background-color: #2d2d2d; 
+    color: #d4d4d4; 
+    border: none; 
+    outline: none; 
     resize: none;
     padding: 10px;
     box-sizing: border-box;
 }
 
-#gui {
-    height: 70%;
+textarea {
+    width: 100%; /* textarea를 #memo의 너비에 맞추기 */
+    background-color: #1e1e1e;
+    color: #2cff00;
+    resize: none; /* 스크롤바가 나타나지 않도록 설정 */
 }
 
+#gui{
+    height: 100%;
+}
 #term {
-    height: 30%;
+    height: 50%;
+}
+
+#shop {
+    
 }

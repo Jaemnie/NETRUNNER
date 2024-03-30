@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="/src/css/login.css"/>
+  </head>
+  <body>
+    <div class="ring">
+      <i style="--clr:#00ff0a;"></i>
+      <i style="--clr:#ff0057;"></i>
+      <i style="--clr:#fffd44;"></i>
+      <div class="login">
+        <h2>N E T R U N N E R</h2>
+        <form action="/src/testlayout/loading.html" method="post">
+          <div class="inputBx">
+            <input type="text" name="username" placeholder="아이디" required>
+          </div>
+          <div class="inputBx">
+            <input type="password" name="password" placeholder="비밀번호" required>
+          </div>
+          <div class="inputBx">
+            <input type="submit" value="로그인">
+          </div>
+        </form>
+        <div class="links">
+          <a href="#passwordResetModal">비밀번호 찾기</a>
+          <a href="#signupModal">회원가입</a>
+        </div>
+      </div>
+    </div>
+  
+  <!-- 비밀번호 찾기 모달 -->
+  <div class="modal" id="passwordResetModal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>비밀번호 찾기</h2>
+      <form id="passwordResetForm" onsubmit="return validatePasswordResetForm(event)">
+        <div class="inputBx">
+          <input type="email" name="email" placeholder="이메일" required>
+          <input type="button" value="인증" id="verifyEmailButton">
+        </div>
+        <div class="inputBx" id="verificationCodeBox" style="display: none;">
+          <input type="text" name="verificationCode" placeholder="인증번호" required>
+          <input type="button" value="인증번호 확인" id="checkVerificationCodeButton">
+        </div>
+        <div class="inputBx" id="newPasswordBox" style="display: none;">
+          <input type="password" name="newPassword" placeholder="새 비밀번호" required>
+          <input type="password" name="confirmNewPassword" placeholder="새 비밀번호 확인" required>
+          <input type="submit" value="비밀번호 재설정" id="resetPasswordButton">
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  
+  
+  
+
+  <!-- 회원가입 모달 -->
+  <div class="modal" id="signupModal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>회원가입</h2>
+      <form id="signupForm">
+        <div class="inputBx">
+          <input type="text" name="name" placeholder="이름" required>
+        </div>
+        <div class="inputBx">
+          <input type="text" name="phone" placeholder="휴대폰 번호" required>
+          <input type="button" value="인증번호 받기" onclick="requestPhoneVerification()">
+        </div>
+        <div class="inputBx">
+          <input type="text" name="verificationCode" placeholder="인증번호" required>
+        </div>
+        <div class="inputBx">
+          <input type="text" name="username" placeholder="아이디" required>
+        </div>
+        <div class="inputBx">
+          <input type="password" name="password" placeholder="비밀번호" required>
+        </div>
+        <div class="inputBx">
+          <input type="password" name="confirmPassword" placeholder="비밀번호 재입력" required>
+        </div>
+        <div class="inputBx">
+          <input type="submit" value="회원가입">
+        </div>
+      </form>
+    </div>
+  </div>
+  
+
+  
+  <script src="/src/Javascripts/login.js"></script>
+  </body>
+</html>

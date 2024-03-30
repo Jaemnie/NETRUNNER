@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="/src/css/loading.css"/>
+</head>
+<body>
+    <div class="progress-bar">
+        <div class="box">
+          <p class="loading-text">로딩중...</p>
+          <p class="done-text">로딩 완료 🎉</p>
+          <div class="box-front"></div>
+          <div class="box-bottom"></div>
+        </div>
+      </div>
+  </div>
+
+  <script>
+    const bar = document.getElementsByClassName("progress-bar")[0];
+    let percentage = 0;
+    bar.style = `--progress: ${percentage}`;
+    const interval = setInterval(() => {
+      bar.style = `--progress: ${percentage}`;
+      percentage += 0.01;
+      if (percentage > 1) {
+        clearInterval(interval);
+        bar.classList.add("done");
+        bar.style = `--progress: 1`;
+        // 진행률이 100%에 도달한 후 2초 뒤에 temp.html로 리디렉션합니다.
+        setTimeout(() => {
+          window.location.href = "temp.html";
+        }, 2000);  // 2000ms = 2s
+      }
+    }, 50);
+  </script>  
+</body>
+</html>
