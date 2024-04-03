@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useRef,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './login.module.css';
 import Modal from './modals/Modal';
@@ -25,6 +25,21 @@ function LoginPage() {
     const closeModal1 = () => { setIsModalOpen1(false) };
 
 
+    const modalref = useRef();
+
+    useEffect(()=>{
+        const handler = (event) =>{
+            if(modalref.current && !modalref.current.contains(event.target)){
+                closeModal();
+            }
+        };
+        document.addEventListener('mousedown',handler);
+        return() =>{
+            document.removeEventListener('mousedown',handler);
+        };
+    },[]);
+
+
     return (
         <div>
             <div className={styles.ring}>
@@ -46,7 +61,7 @@ function LoginPage() {
                     </form>
                     <div className={styles.links}>
                         <a href="#" onClick={(e) => { e.preventDefault(); openModal(); }} >비밀번호 찾기</a>
-                        <Modal isOpen={isModalOpen} closeModal={closeModal}>
+                        <Modal ref={modalref}  isOpen={isModalOpen} closeModal={closeModal}>
                             {
                                 <div className="modal" id="passwordResetModal">
                                     <div className="modal_content">
