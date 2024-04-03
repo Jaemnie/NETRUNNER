@@ -6,7 +6,7 @@ const MainComponents=({children})=>{
         <nav className="main-menu">
             <h1>App</h1>
             <ul>
-                <li className="nav-item active">
+                <li className="nav-item">
                     <b></b>
                     <b></b>
                     <a href="#">

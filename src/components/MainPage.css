@@ -149,3 +149,13 @@ main {
     display: none;
   }
 }
+
+
+@keyframes fadeInAnimation {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

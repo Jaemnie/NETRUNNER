@@ -112,12 +112,12 @@ main {
   background: #c471ed;
 }
 
-.nav-item.active b:nth-child(1),
-.nav-item.active b:nth-child(2) {
+.nav-item.home b:nth-child(1),
+.nav-item.home b:nth-child(2) {
   display: block;
 }
 
-.nav-item.active a {
+.nav-item.home a {
   text-decoration: none;
   color: #ffffff;
   background: #12c2e9;
