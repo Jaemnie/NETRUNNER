@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import "./MainPage.css"
 import TermPage from '../../components/termPage';
+import ClickEffect from './ClickEffect';
 const MenuContent = {
   terminer: <TermPage />,
   info: <div>내정보</div>,
@@ -10,6 +11,17 @@ const MenuContent = {
 };
 
 function MainPage() {
+    const [clickPositions, setClickPositions] = useState([]);
+
+    const handleClick = (event) => {
+      const { pageX: x, pageY: y } = event;
+      setClickPositions([...clickPositions, { x, y }]);
+      setTimeout(() => {
+        setClickPositions(currentPositions => currentPositions.slice(1));
+      }, 200); // 500ms 후에 이펙트 제거
+    };
+  
+  
   // 현재 선택된 메뉴 항목을 저장하는 상태
   const [currentMenu, setCurrentMenu] = useState('terminer');
 
@@ -17,9 +29,12 @@ function MainPage() {
   const handleMenuClick = (menuKey) => {
     setCurrentMenu(menuKey);
   };
-
+  
   return (
-    <main>
+    <main onClick={handleClick} >
+        {clickPositions.map((pos, index) => (
+        <ClickEffect key={index} x={pos.x} y={pos.y} />
+      ))}
     <nav className="main-menu">
         <h1>NetRunner</h1>
         <ul>

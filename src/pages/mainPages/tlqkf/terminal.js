@@ -1,9 +1,8 @@
 import { FileSystem } from "./fileSystems.js";
-// const terminal = new Terminal();
-// document.addEventListener('DOMContentLoaded', termi(terminal));
-function termi(terminal2) {
+
+function Termi(terminal2,elements) {
     const terminal = terminal2;
-    terminal.open(document.getElementById('term'));
+    terminal.open(elements);
     let currentInput = '';
     terminal.write('Welcome to NetRunner!\r\n');
     let currentPath = '/home/user';
@@ -15,7 +14,7 @@ function termi(terminal2) {
     fs.createFile("/home/user/file2.txt");
     fs.createDirectory("/home/user/documents");
     fs.createFile("/home/user/documents/document1.txt");
-    prompt(currentPath);
+    prompt('',currentPath);
     terminal.onKey(({ key, domEvent }) => {
         const char = key;
         if (domEvent.keyCode === 13) {  // Enter key
@@ -129,7 +128,7 @@ function termi(terminal2) {
                     break;
             }
             currentInput = '';
-            prompt(currentPath);
+            prompt('',currentPath);
         } else if (domEvent.keyCode === 8) {
             // Backspace 처리
             if (currentInput.length > 0) {
@@ -149,5 +148,5 @@ function termi(terminal2) {
     }
 }
 
-export { termi };
+export { Termi };
 
