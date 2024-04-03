@@ -7,6 +7,14 @@ function termi(terminal2) {
     let currentInput = '';
     terminal.write('Welcome to NetRunner!\r\n');
     let currentPath = '/home/user';
+    const fs = new FileSystem();
+    fs.createDirectory("/root");
+    fs.createDirectory("/tmp");
+    fs.createDirectory("/home/user")
+    fs.createFile("/home/user/file1.txt");
+    fs.createFile("/home/user/file2.txt");
+    fs.createDirectory("/home/user/documents");
+    fs.createFile("/home/user/documents/document1.txt");
     prompt(currentPath);
     terminal.onKey(({ key, domEvent }) => {
         const char = key;
