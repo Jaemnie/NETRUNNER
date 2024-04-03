@@ -112,16 +112,56 @@ main {
   background: #c471ed;
 }
 
-.nav-item.home b:nth-child(1),
-.nav-item.home b:nth-child(2) {
-  display: block;
+.nav-item.active:hover a {
+  color: #f64f59; /* 호버 시 텍스트 색상 변경 */
+  background: #12c2e9; /* 호버 시 배경색 변경 */
 }
 
-.nav-item.home a {
-  text-decoration: none;
-  color: #ffffff;
-  background: #12c2e9;
+.nav-item.active:hover b:nth-child(1),
+.nav-item.active:hover b:nth-child(2) {
+  background: #c471ed; /* 호버 시 b 요소의 배경색 변경 */
 }
+
+.nav-item.profile:hover a {
+  color: #f64f59; /* 호버 시 텍스트 색상 변경 */
+  background: #12c2e9; /* 호버 시 배경색 변경 */
+}
+
+.nav-item.profile:hover b:nth-child(1),
+.nav-item.profile:hover b:nth-child(2) {
+  background: #c471ed; /* 호버 시 b 요소의 배경색 변경 */
+}
+
+.nav-item.quest:hover a {
+  color: #f64f59; /* 호버 시 텍스트 색상 변경 */
+  background: #12c2e9; /* 호버 시 배경색 변경 */
+}
+
+.nav-item.quest:hover b:nth-child(1),
+.nav-item.quest:hover b:nth-child(2) {
+  background: #c471ed; /* 호버 시 b 요소의 배경색 변경 */
+}
+
+.nav-item.shop:hover a {
+  color: #f64f59; /* 호버 시 텍스트 색상 변경 */
+  background: #12c2e9; /* 호버 시 배경색 변경 */
+}
+
+.nav-item.shop:hover b:nth-child(1),
+.nav-item.shop:hover b:nth-child(2) {
+  background: #c471ed; /* 호버 시 b 요소의 배경색 변경 */
+}
+
+.nav-item.setting:hover a {
+  color: #f64f59; /* 호버 시 텍스트 색상 변경 */
+  background: #12c2e9; /* 호버 시 배경색 변경 */
+}
+
+.nav-item.setting:hover b:nth-child(1),
+.nav-item.setting:hover b:nth-child(2) {
+  background: #c471ed; /* 호버 시 b 요소의 배경색 변경 */
+}
+
 
 .nav-icon {
   width: 60px;

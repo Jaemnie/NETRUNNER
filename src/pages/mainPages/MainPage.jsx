@@ -31,7 +31,7 @@ function MainPage() {
                     <span className="nav-text">터미널</span>
                 </a>
             </li>
-            <li className="nav-item">
+            <li className="nav-item profile">
                 <b></b>
                 <b></b>
                 <a href="#"onClick={() => handleMenuClick('info')}>
@@ -40,7 +40,7 @@ function MainPage() {
                 </a>
             </li>
 
-            <li className="nav-item">
+            <li className="nav-item quest">
                 <b></b>
                 <b></b>
                 <a href="#"onClick={() => handleMenuClick('quest')}>
@@ -49,7 +49,7 @@ function MainPage() {
                 </a>
             </li>
 
-            <li className="nav-item">
+            <li className="nav-item shop">
                 <b></b>
                 <b></b>
                 <a href="#"onClick={() => handleMenuClick('shop')}>
@@ -58,7 +58,7 @@ function MainPage() {
                 </a>
             </li>
 
-            <li className="nav-item">
+            <li className="nav-item setting">
                 <b></b>
                 <b></b>
                 <a href="#"onClick={() => handleMenuClick('setting')}>
