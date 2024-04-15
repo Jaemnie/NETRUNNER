@@ -19,7 +19,19 @@
 }
 
 .modalContent {
-  background-color: #fff;
+  /* 화면에 고정 */
+  z-index: 1;
+  /* 내용 위에 표시 */
+  background-color: #292929;
+  /* width: 100%; */
+  /* 전체 너비 */
+  height: auto;
+  /* 전체 높이 */
+  overflow: auto;
+  /* 내용이 넘칠 경우 스크롤 */
+  backdrop-filter: blur(10px);
+  /* 블러 효과 */
+  /* background-color: #fff; */
   /* 배경색 */
   padding: 20px;
   /* 내부 여백 */
@@ -27,8 +39,11 @@
   /* 모서리 둥글게 */
   max-width: 600px;
   /* 최대 너비 */
-  width: 100%;
+  width: auto;
   /* 너비 */
+  /* 내용 너비 */
+  border-radius: 10px;
+  /* 테두리 둥글게 */
 }
 
 
@@ -66,44 +81,27 @@
   color: rgba(255, 255, 255, 0.75);
 }
 
-.modal {
-  
-  position: fixed;
-  /* 화면에 고정 */
-  z-index: 1;
-  /* 내용 위에 표시 */
-  left: 0;
-  top: 0;
-  width: 100%;
-  /* 전체 너비 */
-  height: 100%;
-  /* 전체 높이 */
-  overflow: auto;
-  /* 내용이 넘칠 경우 스크롤 */
-  backdrop-filter: blur(10px);
-  /* 블러 효과 */
-}
 
-.modal h2 {
+.modalContent h2 {
   font-size: 2em;
   color: #fff;
   margin-bottom: 20px;
   /* 제목과 입력란 사이의 여백 추가 */
 }
 
-.modal .inputBx {
+.modalContent .inputBx {
   position: relative;
   width: 100%;
   margin-bottom: 20px;
   /* 입력란 사이의 여백 추가 */
 }
 
-.modal .inputBx:last-child {
+.modalContent .inputBx:last-child {
   margin-bottom: 0;
   /* 마지막 입력란과 로그인 버튼 사이의 여백 제거 */
 }
 
-.modal .inputBx input {
+.modalContent .inputBx input {
   position: relative;
   width: 100%;
   padding: 12px 20px;
@@ -116,7 +114,7 @@
   outline: none;
 }
 
-.modal .inputBx input[type="submit"] {
+.modalContent .inputBx input[type="submit"] {
   width: 100%;
   background: #0078ff;
   background: linear-gradient(45deg, #ff357a, #fff172);
@@ -124,11 +122,11 @@
   cursor: pointer;
 }
 
-.modal .inputBx input::placeholder {
+.modalContent .inputBx input::placeholder {
   color: rgba(255, 255, 255, 0.75);
 }
 
-.modal .links {
+.modalContent .links {
   position: relative;
   width: 100%;
   display: flex;
@@ -137,23 +135,9 @@
   padding: 0 20px;
 }
 
-.modal .links a {
+.modalContent .links a {
   color: #fff;
   text-decoration: none;
-}
-
-.modal_content {
-  background-color: #292929;
-  margin: 15% auto;
-  /* 페이지 중앙에 표시 */
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-  /* 내용 너비 */
-  border-radius: 10px;
-  
-  /* 테두리 둥글게 */
-  max-width: 600px; 
 }
 
 .close {
