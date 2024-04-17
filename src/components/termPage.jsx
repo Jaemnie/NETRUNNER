@@ -16,7 +16,7 @@ const TermPage=()=> {
     }, []);
     return (<>
                 {/* DirectoryViewer 컴포넌트로 파일 시스템 내용을 렌더링 */}
-                <DirectoryViewer initialPath="/initial/path" /> 
+                <DirectoryViewer initialPath="/home/user" /> 
                 <div ref={terminalRef} style={{width: "100%",height: "100%"}}></div>
 </>
     );

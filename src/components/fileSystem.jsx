@@ -20,16 +20,19 @@ const DirectoryViewer = ({ initialPath }) => {
   useEffect(() => {
     // 백엔드 연동 로직은 여기에 구현
     const exampleData = {
-      files: ['file1.txt', 'file2.txt', 'directory1'],
-      filestype: ['file', 'file', 'directory']
+      files: ['file1.txt', 'file2.txt', 'directory1','file1.txt', 'file2.txt', 'directory1','file1.txt', 'file2.txt', 'directory1','file1.txt', 'file2.txt', 'directory1'],
+      filestype: ['file', 'file', 'directory','file', 'file', 'directory','file', 'file', 'directory','file', 'file', 'directory']
     };
     setContents(exampleData);
   }, [path]);
 
+
+  //이벤트 핸들러
   function handleItemClick(item, type) {
     if (type === 'directory') {
       const newPath = path === '/' ? `/${item}` : `${path}/${item}`;
       setPath(newPath);
+      console.log(path);
     } else {
       console.log(item + ' file clicked');
     }
@@ -45,6 +48,8 @@ const DirectoryViewer = ({ initialPath }) => {
     gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))',
     gap: '20px',
     textAlign: 'center',
+    flexGrow:'1',
+    // overflowY : 'scroll'
   };
 
   const itemStyle = {
@@ -54,14 +59,27 @@ const DirectoryViewer = ({ initialPath }) => {
     alignItems: 'center',
   };
 
+  const pathBar = {
+    position: 'absolute', /* 절대적 위치 설정 */
+            bottom: 0, /* 바닥에서 0px의 위치 */
+            textAlign: 'left', /* 텍스트 중앙 정렬 */
+            backgroundColor: '#c5e3df9d'/* 배경색 설정 */
+  }
+
   return (
-    <div style={gridStyle}>
-      {contents.files.map((item, index) => (
-        <div key={index} style={itemStyle} onClick={() => handleItemClick(item, contents.filestype[index])}>
-          {getIconForType(contents.filestype[index])}
-          <div>{item}</div>
-        </div>
-      ))}
+    <div style={{position: 'relative',display:'flex'}}>
+      <p style={pathBar}>{path}</p>
+      <div style={{borderRight:'black solid 1px'}}>
+        sidebar
+      </div>
+      <div style={gridStyle}>
+        {contents.files.map((item, index) => (
+          <div key={index} style={itemStyle} onClick={() => handleItemClick(item, contents.filestype[index])}>
+            {getIconForType(contents.filestype[index])}
+            <div>{item}</div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

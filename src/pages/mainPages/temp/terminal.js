@@ -14,7 +14,7 @@ function Termi(terminal2,elements) {
     fs.createFile("/home/user/file2.txt");
     fs.createDirectory("/home/user/documents");
     fs.createFile("/home/user/documents/document1.txt");
-    console.log(fs.getPathInfo("/").files);
+    
     prompt('',currentPath);
     terminal.onKey(({ key, domEvent }) => {
         const char = key;
