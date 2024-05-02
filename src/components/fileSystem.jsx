@@ -5,11 +5,11 @@ import { faFolder, faFile } from '@fortawesome/free-solid-svg-icons';
 function getIconForType(type) {
   switch (type) {
     case 'directory':
-      return <FontAwesomeIcon icon={faFolder} size="5x" />;
+      return <FontAwesomeIcon icon={faFolder} size="4x" />;
     case 'file':
-      return <FontAwesomeIcon icon={faFile} size="5x" />;
+      return <FontAwesomeIcon icon={faFile} size="4x" />;
     default:
-      return <FontAwesomeIcon icon={faFile} size="5x" />;
+      return <FontAwesomeIcon icon={faFile} size="4x" />;
   }
 }
 
@@ -24,6 +24,7 @@ const DirectoryViewer = ({ initialPath }) => {
       filestype: ['file', 'file', 'directory','file', 'file', 'directory','file', 'file', 'directory','file', 'file', 'directory']
     };
     setContents(exampleData);
+    // setContents();
   }, [path]);
 
 
@@ -45,8 +46,8 @@ const DirectoryViewer = ({ initialPath }) => {
   // 스타일 정의
   const gridStyle = {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))',
-    gap: '20px',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))',
+    gap: '10px',
     textAlign: 'center',
     flexGrow:'1',
     // overflowY : 'scroll'
@@ -85,3 +86,5 @@ const DirectoryViewer = ({ initialPath }) => {
 };
 
 export default DirectoryViewer;
+
+

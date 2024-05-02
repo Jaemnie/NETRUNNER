@@ -2,14 +2,11 @@ import React, { useState,useRef,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './login.module.css';
 import Modal from './modals/Modal';
+import AuthService from '../../services/AuthService';
 
 function LoginPage() {
     let navigate = useNavigate();
     // 이벤트 핸들러는 useNavigate 훅으로부터 받은 navigate 함수를 사용
-    const submitHandler = (event) => {
-        event.preventDefault();
-        navigate('/loading');
-    };
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -30,16 +27,21 @@ function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [id,setID] = useState('');
-
+    const [userId,setID] = useState('');
+    const [username, setUsername] = useState('');
 
     const [verificationCode, setVerificationCode] = useState('');
     const [inputVerificationCode, setInputVerificationCode] = useState('');
     const [checkVerification,setCheckVerification] = useState(false);
     const fakeVerificationCode = "1234";
 
+    const authService = new AuthService();
+
     const [IdCheck,setIdCheck] = useState(false);
 
+    const handelUsernameChange=(e)=>{
+        setUsername(e.target.value);
+    }
     const handleIdChange=(e)=>{
         setID(e.target.value);
     }
@@ -85,16 +87,13 @@ function LoginPage() {
     }
     
 
-    const AccountSubmit = (e) => {
+    const AccountSubmit = async(e) => {
       e.preventDefault();
-      if(!IdCheck){
-        alert("이미존재하는 Id입니다.");
-        return;
-      }
-      if(!checkVerification){
-        alert("인증번호가 일치하지 않습니다.");
-        return;
-      }
+      
+    //   if(!checkVerification){
+    //     alert("인증번호가 일치하지 않습니다.");
+    //     return;
+    //   }
       // 이메일 형식 검사
       if (!emailRegex.test(email)) {
         alert("유효한 이메일 주소를 입력해주세요.");
@@ -110,11 +109,12 @@ function LoginPage() {
         alert("비밀번호와 비밀번호 재입력이 일치하지 않습니다.");
         return;
       }
-      // 모든 검사를 통과한 경우, 여기에 회원가입 로직을 추가
+
+      authService.signup(userId,username,password,email); 
       console.log("회원가입 성공");
     };
   
-    const FindPassSubmit = (e) => {
+    const FindPassSubmit = async(e) => {
         e.preventDefault();
         if(!checkVerification){
           alert("인증번호가 일치하지 않습니다.");
@@ -135,10 +135,17 @@ function LoginPage() {
           alert("비밀번호와 비밀번호 재입력이 일치하지 않습니다.");
           return;
         }
-        // 모든 검사를 통과한 경우, 여기에 비밀번호 변경 로직을 추가
+        
         console.log("성공");
+        authService.changepass(email,password);
       };
 
+      const submitHandler = (event) => {
+        event.preventDefault();
+        authService.login(userId,password);
+            navigate('/loading');
+        
+    };
 
 
     return (
@@ -151,10 +158,10 @@ function LoginPage() {
                     <h2>N E T R U N N E R</h2>
                     <form onSubmit={submitHandler}>
                         <div className={styles.inputBx}>
-                            <input type="text" name="username" placeholder="아이디" required />
+                            <input type="text" value={userId} onChange={handleIdChange} placeholder="아이디" required />
                         </div>
                         <div className={styles.inputBx}>
-                            <input type="password" name="password" placeholder="비밀번호" required />
+                            <input type="password" value={password} onChange={handlePasswordChange}placeholder="비밀번호" required />
                         </div>
                         <div className={styles.inputBx}>
                             <input type="submit" value="로그인" />
@@ -193,7 +200,7 @@ function LoginPage() {
                                     <h2>회원가입</h2>
                                     <form onSubmit={AccountSubmit} >
                                         <div className="inputBx">
-                                            <input type="text" name="name" placeholder="이름" required />
+                                            <input type="text" value={username} onChange={handelUsernameChange} placeholder="이름" required />
                                         </div>
                                         <div className="inputBx">
                                             <input type="email" value={email} onChange={handleEmailChange} placeholder="이메일 주소" required />
@@ -204,7 +211,7 @@ function LoginPage() {
                                             <input type="button" value="인증번호 확인" onClick={handleVerificationCheck}/>
                                         </div>
                                         <div className="inputBx">
-                                            <input type="text" value={id} onChange={handleIdChange} placeholder="아이디" required />
+                                            <input type="text" value={userId} onChange={handleIdChange} placeholder="아이디" required />
                                             <input type="button" onClick={handelIdCheck} value="중복확인" />
                                         </div>
                                         <div className="inputBx">
