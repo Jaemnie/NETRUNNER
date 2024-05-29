@@ -1,0 +1,274 @@
+/* Ring animation */
+@keyframes ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes splitScreenLeft {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes splitScreenRight {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.ringContainer {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+}
+
+.ring {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  animation: ring 2s linear infinite;
+}
+
+.ring:before,
+.ring:after,
+.innerRing {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  border: 4px solid transparent;
+}
+
+.ring:before {
+  inset: 0;
+  border-top-color: #3498db; /* 파란색 */
+  animation: spin 2s linear infinite;
+}
+
+.ring:after {
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  bottom: 15px;
+  border-top-color: #f9c922; /* 노란색 */
+  animation: spin 1.5s linear infinite;
+}
+
+.innerRing {
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+  border-top-color: #e74c3c; /* 주황색 */
+  animation: spin 3s linear infinite;
+}
+
+.span {
+  position: absolute;
+  color: #24ecff;
+  font-size: 2em;
+  text-transform: uppercase;
+  animation: textShadow 1.5s linear infinite;
+}
+
+@keyframes textShadow {
+  0%,
+  100% {
+    text-shadow: 0 0 15px #24ecff, 0 0 20px #24ecff, 0 0 25px #24ecff,
+      0 0 30px #24ecff, 0 0 35px #24ecff, 0 0 40px #24ecff;
+  }
+  50% {
+    text-shadow: 0 0 5px #24ecff, 0 0 10px #24ecff, 0 0 15px #24ecff,
+      0 0 20px #24ecff, 0 0 25px #24ecff;
+  }
+}
+
+.main {
+  font-family: "Nunito", sans-serif;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: grid;
+  grid-template-columns: 11% 89%; /* 메뉴를 약간 더 키움 */
+  width: 80vw; /* 너비를 약간 더 늘림 */
+  height: 80vh; /* 높이를 약간 더 늘림 */
+  margin: 40px;
+  background: rgb(255, 255, 255);
+  border-radius: 15px;
+  z-index: 10;
+}
+
+.splitScreenLeft,
+.splitScreenRight {
+  position: fixed;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background: #222;
+  z-index: 999;
+}
+
+.splitScreenLeft {
+  left: 0;
+  animation: splitScreenLeft 1s forwards;
+}
+
+.splitScreenRight {
+  right: 0;
+  animation: splitScreenRight 1s forwards;
+}
+
+/* Other existing styles */
+
+.mainMenu {
+  overflow: hidden;
+  background: #f64f59;
+  padding-top: 10px;
+  border-radius: 15px 0 0 15px;
+  font-family: "Roboto", sans-serif;
+}
+
+.mainMenu h1 {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 500;
+  text-align: center;
+  margin: 20px 0 30px;
+  color: #12c2e9;
+  font-family: "Nunito", sans-serif;
+}
+
+.navItem {
+  position: relative;
+  display: block;
+}
+
+.navItem a {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  color: #12c2e9;
+  font-size: 1rem;
+  padding: 15px 0;
+  margin-left: 10px;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+.navItem b:nth-child(1) {
+  position: absolute;
+  top: -15px;
+  height: 15px;
+  width: 100%;
+  background: #12c2e9;
+  display: none;
+}
+
+.navItem b:nth-child(1)::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-bottom-right-radius: 20px;
+  background: #c471ed;
+}
+
+.navItem b:nth-child(2) {
+  position: absolute;
+  bottom: -15px;
+  height: 15px;
+  width: 100%;
+  background: #12c2e9;
+  display: none;
+}
+
+.navItem b:nth-child(2)::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-top-right-radius: 20px;
+  background: #c471ed;
+}
+
+.navItem.active:hover a {
+  color: #f64f59; /* 호버 시 텍스트 색상 변경 */
+  background: #12c2e9; /* 호버 시 배경색 변경 */
+}
+
+.navItem.active:hover b:nth-child(1),
+.navItem.active:hover b:nth-child(2) {
+  background: #c471ed; /* 호버 시 b 요소의 배경색 변경 */
+}
+
+.navItem.quest:hover a {
+  color: #f64f59; /* 호버 시 텍스트 색상 변경 */
+  background: #12c2e9; /* 호버 시 배경색 변경 */
+}
+
+.navItem.quest:hover b:nth-child(1),
+.navItem.quest:hover b:nth-child(2) {
+  background: #c471ed; /* 호버 시 b 요소의 배경색 변경 */
+}
+
+.navItem.shop:hover a {
+  color: #f64f59; /* 호버 시 텍스트 색상 변경 */
+  background: #12c2e9; /* 호버 시 배경색 변경 */
+}
+
+.navItem.shop:hover b:nth-child(1),
+.navItem.shop:hover b:nth-child(2) {
+  background: #c471ed; /* 호버 시 b 요소의 배경색 변경 */
+}
+
+.navIcon {
+  width: 60px;
+  height: 20px;
+  font-size: 20px;
+  text-align: center;
+}
+
+.navText {
+  display: block;
+  width: 120px;
+  height: 20px;
+}
+
+/* CONTENT */
+
+.content {
+  display: grid;
+  grid-template-rows: 70% 30%;
+  overflow-y: scroll; /* 수직 스크롤만 허용 */
+  scrollbar-width: none; /* 파이어폭스에서 스크롤바 숨기기 */
+}
+
+.content::-webkit-scrollbar {
+  display: none; /* 크롬, 사파리, 오페라에서 스크롤바 숨기기 */
+}
