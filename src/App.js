@@ -9,7 +9,7 @@ import MainPage from './pages/mainPages/MainPage';
 // import AuthService from '../../services/AuthService';
 
 const RequireAuth = ({ children }) => {
-  const token = localStorage.getItem('jwt');
+  const token = localStorage.getItem('accessToken');
 
   if (!token) {
     // 로그인 페이지 대신 첫페이지로 리다이렉션
