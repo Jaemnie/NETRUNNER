@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Routes, Route,Navigate } from 'react-router-do
 import LoginPage from './pages/loginPages/LoginPage';
 import Loading from './pages/loadingPages/Loading';
 import MainPage from './pages/mainPages/MainPage';
-// import AuthService from '../../services/AuthService';
+import AuthService from './services/AuthService';
 
 const RequireAuth = ({ children }) => {
   const token = localStorage.getItem('accessToken');

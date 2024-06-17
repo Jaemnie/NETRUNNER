@@ -1,7 +1,7 @@
 class AuthService {
 
   signup(userId, username, password, email) {
-    fetch('http://localhost:4000/auth/signup', {
+    fetch('http://172.16.230.134:4000/auth/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userId, username, password, email }),
@@ -13,7 +13,7 @@ class AuthService {
   }
 
   login(userId, password) {
-    return fetch('http://localhost:4000/auth/signin', {
+    return fetch('http://172.16.230.134:4000/auth/signin', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -42,7 +42,7 @@ class AuthService {
     localStorage.removeItem('accessToken');
     window.location.href = '/';
     // 로그아웃 처리를 위해 서버에 요청을 보냄
-    fetch('http://localhost:4000/auth/signout', {
+    fetch('http://172.16.230.134:4000/auth/signout', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
@@ -55,7 +55,7 @@ class AuthService {
   }
 
   changepass(email, password) {
-    fetch('http://localhost:4000/auth/changepass', {
+    fetch('http://172.16.230.134:4000/auth/changepass', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),

@@ -1,5 +1,6 @@
 
 import {SocketResult} from "./socket";
+import { TerminalInteraction } from './TerminalInteraction';
 
 function Termi(terminal2,elements) {
     let message = '';
@@ -17,6 +18,7 @@ function Termi(terminal2,elements) {
             terminal.writeln('');
             sockets.sendMessage(message,currentPath);
             prompt('',currentPath);
+            TerminalInteraction.handleTerminalInput(message);
             sockets.getMessage((chat) => {
                 terminal.write(chat);
                 terminal.writeln('');
@@ -24,8 +26,6 @@ function Termi(terminal2,elements) {
                 chat= '';
             });
             currentInput = '';
-
-
         } else if (domEvent.keyCode === 8) {
             // Backspace 처리
             if (currentInput.length > 0) {
