@@ -1,8 +1,8 @@
 import React, { forwardRef, useImperativeHandle, useState, useEffect } from 'react';
 import { TerminalInteraction } from './TerminalInteraction';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolder, faFile } from '@fortawesome/free-solid-svg-icons';
+import { SocketResult } from './socket';
 
 function getIconForType(type) {
   switch (type) {
@@ -15,35 +15,80 @@ function getIconForType(type) {
   }
 }
 
-const DirectoryViewer = forwardRef((props, ref, initialPath) => {
+const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
   const [directoryContent, setDirectoryContent] = useState([]);
   const [path, setPath] = useState(initialPath);
   const [contents, setContents] = useState(null);
+  const socketss = new SocketResult();
 
   useImperativeHandle(ref, () => ({
     appendToTerminal: (text) => {
       TerminalInteraction.appendToTerminal(text);
+      socketss.sendMessage(text);
+      socketss.getMessage((char) => {
+        console.log(char);
+      });
+      socketss.sendMessage('ls -al');
+      socketss.getMessage((chat) => {
+        const temp1 = chat;
+        const temp2 = chat;
+        const regex1 = /[^[\]]+(?=\[)/g;
+        const regex2 = /(?<=\[).*?(?=\])/g;
+        const files = temp1.match(regex1);
+        const filestype = temp2.match(regex2);
+        const setDir = { files, filestype };
+        console.log(setDir);
+        setContents(setDir);
+      });
     },
 
     updateDirectoryContent: (newContent) => {
-      console.log("terminput:", newContent);
+      console.log('terminput:', newContent);
+      socketss.sendMessage('pwd');
+      socketss.getMessage((chat) => {
+        socketss.sendMessage(`cd ${chat}`);
+      });
+      socketss.sendMessage('ls -al');
+      socketss.getMessage((chat) => {
+        const temp1 = chat;
+        const temp2 = chat;
+        const regex1 = /[^[\]]+(?=\[)/g;
+        const regex2 = /(?<=\[).*?(?=\])/g;
+        const files = temp1.match(regex1);
+        const filestype = temp2.match(regex2);
+        const setDir = { files, filestype };
+        setContents(setDir);
+      });
+
       if (newContent === 'cd directory1') {
         const exampleData = {
           files: ['file2.txt', 'file2.txt', 'directory2'],
-          filestype: ['file', 'file', 'directory']
-        }
+          filestype: ['file', 'file', 'directory'],
+        };
         setContents(exampleData);
       }
-    }
+    },
   }));
 
-  const exampleData = {
-    files: ['file1.txt', 'file2.txt', 'directory1', 'file1.txt', 'file2.txt', 'directory1', 'file1.txt', 'file2.txt', 'directory1', 'file1.txt', 'file2.txt', 'directory1'],
-    filestype: ['file', 'file', 'directory', 'file', 'file', 'directory', 'file', 'file', 'directory', 'file', 'file', 'directory']
-  };
-
   useEffect(() => {
-    setContents(exampleData);
+    const fetchDirectoryData = async () => {
+      let fdata = null;
+      await fetch('http://172.16.230.134:4000/filesystem/1', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          const files = data.files;
+          const filestype = data.filestype;
+          fdata = { files, filestype };
+        })
+        .catch((error) => console.error('초기화 에러:', error));
+      setContents(fdata);
+    };
+    fetchDirectoryData();
   }, []);
 
   function handleItemClick(item, type) {
@@ -53,10 +98,9 @@ const DirectoryViewer = forwardRef((props, ref, initialPath) => {
       ref.current.appendToTerminal(`cd ${item}`);
       const exampleData = {
         files: ['file2.txt', 'file2.txt', 'directory2'],
-        filestype: ['file', 'file', 'directory']
-      }
+        filestype: ['file', 'file', 'directory'],
+      };
       setContents(exampleData);
-      console.log(path);
     } else {
       ref.current.appendToTerminal(`cat ${item}`);
       console.log(item + ' file clicked');
