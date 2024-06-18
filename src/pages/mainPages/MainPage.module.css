@@ -1,13 +1,18 @@
-/* Ring animation */
-@keyframes ring {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+:root {
+  --primary-color: #12c2e9;
+  --secondary-color: #f64f59;
+  --tertiary-color: #c471ed;
+  --background-color: #222;
+  --font-family: 'Nunito', sans-serif;
+  --padding: 20px;
+  --content-background: #f0f0f0;
+  --border-radius: 8px;
+  --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --max-width: 800px;
+  --margin: 20px auto;
 }
 
+/* 통합 애니메이션 */
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -35,6 +40,18 @@
   }
 }
 
+@keyframes textShadow {
+  0%,
+  100% {
+    text-shadow: 0 0 15px var(--primary-color), 0 0 20px var(--primary-color), 0 0 25px var(--primary-color),
+      0 0 30px var(--primary-color), 0 0 35px var(--primary-color), 0 0 40px var(--primary-color);
+  }
+  50% {
+    text-shadow: 0 0 5px var(--primary-color), 0 0 10px var(--primary-color), 0 0 15px var(--primary-color),
+      0 0 20px var(--primary-color), 0 0 25px var(--primary-color);
+  }
+}
+
 .ringContainer {
   position: fixed;
   top: 50%;
@@ -48,7 +65,7 @@
   width: 200px;
   height: 200px;
   border-radius: 50%;
-  animation: ring 2s linear infinite;
+  animation: spin 2s linear infinite;
 }
 
 .ring:before,
@@ -92,20 +109,8 @@
   animation: textShadow 1.5s linear infinite;
 }
 
-@keyframes textShadow {
-  0%,
-  100% {
-    text-shadow: 0 0 15px #24ecff, 0 0 20px #24ecff, 0 0 25px #24ecff,
-      0 0 30px #24ecff, 0 0 35px #24ecff, 0 0 40px #24ecff;
-  }
-  50% {
-    text-shadow: 0 0 5px #24ecff, 0 0 10px #24ecff, 0 0 15px #24ecff,
-      0 0 20px #24ecff, 0 0 25px #24ecff;
-  }
-}
-
 .main {
-  font-family: "Nunito", sans-serif;
+  font-family: var(--font-family);
   background-repeat: no-repeat;
   background-size: cover;
   display: grid;
@@ -124,7 +129,7 @@
   top: 0;
   width: 50%;
   height: 100%;
-  background: #222;
+  background: var(--background-color);
   z-index: 999;
 }
 
@@ -142,7 +147,7 @@
 
 .mainMenu {
   overflow: hidden;
-  background: #f64f59;
+  background: var(--secondary-color);
   padding-top: 10px;
   border-radius: 15px 0 0 15px;
   font-family: "Roboto", sans-serif;
@@ -154,8 +159,7 @@
   font-weight: 500;
   text-align: center;
   margin: 20px 0 30px;
-  color: #12c2e9;
-  font-family: "Nunito", sans-serif;
+  color: var(--primary-color);
 }
 
 .navItem {
@@ -169,7 +173,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  color: #12c2e9;
+  color: var(--primary-color);
   font-size: 1rem;
   padding: 15px 0;
   margin-left: 10px;
@@ -182,7 +186,7 @@
   top: -15px;
   height: 15px;
   width: 100%;
-  background: #12c2e9;
+  background: var(--primary-color);
   display: none;
 }
 
@@ -194,7 +198,7 @@
   width: 100%;
   height: 100%;
   border-bottom-right-radius: 20px;
-  background: #c471ed;
+  background: var(--tertiary-color);
 }
 
 .navItem b:nth-child(2) {
@@ -202,7 +206,7 @@
   bottom: -15px;
   height: 15px;
   width: 100%;
-  background: #12c2e9;
+  background: var(--primary-color);
   display: none;
 }
 
@@ -214,37 +218,24 @@
   width: 100%;
   height: 100%;
   border-top-right-radius: 20px;
-  background: #c471ed;
+  background: var(--tertiary-color);
 }
 
-.navItem.active:hover a {
-  color: #f64f59; /* 호버 시 텍스트 색상 변경 */
-  background: #12c2e9; /* 호버 시 배경색 변경 */
+.navItem.active:hover a,
+.navItem.quest:hover a,
+.navItem.shop:hover a {
+  color: var(--secondary-color); /* 호버 시 텍스트 색상 변경 */
+  background: var(--primary-color); /* 호버 시 배경색 변경 */
 }
 
 .navItem.active:hover b:nth-child(1),
-.navItem.active:hover b:nth-child(2) {
-  background: #c471ed; /* 호버 시 b 요소의 배경색 변경 */
-}
-
-.navItem.quest:hover a {
-  color: #f64f59; /* 호버 시 텍스트 색상 변경 */
-  background: #12c2e9; /* 호버 시 배경색 변경 */
-}
-
+.navItem.active:hover b:nth-child(2),
 .navItem.quest:hover b:nth-child(1),
-.navItem.quest:hover b:nth-child(2) {
-  background: #c471ed; /* 호버 시 b 요소의 배경색 변경 */
-}
-
-.navItem.shop:hover a {
-  color: #f64f59; /* 호버 시 텍스트 색상 변경 */
-  background: #12c2e9; /* 호버 시 배경색 변경 */
-}
-
+.navItem.quest:hover b:nth-child(2),
 .navItem.shop:hover b:nth-child(1),
 .navItem.shop:hover b:nth-child(2) {
-  background: #c471ed; /* 호버 시 b 요소의 배경색 변경 */
+  background: var(--tertiary-color); /* 호버 시 b 요소의 배경색 변경 */
+  display: block; /* 호버 시 b 요소 표시 */
 }
 
 .navIcon {
@@ -260,15 +251,37 @@
   height: 20px;
 }
 
+
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Full height of the viewport */
+}
+
 /* CONTENT */
 
 .content {
-  display: grid;
-  grid-template-rows: 70% 30%;
-  overflow-y: scroll; /* 수직 스크롤만 허용 */
-  scrollbar-width: none; /* 파이어폭스에서 스크롤바 숨기기 */
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Ensure the content section grows to fill the space */
+  justify-content: flex-end; /* Push the terminal to the bottom */
+  overflow-y: scroll; /* Allow vertical scrolling if content overflows */
+  scrollbar-width: none; /* Firefox: hide scrollbar */
 }
 
 .content::-webkit-scrollbar {
-  display: none; /* 크롬, 사파리, 오페라에서 스크롤바 숨기기 */
+  display: none; /* Chrome, Safari, Opera: hide scrollbar */
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .main {
+    grid-template-columns: 100%; /* 메뉴를 숨기고 내용만 표시 */
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .mainMenu {
+    display: none; /* 메뉴 숨기기 */
+  }
 }

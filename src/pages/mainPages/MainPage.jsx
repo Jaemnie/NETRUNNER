@@ -8,23 +8,24 @@ import Shop from '../../components/shop';
 
 const MenuContent = {
   terminer: <TermPage />,
-  quest: null, // quest를 null로 초기화하고 아래에서 조건부 렌더링
-  shop: null  // shop을 null로 초기화하고 아래에서 조건부 렌더링
+  quest: null,
+  shop: null
 };
 
 function MainPage() {
   const [clickPositions, setClickPositions] = useState([]);
   const [showAnimation, setShowAnimation] = useState(true);
   const [showSplitScreen, setShowSplitScreen] = useState(false);
-  const [missionData, setMissionData] = useState(null); // XML 데이터를 저장할 상태
-  const [userId, setUserId] = useState(''); // 사용자 ID 상태
+  const [missionData, setMissionData] = useState(null);
+  const [userId, setUserId] = useState('');
+  const [currentMenu, setCurrentMenu] = useState('terminer');
 
   const handleClick = (event) => {
     const { pageX: x, pageY: y } = event;
-    setClickPositions([...clickPositions, { x, y }]);
+    setClickPositions((prevPositions) => [...prevPositions, { x, y }]);
     setTimeout(() => {
-      setClickPositions(currentPositions => currentPositions.slice(1));
-    }, 200); // 200ms 후에 이펙트 제거
+      setClickPositions((currentPositions) => currentPositions.slice(1));
+    }, 200);
   };
 
   useEffect(() => {
@@ -33,13 +34,12 @@ function MainPage() {
       setShowSplitScreen(true);
       setTimeout(() => {
         setShowSplitScreen(false);
-      }, 1000); // 1초 후에 화면 갈라짐 애니메이션 제거
-    }, 3000); // 3초 후에 애니메이션 제거
+      }, 1000);
+    }, 3000);
 
-    // 여기서 백엔드 API를 호출하여 데이터를 가져와서 상태에 저장
     const fetchMissionData = async () => {
       try {
-        const response = await fetch('http://172.16.230.134:3000/missions');
+        const response = await fetch('http://127.0.0.1:3000/missions');
         const data = await response.json();
         setMissionData(data.mission);
       } catch (error) {
@@ -48,23 +48,17 @@ function MainPage() {
     };
 
     fetchMissionData();
-
-    // 로그인된 사용자 ID 설정 (예시)
-    setUserId('testuser'); // 실제 사용자 ID로 변경
+    setUserId('testuser');
 
     return () => clearTimeout(timer);
   }, []);
 
-  // 현재 선택된 메뉴 항목을 저장하는 상태
-  const [currentMenu, setCurrentMenu] = useState('terminer');
-
-  // 메뉴 항목 클릭 핸들러
   const handleMenuClick = (menuKey) => {
     setCurrentMenu(menuKey);
   };
 
   return (
-    <div>
+    <div className={styles.mainContainer}>
       {showAnimation && (
         <div className={styles.ringContainer}>
           <div className={styles.ring}>
