@@ -1,4 +1,4 @@
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -16,7 +16,7 @@ body {
   justify-content: center;
   min-height: 100vh;
   min-width: 100vw;
-  background-color: #292929;
+  background-color: #272727;
   overflow: hidden;
 }
 
@@ -24,4 +24,3 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-

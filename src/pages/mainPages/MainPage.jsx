@@ -2,29 +2,39 @@ import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
 import styles from './MainPage.module.css';
 import TermPage from '../../components/termPage';
-import ClickEffect from './ClickEffect';
 import Quest from '../../components/quest';
 import Shop from '../../components/shop';
+import BackgroundMusic from '../../components/BackgroundMusic';
+import Modal from '../../pages/mainPages/esc'; // Modal 컴포넌트 임포트
+import bgm from '../../assets/mainbgm.mp3';
 
 const MenuContent = {
   terminer: <TermPage />,
-  quest: null, // quest를 null로 초기화하고 아래에서 조건부 렌더링
-  shop: null  // shop을 null로 초기화하고 아래에서 조건부 렌더링
+  quest: null,
+  shop: null
 };
 
 function MainPage() {
   const [clickPositions, setClickPositions] = useState([]);
   const [showAnimation, setShowAnimation] = useState(true);
   const [showSplitScreen, setShowSplitScreen] = useState(false);
-  const [missionData, setMissionData] = useState(null); // XML 데이터를 저장할 상태
-  const [userId, setUserId] = useState(''); // 사용자 ID 상태
+  const [missionData, setMissionData] = useState(null);
+  const [userId, setUserId] = useState('');
+  const [currentMenu, setCurrentMenu] = useState('terminer');
+  const [showModal, setShowModal] = useState(false);
 
   const handleClick = (event) => {
     const { pageX: x, pageY: y } = event;
-    setClickPositions([...clickPositions, { x, y }]);
+    setClickPositions((prevPositions) => [...prevPositions, { x, y }]);
     setTimeout(() => {
-      setClickPositions(currentPositions => currentPositions.slice(1));
-    }, 200); // 200ms 후에 이펙트 제거
+      setClickPositions((currentPositions) => currentPositions.slice(1));
+    }, 200);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Escape') {
+      setShowModal(true);
+    }
   };
 
   useEffect(() => {
@@ -33,13 +43,12 @@ function MainPage() {
       setShowSplitScreen(true);
       setTimeout(() => {
         setShowSplitScreen(false);
-      }, 1000); // 1초 후에 화면 갈라짐 애니메이션 제거
-    }, 3000); // 3초 후에 애니메이션 제거
+      }, 1000);
+    }, 3000);
 
-    // 여기서 백엔드 API를 호출하여 데이터를 가져와서 상태에 저장
     const fetchMissionData = async () => {
       try {
-        const response = await fetch('http://172.16.230.134:4000/missions');
+        const response = await fetch('http://127.0.0.1:3000/missions');
         const data = await response.json();
         setMissionData(data.mission);
       } catch (error) {
@@ -48,23 +57,28 @@ function MainPage() {
     };
 
     fetchMissionData();
+    setUserId('testuser');
 
-    // 로그인된 사용자 ID 설정 (예시)
-    setUserId('testuser'); // 실제 사용자 ID로 변경
+    window.addEventListener('keydown', handleKeyDown);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
 
-  // 현재 선택된 메뉴 항목을 저장하는 상태
-  const [currentMenu, setCurrentMenu] = useState('terminer');
-
-  // 메뉴 항목 클릭 핸들러
   const handleMenuClick = (menuKey) => {
     setCurrentMenu(menuKey);
   };
 
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
   return (
-    <div>
+    <div className={styles.mainContainer}>
+      <BackgroundMusic src={bgm} /> {/* BackgroundMusic 컴포넌트 추가 */}
+      <Modal show={showModal} onClose={closeModal} /> {/* Modal 컴포넌트 추가 */}
       {showAnimation && (
         <div className={styles.ringContainer}>
           <div className={styles.ring}>
@@ -81,11 +95,8 @@ function MainPage() {
       )}
       {!showAnimation && !showSplitScreen && (
         <main className={styles.main} onClick={handleClick}>
-          {clickPositions.map((pos, index) => (
-            <ClickEffect key={index} x={pos.x} y={pos.y} />
-          ))}
           <nav className={styles.mainMenu}>
-            <h1>NetRunner</h1>
+            <h1>NETRUNNER</h1>
             <ul>
               <li className={classNames(styles.navItem, { [styles.active]: currentMenu === 'terminer' })}>
                 <b></b>

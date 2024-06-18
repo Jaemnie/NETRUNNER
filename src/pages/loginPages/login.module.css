@@ -5,9 +5,7 @@
 }
 
 body {
-
   width: 100%;
-  
 }
 
 .ring {
@@ -76,26 +74,22 @@ body {
   flex-direction: column;
   gap: 20px;
   padding: 20px;
-  /* 추가된 내부 여백 */
 }
 
 .login h2 {
   font-size: 2em;
   color: #fff;
   margin-bottom: 20px;
-  /* 제목과 입력란 사이의 여백 추가 */
 }
 
 .login .inputBx {
   position: relative;
   width: 100%;
   margin-bottom: 20px;
-  /* 입력란 사이의 여백 추가 */
 }
 
 .login .inputBx:last-child {
   margin-bottom: 0;
-  /* 마지막 입력란과 로그인 버튼 사이의 여백 제거 */
 }
 
 .login .inputBx input {
@@ -136,4 +130,3 @@ body {
   color: #fff;
   text-decoration: none;
 }
-

@@ -4,7 +4,6 @@ import './App.css';
 import React, {useEffect} from 'react';
 import { BrowserRouter as Router, Routes, Route,Navigate } from 'react-router-dom';
 import LoginPage from './pages/loginPages/LoginPage';
-import Loading from './pages/loadingPages/Loading';
 import MainPage from './pages/mainPages/MainPage';
 import AuthService from './services/AuthService';
 
@@ -36,11 +35,6 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<LoginPage />} />
-        <Route path="/loading" element={
-          <RequireAuth>
-            <Loading />
-          </RequireAuth>
-        } />
         <Route path="/main" element={
           <RequireAuth>
             <MainPage />
