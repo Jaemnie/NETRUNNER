@@ -5,6 +5,9 @@ import TermPage from '../../components/termPage';
 import ClickEffect from './ClickEffect';
 import Quest from '../../components/quest';
 import Shop from '../../components/shop';
+import BackgroundMusic from '../../components/BackgroundMusic';
+import Modal from '../../pages/mainPages/esc'; // Modal 컴포넌트 임포트
+import bgm from '../../assets/mainbgm.mp3';
 
 const MenuContent = {
   terminer: <TermPage />,
@@ -19,6 +22,7 @@ function MainPage() {
   const [missionData, setMissionData] = useState(null);
   const [userId, setUserId] = useState('');
   const [currentMenu, setCurrentMenu] = useState('terminer');
+  const [showModal, setShowModal] = useState(false);
 
   const handleClick = (event) => {
     const { pageX: x, pageY: y } = event;
@@ -26,6 +30,12 @@ function MainPage() {
     setTimeout(() => {
       setClickPositions((currentPositions) => currentPositions.slice(1));
     }, 200);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Escape') {
+      setShowModal(true);
+    }
   };
 
   useEffect(() => {
@@ -50,15 +60,26 @@ function MainPage() {
     fetchMissionData();
     setUserId('testuser');
 
-    return () => clearTimeout(timer);
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
 
   const handleMenuClick = (menuKey) => {
     setCurrentMenu(menuKey);
   };
 
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
   return (
     <div className={styles.mainContainer}>
+      <BackgroundMusic src={bgm} /> {/* BackgroundMusic 컴포넌트 추가 */}
+      <Modal show={showModal} onClose={closeModal} /> {/* Modal 컴포넌트 추가 */}
       {showAnimation && (
         <div className={styles.ringContainer}>
           <div className={styles.ring}>

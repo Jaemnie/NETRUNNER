@@ -41,14 +41,13 @@
 }
 
 @keyframes textShadow {
-  0%,
-  100% {
+  0%, 100% {
     text-shadow: 0 0 15px var(--primary-color), 0 0 20px var(--primary-color), 0 0 25px var(--primary-color),
-      0 0 30px var(--primary-color), 0 0 35px var(--primary-color), 0 0 40px var(--primary-color);
+                 0 0 30px var(--primary-color), 0 0 35px var(--primary-color), 0 0 40px var(--primary-color);
   }
   50% {
     text-shadow: 0 0 5px var(--primary-color), 0 0 10px var(--primary-color), 0 0 15px var(--primary-color),
-      0 0 20px var(--primary-color), 0 0 25px var(--primary-color);
+                 0 0 20px var(--primary-color), 0 0 25px var(--primary-color);
   }
 }
 
@@ -111,15 +110,14 @@
 
 .main {
   font-family: var(--font-family);
-  background-repeat: no-repeat;
-  background-size: cover;
   display: grid;
-  grid-template-columns: 11% 89%; /* 메뉴를 약간 더 키움 */
-  width: 80vw; /* 너비를 약간 더 늘림 */
-  height: 80vh; /* 높이를 약간 더 늘림 */
-  margin: 40px;
-  background: rgb(255, 255, 255);
-  border-radius: 15px;
+  grid-template-columns: 15% 85%; /* 비율을 더 키움 */
+  width: 100vw; /* 전체 너비 */
+  height: 100vh; /* 전체 높이 */
+  margin: 0; /* 마진 제거 */
+  background: url('/src/assets/wallpaper.jpg') no-repeat center center fixed;
+  background-size: cover;
+  border-radius: 0; /* 테두리 반경 제거 */
   z-index: 10;
 }
 
@@ -147,9 +145,10 @@
 
 .mainMenu {
   overflow: hidden;
-  background: var(--secondary-color);
+  background: rgba(0, 0, 0, 0.5); /* 투명도 추가 */
   padding-top: 10px;
-  border-radius: 15px 0 0 15px;
+  border: 2px solid var(--tertiary-color); /* 보라색 테두리 추가 */
+  border-radius: 0; /* 테두리 반경 제거 */
   font-family: "Roboto", sans-serif;
 }
 
@@ -165,6 +164,7 @@
 .navItem {
   position: relative;
   display: block;
+  transition: all 0.3s ease;
 }
 
 .navItem a {
@@ -179,63 +179,11 @@
   margin-left: 10px;
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
+  transition: all 0.3s ease;
 }
 
-.navItem b:nth-child(1) {
-  position: absolute;
-  top: -15px;
-  height: 15px;
-  width: 100%;
-  background: var(--primary-color);
-  display: none;
-}
-
-.navItem b:nth-child(1)::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-bottom-right-radius: 20px;
-  background: var(--tertiary-color);
-}
-
-.navItem b:nth-child(2) {
-  position: absolute;
-  bottom: -15px;
-  height: 15px;
-  width: 100%;
-  background: var(--primary-color);
-  display: none;
-}
-
-.navItem b:nth-child(2)::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-top-right-radius: 20px;
-  background: var(--tertiary-color);
-}
-
-.navItem.active:hover a,
-.navItem.quest:hover a,
-.navItem.shop:hover a {
-  color: var(--secondary-color); /* 호버 시 텍스트 색상 변경 */
-  background: var(--primary-color); /* 호버 시 배경색 변경 */
-}
-
-.navItem.active:hover b:nth-child(1),
-.navItem.active:hover b:nth-child(2),
-.navItem.quest:hover b:nth-child(1),
-.navItem.quest:hover b:nth-child(2),
-.navItem.shop:hover b:nth-child(1),
-.navItem.shop:hover b:nth-child(2) {
-  background: var(--tertiary-color); /* 호버 시 b 요소의 배경색 변경 */
-  display: block; /* 호버 시 b 요소 표시 */
+.navItem a:hover {
+  box-shadow: 0 0 10px var(--tertiary-color), 0 0 20px var(--tertiary-color), 0 0 30px var(--tertiary-color);
 }
 
 .navIcon {
@@ -251,7 +199,6 @@
   height: 20px;
 }
 
-
 .mainContainer {
   display: flex;
   flex-direction: column;
@@ -265,7 +212,7 @@
   flex-direction: column;
   flex-grow: 1; /* Ensure the content section grows to fill the space */
   justify-content: flex-end; /* Push the terminal to the bottom */
-  overflow-y: scroll; /* Allow vertical scrolling if content overflows */
+  overflow-y: hidden; /* Allow vertical scrolling if content overflows */
   scrollbar-width: none; /* Firefox: hide scrollbar */
 }
 
@@ -276,12 +223,12 @@
 /* 반응형 디자인 */
 @media (max-width: 768px) {
   .main {
-    grid-template-columns: 100%; /* 메뉴를 숨기고 내용만 표시 */
+    grid-template-columns: 100%;
     width: 100vw;
     height: 100vh;
   }
 
   .mainMenu {
-    display: none; /* 메뉴 숨기기 */
+    display: none;
   }
 }

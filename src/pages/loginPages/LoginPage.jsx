@@ -138,7 +138,7 @@ function LoginPage() {
         event.preventDefault();
         const isLoginSuccessful = await authService.login(userId, password);
         if (isLoginSuccessful) {
-            navigate('/loading');
+            navigate('/main');
         } else {
             alert("로그인에 실패했습니다.");
         }
