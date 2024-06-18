@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
 import styles from './MainPage.module.css';
 import TermPage from '../../components/termPage';
-import ClickEffect from './ClickEffect';
 import Quest from '../../components/quest';
 import Shop from '../../components/shop';
 import BackgroundMusic from '../../components/BackgroundMusic';
@@ -96,9 +95,6 @@ function MainPage() {
       )}
       {!showAnimation && !showSplitScreen && (
         <main className={styles.main} onClick={handleClick}>
-          {clickPositions.map((pos, index) => (
-            <ClickEffect key={index} x={pos.x} y={pos.y} />
-          ))}
           <nav className={styles.mainMenu}>
             <h1>NetRunner</h1>
             <ul>
