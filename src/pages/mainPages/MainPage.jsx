@@ -96,7 +96,7 @@ function MainPage() {
       {!showAnimation && !showSplitScreen && (
         <main className={styles.main} onClick={handleClick}>
           <nav className={styles.mainMenu}>
-            <h1>NetRunner</h1>
+            <h1>NETRUNNER</h1>
             <ul>
               <li className={classNames(styles.navItem, { [styles.active]: currentMenu === 'terminer' })}>
                 <b></b>

@@ -7,50 +7,43 @@ import { faFolder, faFile } from '@fortawesome/free-solid-svg-icons';
 function getIconForType(type) {
   switch (type) {
     case 'directory':
-      return <FontAwesomeIcon icon={faFolder} size="4x" />;
+      return <FontAwesomeIcon icon={faFolder} size="4x" color='white' />;
     case 'file':
-      return <FontAwesomeIcon icon={faFile} size="4x" />;
+      return <FontAwesomeIcon icon={faFile} size="4x" color='white' />;
     default:
-      return <FontAwesomeIcon icon={faFile} size="4x" />;
+      return <FontAwesomeIcon icon={faFile} size="4x" color='white' />;
   }
 }
-const DirectoryViewer = forwardRef((props, ref ,initialPath ) => {
+
+const DirectoryViewer = forwardRef((props, ref, initialPath) => {
   const [directoryContent, setDirectoryContent] = useState([]);
-  
   const [path, setPath] = useState(initialPath);
   const [contents, setContents] = useState(null);
 
   useImperativeHandle(ref, () => ({
-    // DirectoryViewer에서 터미널 창에 텍스트를 입력하는 함수
     appendToTerminal: (text) => {
       TerminalInteraction.appendToTerminal(text);
     },
 
-    // DirectoryViewer에서 파일 시스템 내용을 변경하는 함수
     updateDirectoryContent: (newContent) => {
-      console.log("terminput:",newContent);
-      if(newContent==='cd directory1'){
-        exampleData={
+      console.log("terminput:", newContent);
+      if (newContent === 'cd directory1') {
+        const exampleData = {
           files: ['file2.txt', 'file2.txt', 'directory2'],
           filestype: ['file', 'file', 'directory']
         }
         setContents(exampleData);
       }
-
     }
   }));
-  let exampleData = {
-    files: ['file1.txt', 'file2.txt', 'directory1','file1.txt', 'file2.txt', 'directory1','file1.txt', 'file2.txt', 'directory1','file1.txt', 'file2.txt', 'directory1'],
-    filestype: ['file', 'file', 'directory','file', 'file', 'directory','file', 'file', 'directory','file', 'file', 'directory']
+
+  const exampleData = {
+    files: ['file1.txt', 'file2.txt', 'directory1', 'file1.txt', 'file2.txt', 'directory1', 'file1.txt', 'file2.txt', 'directory1', 'file1.txt', 'file2.txt', 'directory1'],
+    filestype: ['file', 'file', 'directory', 'file', 'file', 'directory', 'file', 'file', 'directory', 'file', 'file', 'directory']
   };
+
   useEffect(() => {
     setContents(exampleData);
-    // // 백엔드에서 제공받은 데이터를 가공하여 화면에 표시
-    // const fetchDirectoryData = async () => {
-    //   const data = await fetch('/api/directory');
-    //   setDirectoryContent(data);
-    // };
-    // fetchDirectoryData();
   }, []);
 
   function handleItemClick(item, type) {
@@ -58,7 +51,7 @@ const DirectoryViewer = forwardRef((props, ref ,initialPath ) => {
       const newPath = path === '/' ? `/${item}` : `${path}/${item}`;
       setPath(newPath);
       ref.current.appendToTerminal(`cd ${item}`);
-      exampleData={
+      const exampleData = {
         files: ['file2.txt', 'file2.txt', 'directory2'],
         filestype: ['file', 'file', 'directory']
       }
@@ -69,57 +62,63 @@ const DirectoryViewer = forwardRef((props, ref ,initialPath ) => {
       console.log(item + ' file clicked');
     }
   }
-  
 
   if (!contents) {
     return <div>Loading...</div>;
   }
+
   const gridStyle = {
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))',
     gap: '10px',
     textAlign: 'center',
-    flexGrow:'1',
-    // overflowY : 'scroll'
+    justifyContent: 'flex-start',
+    flexGrow: 1,
+    color: 'white',
+    padding: '10px', // 내부 여백 추가 (선택 사항)
+    overflowY: 'auto', // 세로 스크롤 가능
   };
 
   const itemStyle = {
-    cursor: 'pointer',
+    cursor: 'default',
     display: 'flex',
     flexDirection: 'column',
+    justifyContent: 'flex-start',
     alignItems: 'center',
+    color: 'white',
+  };
+
+  const iconStyle = {
+    cursor: 'pointer',
   };
 
   const pathBar = {
-    position: 'absolute', /* 절대적 위치 설정 */
-    bottom: 0, /* 바닥에서 0px의 위치 */
-    textAlign: 'left', /* 텍스트 중앙 정렬 */
-    backgroundColor: '#c5e3df9d'/* 배경색 설정 */
-  }
+    position: 'absolute',
+    bottom: 0,
+    textAlign: 'left',
+    backgroundColor: '#c5e3df9d',
+    color: 'white',
+    width: '100%',
+    padding: '10px',
+  };
 
   return (
-    <div style={{position: 'relative',display:'flex'}}>
+    <div style={{ position: 'relative', display: 'flex', color: 'white', flexDirection: 'column', height: '55.5vh' }}>
+      <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        <div style={gridStyle}>
+          {contents.files.map((item, index) => (
+            <div key={index} style={itemStyle}>
+              <div style={iconStyle} onClick={() => handleItemClick(item, contents.filestype[index])}>
+                {getIconForType(contents.filestype[index])}
+              </div>
+              <div>{item}</div>
+            </div>
+          ))}
+        </div>
+      </div>
       <p style={pathBar}>{path}</p>
-      <div style={{borderRight:'black solid 1px'}}>
-        sidebar
-      </div>
-      <div style={gridStyle}>
-        {contents.files.map((item, index) => (
-          <div key={index} style={itemStyle} onClick={() => handleItemClick(item, contents.filestype[index])}>
-            {getIconForType(contents.filestype[index])}
-            <div>{item}</div>
-          </div>
-        ))}
-      </div>
     </div>
   );
-  // return (
-  //   <div>
-  //     {directoryContent.map((item) => (
-  //       <div key={item.id}>{item.name}</div>
-  //     ))}
-  //   </div>
-  // );
 });
 
-export  {DirectoryViewer};
+export { DirectoryViewer };
