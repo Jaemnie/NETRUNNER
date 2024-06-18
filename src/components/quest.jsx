@@ -9,7 +9,7 @@ const Quest = ({ missionId }) => {
     // 미션 데이터를 가져오는 함수
     const fetchMissionData = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/missions/${missionId}`);
+        const response = await fetch(`http://localhost:4000/missions/${missionId}`);
         const data = await response.json();
         setMissionData(data);
       } catch (error) {

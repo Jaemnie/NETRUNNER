@@ -9,20 +9,16 @@ function Termi(terminal2,elements) {
     terminal.open(elements);
     let currentInput = '';
     terminal.write('Welcome to NetRunner!\r\n');
-    let currentPath = '/home/user';
-    prompt('',currentPath);
     terminal.onKey(({ key, domEvent }) => {
         const char = key;
         if (domEvent.keyCode === 13) {  // Enter key
             message = currentInput;
             terminal.writeln('');
-            sockets.sendMessage(message,currentPath);
-            prompt('',currentPath);
+            sockets.sendMessage(message);
             TerminalInteraction.handleTerminalInput(message);
             sockets.getMessage((chat) => {
                 terminal.write(chat);
                 terminal.writeln('');
-                prompt('',currentPath)
                 chat= '';
             });
             currentInput = '';
@@ -37,12 +33,6 @@ function Termi(terminal2,elements) {
             terminal.write(char);
         }
     });
-    function prompt(ip, location) {
-        if (location === "/root") {
-            location = '~';
-        }
-        terminal.write(`${ip}root@root[${location}]$`);
-    }
 }
 
 export { Termi };

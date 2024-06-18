@@ -15,7 +15,7 @@ export const TerminalInteraction = {
   //터미널->GUI
   handleTerminalInput: (data) => {
     // 터미널 창에서 입력된 명령어를 DirectoryViewer에 전달
-    directoryViewer.updateDirectoryContent(data);
+      directoryViewer.updateDirectoryContent(data);
   },
 
   //GUI->터미널
@@ -24,4 +24,5 @@ export const TerminalInteraction = {
     terminal.write(text);
     terminal.write('\r\n');
   }
+  
 };

@@ -11,7 +11,7 @@ const Shop = ({ userId }) => {
     // 사용자의 포인트를 가져오는 함수
     const fetchPoints = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/missions/points/${userId}`);
+        const response = await fetch(`http://localhost:4000/missions/points/${userId}`);
         const data = await response.json();
         setAvailablePoints(data.points);
       } catch (error) {
@@ -22,7 +22,7 @@ const Shop = ({ userId }) => {
     // 사용할 수 있는 도구를 가져오는 함수
     const fetchTools = async () => {
       try {
-        const response = await fetch('http://localhost:3000/missions/tools');
+        const response = await fetch('http://localhost:4000/missions/tools');
         const data = await response.json();
         setTools(data);
       } catch (error) {

@@ -39,7 +39,7 @@ function MainPage() {
     // 여기서 백엔드 API를 호출하여 데이터를 가져와서 상태에 저장
     const fetchMissionData = async () => {
       try {
-        const response = await fetch('http://172.16.230.134:3000/missions');
+        const response = await fetch('http://172.16.230.134:4000/missions');
         const data = await response.json();
         setMissionData(data.mission);
       } catch (error) {
