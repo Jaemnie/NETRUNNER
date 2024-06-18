@@ -54,6 +54,15 @@
   }
 }
 
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 .ringContainer {
   position: fixed;
   top: 50%;
@@ -122,6 +131,8 @@
   background-size: cover;
   border-radius: 0; /* 테두리 반경 제거 */
   z-index: 10;
+  opacity: 0;
+  animation: fadeIn 2s forwards; /* 페이드 인 애니메이션 추가 */
 }
 
 .splitScreenLeft,
