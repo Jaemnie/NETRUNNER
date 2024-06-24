@@ -1,52 +1,29 @@
 .questContainer {
-  padding: var(--padding);
-  background-color: var(--background-color);
-  border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow);
-  max-width: var(--max-width);
-  margin: var(--margin);
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
 }
 
-.missionDetail {
-  margin-bottom: 20px;
-}
-
-.missionDetail p {
-  margin: 5px 0;
-}
-
-.missionDetail h3 {
+.missionDetails {
   margin-top: 20px;
 }
 
-.missionDetail h4 {
-  margin-top: 15px;
+.missionDetails h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
 }
 
-.missionDetail ul {
-  padding-left: 20px;
+.missionDetails p {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.missionDetails ul {
   list-style-type: disc;
+  padding-left: 20px;
 }
 
-.missionDetail pre {
-  background-color: var(--secondary-background);
-  padding: var(--secondary-padding);
-  border-radius: var(--secondary-border-radius);
-  overflow-x: auto;
-}
-
-h2, h3, h4 {
-  color: var(--primary-color);
-}
-
-/* 반응형 디자인 추가 */
-@media (max-width: 768px) {
-  .questContainer {
-    padding: 15px;
-    max-width: 90%;
-  }
-
-  .missionDetail ul {
-    padding-left: 15px;
-  }
+.missionDetails ul li {
+  font-size: 16px;
+  margin-bottom: 10px;
 }

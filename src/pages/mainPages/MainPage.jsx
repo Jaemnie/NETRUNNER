@@ -6,7 +6,7 @@ import MainPageComp from '../../components/mainPage';
 import Quest from '../../components/quest';
 import Shop from '../../components/shop';
 import BackgroundMusic from '../../components/BackgroundMusic';
-import ProfileCard from '../../components/Profile/ProfileCard'; // ProfileCard 컴포넌트 임포트
+import ProfileCard from '../../components/Profile/ProfileCard';
 import bgm from '../../assets/mainbgm.mp3';
 
 const MenuContent = {
@@ -40,6 +40,25 @@ function MainPage() {
     }
   };
 
+  const fetchMissionData = async () => {
+    try {
+      const response = await fetch('http://netrunner.life:4000/missions', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`, // JWT 토큰을 헤더에 포함
+          'Content-Type': 'application/json'
+        }
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      setMissionData(data.mission);
+      console.log('미션 데이터:', data.mission); // 콘솔 로그 추가
+    } catch (error) {
+      console.error('Error fetching mission data:', error);
+    }
+  };
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowAnimation(false);
@@ -49,17 +68,7 @@ function MainPage() {
       }, 1000);
     }, 3000);
 
-    const fetchMissionData = async () => {
-      try {
-        const response = await fetch('http://netrunner.life:4000/missions');
-        const data = await response.json();
-        setMissionData(data.mission);
-      } catch (error) {
-        console.error('Error fetching mission data:', error);
-      }
-    };
-
-    fetchMissionData();
+    fetchMissionData(); // 초기 로딩 시 미션 데이터 가져오기
 
     window.addEventListener('keydown', handleKeyDown);
 
@@ -69,7 +78,15 @@ function MainPage() {
     };
   }, []);
 
+  useEffect(() => {
+    console.log('Current Menu:', currentMenu);
+    if (currentMenu === 'quest') {
+      fetchMissionData(); // quest 메뉴 클릭 시 미션 데이터 가져오기
+    }
+  }, [currentMenu]);
+
   const handleMenuClick = (menuKey) => {
+    console.log('Menu clicked:', menuKey); // 콘솔 로그 추가
     setCurrentMenu(menuKey);
   };
 
@@ -79,8 +96,12 @@ function MainPage() {
         method: 'GET', // GET으로 변경
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}` // JWT 토큰을 헤더에 포함
         },
       });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       const data = await response.json();
       setProfileData(data);
       setShowProfileCard(true);
@@ -131,7 +152,13 @@ function MainPage() {
             </a>
           </nav>
           <section className={styles.content}>
-            {currentMenu === 'quest' && missionData ? <Quest missionData={missionData} /> : null}
+            {currentMenu === 'quest' ? (
+              missionData ? (
+                <Quest missionData={missionData} />
+              ) : (
+                <div>No mission data available</div>
+              )
+            ) : null}
             {currentMenu === 'shop' && userId ? <Shop userId={userId} /> : null}
             {currentMenu !== 'quest' && currentMenu !== 'shop' ? MenuContent[currentMenu] : null}
           </section>

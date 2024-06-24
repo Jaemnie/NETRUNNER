@@ -4,7 +4,6 @@ import React, { useRef, useEffect } from "react"; // useState 제거
 import { Termi } from "./termsocket";
 import TerminalInteraction from './TerminalInteraction';
 import { SocketResult } from "./socket";
-import './terminal.css'; // 커스텀 CSS 가져오기
 
 const TermPage = () => {
   const termRef = useRef(null);
