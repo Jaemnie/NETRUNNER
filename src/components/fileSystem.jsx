@@ -1,5 +1,5 @@
 import React, { forwardRef, useImperativeHandle, useState, useEffect } from 'react';
-import TerminalInteraction  from './TerminalInteraction';
+import TerminalInteraction from './TerminalInteraction';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolder, faFile } from '@fortawesome/free-solid-svg-icons';
 import { SocketResult } from './Gsocket';
@@ -7,93 +7,106 @@ import { SocketResult } from './Gsocket';
 function getIconForType(type) {
   switch (type) {
     case 'directory':
-      return <FontAwesomeIcon icon={faFolder} size="4x" color='white' />;
+      return <FontAwesomeIcon icon={faFolder} size="4x" color="white" />;
     case 'file':
-      return <FontAwesomeIcon icon={faFile} size="4x" color='white' />;
+      return <FontAwesomeIcon icon={faFile} size="4x" color="white" />;
     default:
-      return <FontAwesomeIcon icon={faFile} size="4x" color='white' />;
+      return <FontAwesomeIcon icon={faFile} size="4x" color="white" />;
   }
 }
 
 const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
   const [path, setPath] = useState(initialPath);
   const [contents, setContents] = useState(null);
-  const [socket,setSockets] = useState(null);
+  const [socket, setSocket] = useState(null);
+
   TerminalInteraction.setDirectoryViewer(ref);
-useEffect(() => {
-  const fetchDirectoryData = async () => {
-    let fdata = null;
-    await fetch('http://172.16.230.134:4000/filesystem/1', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-      },
-    })
-    .then(response => response.json())
-    .then(data => {
-      const files = data.files;
-      const filestype = data.filestype;
-      fdata = {files,filestype};
-    })
-    .catch(error => console.error('초기화 에러:', error));
-    setContents(fdata);
-  };
-  fetchDirectoryData();
-  setSockets(new SocketResult());
-}, []);
 
-useImperativeHandle(ref, () => ({
-  appendToTerminal: (text) => {
-    TerminalInteraction.appendToTerminal(text);
-    //GUI->터미널
-    socket.sendMessage(text);
-    socket.getMessage((char)=>{
-      console.log(char);
-    });
-    socket.sendMessage("ls -al");
-    socket.getMessage((chat) => {
-    const temp1 = chat;
-    const temp2 = chat;
-    const regex1 = /[^[\]]+(?=\[)/g;
-    const regex2 = /(?<=\[).*?(?=\])/g;
-    const files = temp1.match(regex1); 
-    const filestype = temp2.match(regex2);
-    const setDir = {files,filestype};
-    setContents(setDir);
-  });
-  },
+  useEffect(() => {
+    const fetchDirectoryData = async () => {
+      let fdata = null;
+      await fetch('http://netrunner.life:4000/filesystem/1', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          const files = data.files;
+          const filestype = data.filestype;
+          fdata = { files, filestype };
+        })
+        .catch((error) => console.error('초기화 에러:', error));
+      setContents(fdata);
+    };
 
-  updateDirectoryContent(newContent){
-    //터미널->GUI
-    socket.sendMessage('pwd');
-    socket.getMessage((chat) => {
-      socket.sendMessage(`cd ${chat}`);
-    });
-    socket.sendMessage("ls -al");
-    socket.getMessage((chat) => {
-        const temp1 = chat;
-        const temp2 = chat;
-        const regex1 = /[^[\]]+(?=\[)/g;
-        const regex2 = /(?<=\[).*?(?=\])/g;
-        const files = temp1.match(regex1); 
-        const filestype = temp2.match(regex2);
-        const setDir ={files,filestype};
-        setContents(setDir);
-      });
-  },
-}
-));
+    fetchDirectoryData();
 
-function handleItemClick(item, type) {
-  if (type === 'directory') {
-    const newPath = path === '/' ? `/${item}` : `${path}/${item}`;
-    setPath(newPath);
-    ref.current.appendToTerminal(`cd ${item}`);
-  } else {
-    ref.current.appendToTerminal(`cat ${item}`);
-    console.log(item + ' file clicked');
+    const newSocket = new SocketResult();
+    newSocket.joinRoom('yourRoomId'); // 방 ID를 실제 값으로 대체
+    setSocket(newSocket);
+
+    return () => {
+      if (newSocket) {
+        newSocket.leaveRoom();
+      }
+    };
+  }, []);
+
+  useImperativeHandle(ref, () => ({
+    appendToTerminal: (text) => {
+      TerminalInteraction.appendToTerminal(text);
+      if (socket) {
+        socket.sendMessage(text);
+        socket.getMessage((char) => {
+          console.log(char);
+        });
+        socket.sendMessage('ls -al');
+        socket.getMessage((chat) => {
+          const temp1 = chat;
+          const temp2 = chat;
+          const regex1 = /[^[\]]+(?=\[)/g;
+          const regex2 = /(?<=\[).*?(?=\])/g;
+          const files = temp1.match(regex1);
+          const filestype = temp2.match(regex2);
+          const setDir = { files, filestype };
+          setContents(setDir);
+        });
+      }
+    },
+
+    updateDirectoryContent(newContent) {
+      if (socket) {
+        socket.sendMessage('pwd');
+        socket.getMessage((chat) => {
+          socket.sendMessage(`cd ${chat}`);
+        });
+        socket.sendMessage('ls -al');
+        socket.getMessage((chat) => {
+          const temp1 = chat;
+          const temp2 = chat;
+          const regex1 = /[^[\]]+(?=\[)/g;
+          const regex2 = /(?<=\[).*?(?=\])/g;
+          const files = temp1.match(regex1);
+          const filestype = temp2.match(regex2);
+          const setDir = { files, filestype };
+          setContents(setDir);
+        });
+      }
+    },
+  }));
+
+  function handleItemClick(item, type) {
+    if (type === 'directory') {
+      const newPath = path === '/' ? `/${item}` : `${path}/${item}`;
+      setPath(newPath);
+      ref.current.appendToTerminal(`cd ${item}`);
+    } else {
+      ref.current.appendToTerminal(`cat ${item}`);
+      console.log(item + ' file clicked');
+    }
   }
-}
 
   if (!contents) {
     return <div>Loading...</div>;

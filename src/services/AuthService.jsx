@@ -1,6 +1,6 @@
 class AuthService {
   constructor() {
-    this.baseUrl = process.env.REACT_APP_API_URL || 'http://172.16.230.134:4000';
+    this.baseUrl = process.env.REACT_APP_API_URL || 'http://netrunner.life:4000';
   }
 
   async signup(userId, username, password, email) {
@@ -37,6 +37,7 @@ class AuthService {
 
       if (data.accessToken) {
         localStorage.setItem('accessToken', data.accessToken);
+        localStorage.setItem('userId', userId); // userId 저장
         return true; // 로그인 성공
       } else {
         console.error('JWT를 받아오지 못했습니다.');
@@ -51,6 +52,7 @@ class AuthService {
   async logout() {
     // 로컬 저장소에서 JWT 삭제
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('userId'); // userId 삭제
     window.location.href = '/';
 
     try {

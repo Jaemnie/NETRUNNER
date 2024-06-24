@@ -9,7 +9,7 @@ const Quest = ({ missionId }) => {
     // 미션 데이터를 가져오는 함수
     const fetchMissionData = async () => {
       try {
-        const response = await fetch(`http://172.16.230.134:4000/missions/${missionId}`);
+        const response = await fetch(`http://netrunner.life:4000/missions/${missionId}`);
         const data = await response.json();
         setMissionData(data);
       } catch (error) {

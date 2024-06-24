@@ -1,0 +1,249 @@
+/* ProfileCard.module.css */
+
+@import url('https://fonts.googleapis.com/css?family=Quicksand:400,500,700&subset=latin-ext');
+
+html {
+  position: relative;
+  overflow-x: hidden !important;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Quicksand', sans-serif;
+  color: #324e63;
+}
+
+a,
+a:hover {
+  text-decoration: none;
+}
+
+.icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+
+.wrapper {
+  width: 100%;
+  height: auto;
+  min-height: 100vh;
+  padding: 50px 20px;
+  padding-top: 100px;
+  display: flex;
+  background-image: linear-gradient(-20deg, #ff2846 0%, #6944ff 100%);
+  justify-content: center;
+  align-items: center;
+}
+
+.profileCard {
+  width: 100%;
+  min-height: 460px;
+  margin: auto;
+  box-shadow: 0px 8px 60px -10px rgba(13, 28, 39, 0.6);
+  background: #fff;
+  border-radius: 12px;
+  max-width: 700px;
+  position: relative;
+}
+
+.profileCardImg {
+  width: 150px;
+  height: 150px;
+  margin-left: auto;
+  margin-right: auto;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+  z-index: 4;
+  box-shadow: 0px 5px 50px 0px rgb(108, 68, 252), 0px 0px 0px 7px rgba(107, 74, 255, 0.5);
+
+  @media screen and (max-width: 576px) {
+    width: 120px;
+    height: 120px;
+  }
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+}
+
+.profileCardCnt {
+  margin-top: -35px;
+  text-align: center;
+  padding: 0 20px;
+  padding-bottom: 40px;
+  transition: all 0.3s;
+}
+
+.profileCardName {
+  font-weight: 700;
+  font-size: 24px;
+  color: #6944ff;
+  margin-bottom: 15px;
+}
+
+.profileCardTxt {
+  font-size: 18px;
+  font-weight: 500;
+  color: #324e63;
+  margin-bottom: 15px;
+
+  strong {
+    font-weight: 700;
+  }
+}
+
+.profileCardLoc {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 600;
+
+  &__icon {
+    display: inline-flex;
+    font-size: 27px;
+    margin-right: 10px;
+  }
+}
+
+.profileCardInf {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  margin-top: 35px;
+}
+
+.profileCardInfItem {
+  padding: 10px 35px;
+  min-width: 150px;
+
+  @media screen and (max-width: 768px) {
+    padding: 10px 20px;
+    min-width: 120px;
+  }
+}
+
+.profileCardInfTitle {
+  font-weight: 700;
+  font-size: 27px;
+  color: #324e63;
+}
+
+.profileCardInfTxt {
+  font-weight: 500;
+  margin-top: 7px;
+}
+
+.profileCardCtr {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
+
+  @media screen and (max-width: 576px) {
+    flex-wrap: wrap;
+  }
+}
+
+.profileCardButton {
+  background: none;
+  border: none;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  font-size: 19px;
+  margin: 15px 35px;
+  padding: 15px 40px;
+  min-width: 201px;
+  border-radius: 50px;
+  min-height: 55px;
+  color: #fff;
+  cursor: pointer;
+  backface-visibility: hidden;
+  transition: all 0.3s;
+
+  @media screen and (max-width: 768px) {
+    min-width: 170px;
+    margin: 15px 25px;
+  }
+
+  @media screen and (max-width: 576px) {
+    min-width: inherit;
+    margin: 0;
+    margin-bottom: 16px;
+    width: 100%;
+    max-width: 300px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &:focus {
+    outline: none !important;
+  }
+
+  @media screen and (min-width: 768px) {
+    &:hover {
+      transform: translateY(-5px);
+    }
+  }
+
+  &:first-child {
+    margin-left: 0;
+  }
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  &.buttonBlue {
+    background: linear-gradient(45deg, #1da1f2, #0e71c8);
+    box-shadow: 0px 4px 30px rgba(19, 127, 212, 0.4);
+
+    &:hover {
+      box-shadow: 0px 7px 30px rgba(19, 127, 212, 0.75);
+    }
+  }
+
+  &.buttonGray {
+    box-shadow: none;
+    background: #dcdcdc;
+    color: #142029;
+  }
+}
+
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .modalContent {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    max-width: 500px;
+    width: 100%;
+  }
