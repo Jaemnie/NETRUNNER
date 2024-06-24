@@ -98,23 +98,24 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
   }));
 
   const handleItemClick = (item, type) => {
-    const newPath = path === '/' ? `/${item}` : `${path}/${item}`;
+    const trimmedItem = item.trim(); // 파일 이름에서 공백 제거
+    const newPath = path === '/' ? `/${trimmedItem}` : `${path}/${trimmedItem}`;
     if (type === 'directory') {
       setPathHistory([...pathHistory, path]); // 현재 경로를 히스토리에 추가
       setPath(newPath);
-      ref.current.appendToTerminal(`cd ${item}`);
+      ref.current.appendToTerminal(`cd ${trimmedItem}`);
     } else {
-      ref.current.appendToTerminal(`cat ${item}`);
-      console.log(item + ' file clicked');
+      ref.current.appendToTerminal(`cat ${trimmedItem}`);
+      console.log(trimmedItem + ' file clicked');
     }
   };
 
   const handleBackClick = () => {
     if (pathHistory.length > 0) {
       const previousPath = pathHistory.pop(); // 히스토리에서 이전 경로를 꺼냄
+      setPathHistory([...pathHistory]); // 히스토리 업데이트
       setPath(previousPath);
-      setPathHistory(pathHistory); // 히스토리 업데이트
-      ref.current.appendToTerminal(`cd ..`);
+      ref.current.appendToTerminal('cd ..');
     }
   };
 
@@ -132,6 +133,7 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
     color: 'white',
     padding: '10px', // 내부 여백 추가 (선택 사항)
     overflowY: 'auto', // 세로 스크롤 가능
+    userSelect: 'none', // 텍스트 선택 방지
   };
 
   const itemStyle = {
@@ -141,10 +143,12 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
     justifyContent: 'flex-start',
     alignItems: 'center',
     color: 'white',
+    userSelect: 'none', // 텍스트 선택 방지
   };
 
   const iconStyle = {
     cursor: 'pointer',
+    userSelect: 'none', // 텍스트 선택 방지
   };
 
   const pathBar = {
@@ -160,17 +164,17 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
   return (
     <div style={{ position: 'relative', display: 'flex', color: 'white', flexDirection: 'column', height: '55.5vh' }}>
       <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-        <div style={{ marginBottom: '10px', cursor: 'pointer' }} onClick={handleBackClick}>
+        <div style={{ marginBottom: '10px', cursor: 'pointer', userSelect: 'none' }} onClick={handleBackClick} onDragStart={(e) => e.preventDefault()}>
           <FontAwesomeIcon icon={faArrowLeft} style={{ marginRight: '5px' }} />
           뒤로 가기
         </div>
         <div style={gridStyle}>
           {contents?.files?.map((item, index) => (
-            <div key={index} style={itemStyle}>
-              <div style={iconStyle} onClick={() => handleItemClick(item, contents.filestype[index])}>
+            <div key={index} style={itemStyle} draggable="false">
+              <div style={iconStyle} onClick={() => handleItemClick(item, contents.filestype[index])} draggable="false">
                 {getIconForType(contents.filestype[index])}
               </div>
-              <div>{item}</div>
+              <div draggable="false">{item.trim()}</div> {/* 공백 제거 후 표시 */}
             </div>
           ))}
         </div>

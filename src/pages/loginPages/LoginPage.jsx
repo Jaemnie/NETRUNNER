@@ -71,7 +71,7 @@ function LoginPage() {
         // 여기서는 예시로 랜덤 문자열을 생성하여 사용합니다.
         // 실제 애플리케이션에서는 서버에서 생성 및 전송
         // setVerificationCode(fakeVerificationCode);
-        await fetch("netrunner.life:4000/email/send", {
+        await fetch("http://netrunner.life:4000/email/send", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({email}),
@@ -81,7 +81,7 @@ function LoginPage() {
 
     const handleVerificationCheck = async () => {
         // 인증 번호 입력란이 비어있는지, 인증 번호 일치 검사
-        const isCheck= await fetch("netrunner.life:4000/email/check", {
+        const isCheck= await fetch("http://netrunner.life:4000/email/check", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({inputVerificationCode}),
