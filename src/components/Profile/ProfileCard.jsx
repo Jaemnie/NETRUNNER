@@ -8,7 +8,7 @@ const ProfileCard = ({ profileData, onClose }) => {
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
         <div className={styles.profileCard}>
           <div className={styles.profileCardImg}>
-            <img src="https://res.cloudinary.com/muhammederdem/image/upload/v1537638518/Ba%C5%9Bl%C4%B1ks%C4%B1z-1.jpg" alt="profile card" />
+            <img src="https://i.imgur.com/FuHIa08.jpeg" alt="profile card" />
           </div>
 
           <div className={styles.profileCardCnt}>

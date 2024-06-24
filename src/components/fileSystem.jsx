@@ -1,7 +1,7 @@
-import React, { forwardRef, useImperativeHandle, useState, useEffect,useRef } from 'react';
+import React, { forwardRef, useImperativeHandle, useState, useEffect, useRef } from 'react';
 import TerminalInteraction from './TerminalInteraction';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFolder, faFile } from '@fortawesome/free-solid-svg-icons';
+import { faFolder, faFile, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { SocketResult } from './Gsocket';
 
 function getIconForType(type) {
@@ -19,6 +19,7 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
   const [path, setPath] = useState(initialPath);
   const [contents, setContents] = useState(null);
   const [socket, setSocket] = useState(null);
+  const [pathHistory, setPathHistory] = useState([]); // 경로 히스토리 관리
   const dirViewerRef = useRef();
   TerminalInteraction.setDirectoryViewer(ref.current);
 
@@ -44,7 +45,7 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
     fetchDirectoryData();
 
     const newSocket = new SocketResult();
-    newSocket.joinRoom( Math.floor(100000 + Math.random() * 900000).toString()); // 방 ID를 실제 값으로 대체
+    newSocket.joinRoom(Math.floor(100000 + Math.random() * 900000).toString());
     setSocket(newSocket);
 
     return () => {
@@ -57,7 +58,7 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
   useImperativeHandle(ref, () => ({
     appendToTerminal: (text) => {
       TerminalInteraction.appendToTerminal(text);
-      
+      if (socket) {
         socket.sendMessage(text);
         socket.getMessage((char) => {
           console.log(char);
@@ -73,11 +74,10 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
           const setDir = { files, filestype };
           setContents(setDir);
         });
-      
+      }
     },
-
     updateDirectoryContent(newContent) {
-      
+      if (socket) {
         socket.sendMessage('pwd');
         socket.getMessage((chat) => {
           socket.sendMessage(`cd ${chat}`);
@@ -93,20 +93,30 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
           const setDir = { files, filestype };
           setContents(setDir);
         });
-      
+      }
     },
   }));
 
-  function handleItemClick(item, type) {
+  const handleItemClick = (item, type) => {
+    const newPath = path === '/' ? `/${item}` : `${path}/${item}`;
     if (type === 'directory') {
-      const newPath = path === '/' ? `/${item}` : `${path}/${item}`;
+      setPathHistory([...pathHistory, path]); // 현재 경로를 히스토리에 추가
       setPath(newPath);
       ref.current.appendToTerminal(`cd ${item}`);
     } else {
       ref.current.appendToTerminal(`cat ${item}`);
       console.log(item + ' file clicked');
     }
-  }
+  };
+
+  const handleBackClick = () => {
+    if (pathHistory.length > 0) {
+      const previousPath = pathHistory.pop(); // 히스토리에서 이전 경로를 꺼냄
+      setPath(previousPath);
+      setPathHistory(pathHistory); // 히스토리 업데이트
+      ref.current.appendToTerminal(`cd ..`);
+    }
+  };
 
   if (!contents) {
     return <div>Loading...</div>;
@@ -150,6 +160,10 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
   return (
     <div style={{ position: 'relative', display: 'flex', color: 'white', flexDirection: 'column', height: '55.5vh' }}>
       <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        <div style={{ marginBottom: '10px', cursor: 'pointer' }} onClick={handleBackClick}>
+          <FontAwesomeIcon icon={faArrowLeft} style={{ marginRight: '5px' }} />
+          뒤로 가기
+        </div>
         <div style={gridStyle}>
           {contents?.files?.map((item, index) => (
             <div key={index} style={itemStyle}>
