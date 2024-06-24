@@ -8,10 +8,12 @@ class TerminalInteraction {
 
   static setDirectoryViewer(viewer) {
     TerminalInteraction.directoryViewer = viewer;
+    
   }
 
   static handleTerminalInput(data) {
     TerminalInteraction.directoryViewer.updateDirectoryContent(data);
+
   }
 
   static appendToTerminal(text) {

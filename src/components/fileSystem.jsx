@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle, useState, useEffect } from 'react';
+import React, { forwardRef, useImperativeHandle, useState, useEffect,useRef } from 'react';
 import TerminalInteraction from './TerminalInteraction';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolder, faFile } from '@fortawesome/free-solid-svg-icons';
@@ -19,8 +19,8 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
   const [path, setPath] = useState(initialPath);
   const [contents, setContents] = useState(null);
   const [socket, setSocket] = useState(null);
-
-  TerminalInteraction.setDirectoryViewer(ref);
+  const dirViewerRef = useRef();
+  TerminalInteraction.setDirectoryViewer(ref.current);
 
   useEffect(() => {
     const fetchDirectoryData = async () => {
@@ -44,7 +44,7 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
     fetchDirectoryData();
 
     const newSocket = new SocketResult();
-    newSocket.joinRoom('yourRoomId'); // 방 ID를 실제 값으로 대체
+    newSocket.joinRoom( Math.floor(100000 + Math.random() * 900000).toString()); // 방 ID를 실제 값으로 대체
     setSocket(newSocket);
 
     return () => {
@@ -57,7 +57,7 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
   useImperativeHandle(ref, () => ({
     appendToTerminal: (text) => {
       TerminalInteraction.appendToTerminal(text);
-      if (socket) {
+      
         socket.sendMessage(text);
         socket.getMessage((char) => {
           console.log(char);
@@ -73,11 +73,11 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
           const setDir = { files, filestype };
           setContents(setDir);
         });
-      }
+      
     },
 
     updateDirectoryContent(newContent) {
-      if (socket) {
+      
         socket.sendMessage('pwd');
         socket.getMessage((chat) => {
           socket.sendMessage(`cd ${chat}`);
@@ -93,7 +93,7 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
           const setDir = { files, filestype };
           setContents(setDir);
         });
-      }
+      
     },
   }));
 
