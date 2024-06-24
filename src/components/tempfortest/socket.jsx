@@ -5,7 +5,7 @@ class SocketResult {
         // Token은 인스턴스가 생성될 때 한 번만 설정되어야 합니다.
         const token = localStorage.getItem('accessToken');
         // this.socket을 사용해 클래스 내 다른 메소드에서도 소켓에 접근할 수 있습니다.
-        this.socket = io('http://localhost:4000/term', {
+        this.socket = io('172.16.230.134:4000/term', {
             query: { token }
         }); // NestJS 서버 주소
 

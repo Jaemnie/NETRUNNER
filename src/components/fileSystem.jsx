@@ -1,8 +1,8 @@
 import React, { forwardRef, useImperativeHandle, useState, useEffect } from 'react';
-import { TerminalInteraction } from './TerminalInteraction';
+import TerminalInteraction  from './TerminalInteraction';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolder, faFile } from '@fortawesome/free-solid-svg-icons';
-import { SocketResult } from './socket';
+import { SocketResult } from './Gsocket';
 
 function getIconForType(type) {
   switch (type) {
@@ -16,96 +16,84 @@ function getIconForType(type) {
 }
 
 const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
-  const [directoryContent, setDirectoryContent] = useState([]);
   const [path, setPath] = useState(initialPath);
   const [contents, setContents] = useState(null);
-  const socketss = new SocketResult();
+  const [socket,setSockets] = useState(null);
+  TerminalInteraction.setDirectoryViewer(ref);
+useEffect(() => {
+  const fetchDirectoryData = async () => {
+    let fdata = null;
+    await fetch('http://172.16.230.134:4000/filesystem/1', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+      },
+    })
+    .then(response => response.json())
+    .then(data => {
+      const files = data.files;
+      const filestype = data.filestype;
+      fdata = {files,filestype};
+    })
+    .catch(error => console.error('초기화 에러:', error));
+    setContents(fdata);
+  };
+  fetchDirectoryData();
+  setSockets(new SocketResult());
+}, []);
 
-  useImperativeHandle(ref, () => ({
-    appendToTerminal: (text) => {
-      TerminalInteraction.appendToTerminal(text);
-      socketss.sendMessage(text);
-      socketss.getMessage((char) => {
-        console.log(char);
-      });
-      socketss.sendMessage('ls -al');
-      socketss.getMessage((chat) => {
+useImperativeHandle(ref, () => ({
+  appendToTerminal: (text) => {
+    TerminalInteraction.appendToTerminal(text);
+    //GUI->터미널
+    socket.sendMessage(text);
+    socket.getMessage((char)=>{
+      console.log(char);
+    });
+    socket.sendMessage("ls -al");
+    socket.getMessage((chat) => {
+    const temp1 = chat;
+    const temp2 = chat;
+    const regex1 = /[^[\]]+(?=\[)/g;
+    const regex2 = /(?<=\[).*?(?=\])/g;
+    const files = temp1.match(regex1); 
+    const filestype = temp2.match(regex2);
+    const setDir = {files,filestype};
+    setContents(setDir);
+  });
+  },
+
+  updateDirectoryContent(newContent){
+    //터미널->GUI
+    socket.sendMessage('pwd');
+    socket.getMessage((chat) => {
+      socket.sendMessage(`cd ${chat}`);
+    });
+    socket.sendMessage("ls -al");
+    socket.getMessage((chat) => {
         const temp1 = chat;
         const temp2 = chat;
         const regex1 = /[^[\]]+(?=\[)/g;
         const regex2 = /(?<=\[).*?(?=\])/g;
-        const files = temp1.match(regex1);
+        const files = temp1.match(regex1); 
         const filestype = temp2.match(regex2);
-        const setDir = { files, filestype };
-        console.log(setDir);
+        const setDir ={files,filestype};
         setContents(setDir);
       });
-    },
+  },
+}
+));
 
-    updateDirectoryContent: (newContent) => {
-      console.log('terminput:', newContent);
-      socketss.sendMessage('pwd');
-      socketss.getMessage((chat) => {
-        socketss.sendMessage(`cd ${chat}`);
-      });
-      socketss.sendMessage('ls -al');
-      socketss.getMessage((chat) => {
-        const temp1 = chat;
-        const temp2 = chat;
-        const regex1 = /[^[\]]+(?=\[)/g;
-        const regex2 = /(?<=\[).*?(?=\])/g;
-        const files = temp1.match(regex1);
-        const filestype = temp2.match(regex2);
-        const setDir = { files, filestype };
-        setContents(setDir);
-      });
-
-      if (newContent === 'cd directory1') {
-        const exampleData = {
-          files: ['file2.txt', 'file2.txt', 'directory2'],
-          filestype: ['file', 'file', 'directory'],
-        };
-        setContents(exampleData);
-      }
-    },
-  }));
-
-  useEffect(() => {
-    const fetchDirectoryData = async () => {
-      let fdata = null;
-      await fetch('http://172.16.230.134:4000/filesystem/1', {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          const files = data.files;
-          const filestype = data.filestype;
-          fdata = { files, filestype };
-        })
-        .catch((error) => console.error('초기화 에러:', error));
-      setContents(fdata);
-    };
-    fetchDirectoryData();
-  }, []);
-
-  function handleItemClick(item, type) {
-    if (type === 'directory') {
-      const newPath = path === '/' ? `/${item}` : `${path}/${item}`;
-      setPath(newPath);
-      ref.current.appendToTerminal(`cd ${item}`);
-      const exampleData = {
-        files: ['file2.txt', 'file2.txt', 'directory2'],
-        filestype: ['file', 'file', 'directory'],
-      };
-      setContents(exampleData);
-    } else {
-      ref.current.appendToTerminal(`cat ${item}`);
-      console.log(item + ' file clicked');
-    }
+function handleItemClick(item, type) {
+  if (type === 'directory') {
+    const newPath = path === '/' ? `/${item}` : `${path}/${item}`;
+    setPath(newPath);
+    ref.current.appendToTerminal(`cd ${item}`);
+  } else {
+    ref.current.appendToTerminal(`cat ${item}`);
+    console.log(item + ' file clicked');
   }
+}
 
   if (!contents) {
     return <div>Loading...</div>;
@@ -150,7 +138,7 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
     <div style={{ position: 'relative', display: 'flex', color: 'white', flexDirection: 'column', height: '55.5vh' }}>
       <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
         <div style={gridStyle}>
-          {contents.files.map((item, index) => (
+          {contents?.files?.map((item, index) => (
             <div key={index} style={itemStyle}>
               <div style={iconStyle} onClick={() => handleItemClick(item, contents.filestype[index])}>
                 {getIconForType(contents.filestype[index])}

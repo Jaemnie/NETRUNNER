@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
 import styles from './MainPage.module.css';
-import TermPage from '../../components/termPage';
+import MainPageComp from '../../components/mainPage';
 import Quest from '../../components/quest';
 import Shop from '../../components/shop';
 import BackgroundMusic from '../../components/BackgroundMusic';
@@ -9,7 +9,7 @@ import Modal from '../../pages/mainPages/esc'; // Modal 컴포넌트 임포트
 import bgm from '../../assets/mainbgm.mp3';
 
 const MenuContent = {
-  terminer: <TermPage />,
+  terminer: <MainPageComp/>,
   quest: null,
   shop: null
 };
@@ -48,7 +48,7 @@ function MainPage() {
 
     const fetchMissionData = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:3000/missions');
+        const response = await fetch('http://172.16.230.134:4000/missions');
         const data = await response.json();
         setMissionData(data.mission);
       } catch (error) {

@@ -1,56 +1,29 @@
-import React, { useRef, useEffect } from 'react';
-import { Terminal } from '@xterm/xterm';
+import { Terminal } from "@xterm/xterm";
 import "../../node_modules/@xterm/xterm/css/xterm.css";
-import { DirectoryViewer } from './fileSystem';
-import { TerminalInteraction } from './TerminalInteraction';
-import { Termi } from './termsocket';
+import React, { useRef, useEffect, useState } from "react";
+import { Termi } from "./termsocket";
+import  TerminalInteraction  from './TerminalInteraction';
+import {SocketResult} from "./socket";
 
 const TermPage = () => {
   const termRef = useRef(null);
-  const dirViewerRef = useRef(null);
-
+  const socketRoomId = Math.floor(100000 + Math.random() * 900000).toString();
+  const socket = new SocketResult();
+  socket.joinRoom(socketRoomId);
   useEffect(() => {
     if (termRef.current) {
       const term = new Terminal();
-      Termi(term, termRef.current); 
+      Termi(term, termRef.current,socket.getRoomId()); 
       TerminalInteraction.setTerminal(term);
-      TerminalInteraction.setDirectoryViewer(dirViewerRef.current);
       return () => {
         term.dispose(); // Terminal 인스턴스 정리
       };
     }
-  }, []);
-
-  const containerStyle = {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100vh',
-  };
-
-  const directoryViewerStyle = {
-    flexShrink: 0,
-    border: '2px solid #C471ED',
-    borderRadius: '8px',
-    padding: '10px',
-    boxSizing: 'border-box',
-  };
-
-  const terminalStyle = {
-    flexGrow: 1,
-    border: '2px solid #C471ED',
-    borderRadius: '8px',
-    padding: '10px',
-    boxSizing: 'border-box',
-  };
-
-  return (
-    <div style={containerStyle}>
-      <div style={directoryViewerStyle}>
-        <DirectoryViewer ref={dirViewerRef} />
-      </div>
-      <div ref={termRef} style={terminalStyle} />
-    </div>
+  },[]);
+  return (<>
+    {/* DirectoryViewer 컴포넌트로 파일 시스템 내용을 렌더링 */}
+    <div ref={termRef} />
+  </>
   );
-};
-
+}
 export default TermPage;

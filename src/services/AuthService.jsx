@@ -1,6 +1,6 @@
 class AuthService {
   constructor() {
-    this.baseUrl = process.env.REACT_APP_API_URL || 'http://127.0.0.1:4000';
+    this.baseUrl = process.env.REACT_APP_API_URL || 'http://172.16.230.134:4000';
   }
 
   async signup(userId, username, password, email) {

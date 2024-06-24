@@ -1,10 +1,10 @@
 
-import {SocketResult} from "./socket";
-import { TerminalInteraction } from './TerminalInteraction';
-
-function Termi(terminal2,elements) {
+import  TerminalInteraction  from './TerminalInteraction';
+import { SocketResult } from './socket';
+function Termi(terminal2,elements,socketRoomId) {
     let message = '';
-    const sockets = new SocketResult();
+    const socket = new SocketResult();
+    socket.joinRoom(socketRoomId);
     const terminal = terminal2;
     terminal.open(elements);
     let currentInput = '';
@@ -14,9 +14,9 @@ function Termi(terminal2,elements) {
         if (domEvent.keyCode === 13) {  // Enter key
             message = currentInput;
             terminal.writeln('');
-            sockets.sendMessage(message);
+            socket.sendMessage(message);
             TerminalInteraction.handleTerminalInput(message);
-            sockets.getMessage((chat) => {
+            socket.getMessage((chat) => {
                 terminal.write(chat);
                 terminal.writeln('');
                 chat= '';

@@ -66,17 +66,27 @@ function LoginPage() {
         setInputVerificationCode(e.target.value);
     };
 
-    const handleSendVerificationCode = () => {
+    const handleSendVerificationCode = async () => {
         // 인증번호를 이메일로 발송하는 로직 구현
         // 여기서는 예시로 랜덤 문자열을 생성하여 사용합니다.
         // 실제 애플리케이션에서는 서버에서 생성 및 전송
-        setVerificationCode(fakeVerificationCode);
+        // setVerificationCode(fakeVerificationCode);
+        await fetch("172.16.230.134:4000/email/send", {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({email}),
+          });
         alert("인증번호가 발송되었습니다. 이메일을 확인해주세요.");
     };
 
-    const handleVerificationCheck = () => {
+    const handleVerificationCheck = async () => {
         // 인증 번호 입력란이 비어있는지, 인증 번호 일치 검사
-        if (inputVerificationCode.trim() && fakeVerificationCode === inputVerificationCode) {
+        const isCheck= await fetch("172.16.230.134:4000/email/check", {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({inputVerificationCode}),
+          });
+        if (isCheck) {
             setCheckVerification(true);
             alert("인증되었습니다.");
         } else {
