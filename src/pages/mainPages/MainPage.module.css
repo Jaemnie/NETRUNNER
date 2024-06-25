@@ -1,12 +1,11 @@
-/* Google Fonts에서 Noto Sans Korean 폰트를 가져옴 */
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
 
-:root {
+.mainContainer {
   --primary-color: #12c2e9;
   --secondary-color: #f64f59;
   --tertiary-color: #c471ed;
   --background-color: #222;
-  --font-family: 'Noto Sans KR', sans-serif; /* 폰트 패밀리 변경 */
+  --font-family: 'Noto Sans KR', sans-serif;
   --padding: 20px;
   --content-background: #f0f0f0;
   --border-radius: 8px;
@@ -15,7 +14,6 @@
   --margin: 20px auto;
 }
 
-/* 통합 애니메이션 */
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -123,16 +121,16 @@
 .main {
   font-family: var(--font-family);
   display: grid;
-  grid-template-columns: 4.5rem 1fr; /* 변경된 비율 */
-  width: 100vw; /* 전체 너비 */
-  height: 100vh; /* 전체 높이 */
-  margin: 0; /* 마진 제거 */
+  grid-template-columns: 4.5rem 1fr;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
   background: url('/src/assets/wallpaper.jpg') no-repeat center center fixed;
   background-size: cover;
-  border-radius: 0; /* 테두리 반경 제거 */
+  border-radius: 0;
   z-index: 10;
   opacity: 0;
-  animation: fadeIn 2s forwards; /* 페이드 인 애니메이션 추가 */
+  animation: fadeIn 2s forwards;
 }
 
 .splitScreenLeft,
@@ -154,8 +152,6 @@
   right: 0;
   animation: splitScreenRight 1s forwards;
 }
-
-/* Other existing styles */
 
 .mainMenu {
   position: sticky;
@@ -188,7 +184,6 @@
   transform: translateY(-50%);
   height: 0rem;
   width: 0.3125rem;
-  width: 0.25rem;
   border-radius: 1rem;
   background: var(--tertiary-color);
   transition: height 200ms ease, box-shadow 200ms ease;
@@ -211,25 +206,22 @@
 .mainContainer {
   display: flex;
   flex-direction: column;
-  height: 100vh; /* Full height of the viewport */
+  height: 100vh;
 }
-
-/* CONTENT */
 
 .content {
   display: flex;
   flex-direction: column;
-  flex-grow: 1; /* Ensure the content section grows to fill the space */
-  justify-content: flex-end; /* Push the terminal to the bottom */
-  overflow-y: hidden; /* Allow vertical scrolling if content overflows */
-  scrollbar-width: none; /* Firefox: hide scrollbar */
+  flex-grow: 1;
+  justify-content: flex-end;
+  overflow-y: hidden;
+  scrollbar-width: none;
 }
 
 .content::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera: hide scrollbar */
+  display: none;
 }
 
-/* 반응형 디자인 */
 @media (max-width: 768px) {
   .main {
     grid-template-columns: 100%;

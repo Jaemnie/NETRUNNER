@@ -10,10 +10,20 @@ const Shop = ({ userId }) => {
   useEffect(() => {
     // 사용자의 포인트를 가져오는 함수
     const fetchPoints = async () => {
+      const token = localStorage.getItem('accessToken'); // JWT 토큰 가져오기
       try {
-        const response = await fetch(`http://netrunner.life:4000/missions/points/${userId}`);
+        const response = await fetch(`http://netrunner.life:4000/missions/points/${userId}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` // JWT 포함
+          },
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
         const data = await response.json();
-        setAvailablePoints(data.points);
+        setAvailablePoints(data);
       } catch (error) {
         console.error('포인트 가져오기 오류:', error);
       }
@@ -21,8 +31,18 @@ const Shop = ({ userId }) => {
 
     // 사용할 수 있는 도구를 가져오는 함수
     const fetchTools = async () => {
+      const token = localStorage.getItem('accessToken'); // JWT 토큰 가져오기
       try {
-        const response = await fetch('http://netrunner.life:4000/missions/tools');
+        const response = await fetch('http://netrunner.life:4000/missions/tools', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` // JWT 포함
+          },
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
         const data = await response.json();
         setTools(data);
       } catch (error) {

@@ -1,11 +1,11 @@
-
 import './App.css';
-
-import React, {useEffect} from 'react';
-import { BrowserRouter as Router, Routes, Route,Navigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './pages/loginPages/LoginPage';
 import MainPage from './pages/mainPages/MainPage';
-import AuthService from './services/AuthService';
+import { AudioProvider } from './pages/mainPages/AudioContext';
+import BackgroundMusic from './components/BackgroundMusic';
+import bgm from './assets/mainbgm.mp3';
 
 const RequireAuth = ({ children }) => {
   const token = localStorage.getItem('accessToken');
@@ -18,30 +18,32 @@ const RequireAuth = ({ children }) => {
   return children;
 };
 
-
 function App() {
 
-  useEffect(()=>{
-    const handleBeforeUnload=(e)=>{
+  useEffect(() => {
+    const handleBeforeUnload = () => {
       localStorage.removeItem('accessToken');
     };
     window.addEventListener('beforeunload', handleBeforeUnload);
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-  },[]); //창닫을시 로그아웃
+  }, []); // 창 닫을 시 로그아웃
 
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<LoginPage />} />
-        <Route path="/main" element={
-          <RequireAuth>
-            <MainPage />
-          </RequireAuth>
+    <AudioProvider>
+      <Router>
+        <BackgroundMusic src={bgm} />
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/main" element={
+            <RequireAuth>
+              <MainPage />
+            </RequireAuth>
           } />
-      </Routes>
-    </Router>
+        </Routes>
+      </Router>
+    </AudioProvider>
   );
 }
 

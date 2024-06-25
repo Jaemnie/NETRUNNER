@@ -16,24 +16,27 @@ class SocketResult {
             }
         });
     }
-     joinRoom(id){
+
+    joinRoom(id){
         this.roomId = id;
         this.socket.emit('join',{roomId:`${id}roomId`});
     }
-     getRoomId(){
+
+    getRoomId(){
         return this.roomId;
     }
+
     // 메시지를 받는 메소드
-     getMessage(callback) {
+    getMessage(callback) {
         this.onMessageReceived = callback;
     }
 
     // 메시지를 보내는 메소드
-     sendMessage(message) {
-        this.socket.emit('message', {roomId:`${this.roomId}roomId`,payload:`${message}`});
+    sendMessage(message) {
+        this.socket.emit('message', {roomId:`${this.roomId}roomId`, payload: message});
     }
 
-     leaveRoom(){
+    leaveRoom(){
         this.socket.emit('leave',{roomId:`${this.roomId}`});
     }
 }

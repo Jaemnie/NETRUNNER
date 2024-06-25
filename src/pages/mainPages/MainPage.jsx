@@ -7,11 +7,12 @@ import Quest from '../../components/quest';
 import Shop from '../../components/shop';
 import BackgroundMusic from '../../components/BackgroundMusic';
 import ProfileCard from '../../components/Profile/ProfileCard';
+import Setting from '../../pages/mainPages/Setting';
 import bgm from '../../assets/mainbgm.mp3';
+import { SocketResult } from '../../components/socket'; // SocketResult 클래스를 가져옵니다.
 
 const MenuContent = {
   terminer: <MainPageComp />,
-  quest: null,
   shop: null
 };
 
@@ -19,12 +20,26 @@ function MainPage() {
   const [clickPositions, setClickPositions] = useState([]);
   const [showAnimation, setShowAnimation] = useState(true);
   const [showSplitScreen, setShowSplitScreen] = useState(false);
-  const [missionData, setMissionData] = useState(null);
   const [currentMenu, setCurrentMenu] = useState('terminer');
   const [showProfileCard, setShowProfileCard] = useState(false);
   const [profileData, setProfileData] = useState(null);
+  const [showSetting, setShowSetting] = useState(false);
+  const [showQuest, setShowQuest] = useState(false);
+  const [questData, setQuestData] = useState(null);
+  const [socketResult, setSocketResult] = useState(null);
 
-  const userId = localStorage.getItem('userId'); // localStorage에서 userId 가져오기
+  const userId = localStorage.getItem('userId');
+
+  useEffect(() => {
+    const socket = new SocketResult();
+    setSocketResult(socket);
+
+    return () => {
+      if (socket) {
+        socket.leaveRoom();
+      }
+    };
+  }, []);
 
   const handleClick = (event) => {
     const { pageX: x, pageY: y } = event;
@@ -36,26 +51,7 @@ function MainPage() {
 
   const handleKeyDown = (event) => {
     if (event.key === 'Escape') {
-      setShowProfileCard(false);
-    }
-  };
-
-  const fetchMissionData = async () => {
-    try {
-      const response = await fetch('http://netrunner.life:4000/missions', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`, // JWT 토큰을 헤더에 포함
-          'Content-Type': 'application/json'
-        }
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      setMissionData(data.mission);
-      console.log('미션 데이터:', data.mission); // 콘솔 로그 추가
-    } catch (error) {
-      console.error('Error fetching mission data:', error);
+      setShowSetting((prev) => !prev);
     }
   };
 
@@ -68,8 +64,6 @@ function MainPage() {
       }, 1000);
     }, 3000);
 
-    fetchMissionData(); // 초기 로딩 시 미션 데이터 가져오기
-
     window.addEventListener('keydown', handleKeyDown);
 
     return () => {
@@ -78,25 +72,48 @@ function MainPage() {
     };
   }, []);
 
-  useEffect(() => {
-    console.log('Current Menu:', currentMenu);
-    if (currentMenu === 'quest') {
-      fetchMissionData(); // quest 메뉴 클릭 시 미션 데이터 가져오기
-    }
-  }, [currentMenu]);
+  const handleMenuClick = async (menuKey) => {
+    console.log('Menu clicked:', menuKey);
+    if (menuKey === 'quest') {
+      const token = localStorage.getItem('accessToken'); // 올바른 키로 JWT 토큰 가져오기
+      console.log('User ID:', userId);
+      console.log('Token:', token);
+      try {
+        const response = await fetch(`http://netrunner.life:4000/missions/#`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json', // JSON으로 요청
+            'Authorization': `Bearer ${token}` // JWT를 포함합니다.
+          },
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setQuestData(data); // JSON 데이터 처리
+        setShowQuest(true);
 
-  const handleMenuClick = (menuKey) => {
-    console.log('Menu clicked:', menuKey); // 콘솔 로그 추가
-    setCurrentMenu(menuKey);
+        if (socketResult) {
+          socketResult.joinRoom(userId);
+        }
+      } catch (error) {
+        console.error('Error fetching quest data:', error);
+      }
+    } else if (menuKey === 'shop') {
+      MenuContent.shop = <Shop userId={userId} />;
+      setCurrentMenu(menuKey);
+    } else {
+      setCurrentMenu(menuKey);
+    }
   };
 
   const openProfileCard = async () => {
     try {
       const response = await fetch(`http://netrunner.life:4000/auth/${userId}`, {
-        method: 'GET', // GET으로 변경
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}` // JWT 토큰을 헤더에 포함
+          'Authorization': `Bearer ${localStorage.getItem('accessToken')}` // 올바른 키로 JWT 토큰 가져오기
         },
       });
       if (!response.ok) {
@@ -116,7 +133,7 @@ function MainPage() {
 
   return (
     <div className={styles.mainContainer}>
-      <BackgroundMusic src={bgm} /> {/* BackgroundMusic 컴포넌트 추가 */}
+      <BackgroundMusic src={bgm} />
       {showAnimation && (
         <div className={styles.ringContainer}>
           <div className={styles.ring}>
@@ -144,7 +161,7 @@ function MainPage() {
               <FaShoppingCart />
             </a>
             <div className={styles.navspacer}></div>
-            <a href="#">
+            <a href="#" onClick={() => setShowSetting(true)}>
               <FaCog />
             </a>
             <a href="#" onClick={openProfileCard}>
@@ -152,19 +169,13 @@ function MainPage() {
             </a>
           </nav>
           <section className={styles.content}>
-            {currentMenu === 'quest' ? (
-              missionData ? (
-                <Quest missionData={missionData} />
-              ) : (
-                <div>No mission data available</div>
-              )
-            ) : null}
-            {currentMenu === 'shop' && userId ? <Shop userId={userId} /> : null}
-            {currentMenu !== 'quest' && currentMenu !== 'shop' ? MenuContent[currentMenu] : null}
+            {MenuContent[currentMenu]}
           </section>
         </main>
       )}
       {showProfileCard && profileData && <ProfileCard profileData={profileData} onClose={closeProfileCard} />}
+      {showSetting && <Setting show={showSetting} onClose={() => setShowSetting(false)} />}
+      {showQuest && questData && <Quest show={showQuest} onClose={() => setShowQuest(false)} userId={userId} questData={questData} />}
     </div>
   );
 }
