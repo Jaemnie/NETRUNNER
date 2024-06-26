@@ -1,6 +1,6 @@
 import { Terminal } from "@xterm/xterm";
 import "../../node_modules/@xterm/xterm/css/xterm.css";
-import React, { useRef, useEffect } from "react"; // useState 제거
+import React, { useRef, useEffect } from "react";
 import { Termi } from "./termsocket";
 import TerminalInteraction from './TerminalInteraction';
 import { SocketResult } from "./socket";
@@ -17,14 +17,14 @@ const TermPage = () => {
       Termi(term, termRef.current, socket.getRoomId());
       TerminalInteraction.setTerminal(term);
       return () => {
-        term.dispose(); // 터미널 인스턴스 정리
+        term.dispose();
       };
     }
-  }, [socket]); // socket 의존성 추가
+  }, [socket]);
 
   return (
     <>
-      <div ref={termRef} className="terminal-container" /> {/* 커스텀 CSS 클래스 적용 */}
+      <div ref={termRef} className="terminal-container" />
     </>
   );
 }

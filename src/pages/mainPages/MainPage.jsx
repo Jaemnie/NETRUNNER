@@ -27,6 +27,7 @@ function MainPage() {
   const [showQuest, setShowQuest] = useState(false);
   const [questData, setQuestData] = useState(null);
   const [socketResult, setSocketResult] = useState(null);
+  const [currentMissionID, setCurrentMissionID] = useState(1); // 현재 미션 ID 상태 추가
 
   const userId = localStorage.getItem('userId');
 
@@ -72,33 +73,37 @@ function MainPage() {
     };
   }, []);
 
+  const fetchMission = async (missionID) => {
+    const token = localStorage.getItem('accessToken'); // 올바른 키로 JWT 토큰 가져오기
+    console.log('User ID:', userId);
+    console.log('Token:', token);
+    try {
+      const response = await fetch(`http://netrunner.life:4000/missions/${missionID}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json', // JSON으로 요청
+          'Authorization': `Bearer ${token}` // JWT를 포함합니다.
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      setQuestData(data); // JSON 데이터 처리
+      setShowQuest(true);
+
+      if (socketResult) {
+        socketResult.joinRoom(userId);
+      }
+    } catch (error) {
+      console.error('Error fetching quest data:', error);
+    }
+  };
+
   const handleMenuClick = async (menuKey) => {
     console.log('Menu clicked:', menuKey);
     if (menuKey === 'quest') {
-      const token = localStorage.getItem('accessToken'); // 올바른 키로 JWT 토큰 가져오기
-      console.log('User ID:', userId);
-      console.log('Token:', token);
-      try {
-        const response = await fetch(`http://netrunner.life:4000/missions/#`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json', // JSON으로 요청
-            'Authorization': `Bearer ${token}` // JWT를 포함합니다.
-          },
-        });
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        setQuestData(data); // JSON 데이터 처리
-        setShowQuest(true);
-
-        if (socketResult) {
-          socketResult.joinRoom(userId);
-        }
-      } catch (error) {
-        console.error('Error fetching quest data:', error);
-      }
+      await fetchMission(currentMissionID); // 현재 미션 ID로 미션 데이터 가져오기
     } else if (menuKey === 'shop') {
       MenuContent.shop = <Shop userId={userId} />;
       setCurrentMenu(menuKey);
@@ -175,7 +180,7 @@ function MainPage() {
       )}
       {showProfileCard && profileData && <ProfileCard profileData={profileData} onClose={closeProfileCard} />}
       {showSetting && <Setting show={showSetting} onClose={() => setShowSetting(false)} />}
-      {showQuest && questData && <Quest show={showQuest} onClose={() => setShowQuest(false)} userId={userId} questData={questData} />}
+      {showQuest && questData && <Quest show={showQuest} onClose={() => setShowQuest(false)} userId={userId} questData={questData} fetchMission={fetchMission} />}
     </div>
   );
 }

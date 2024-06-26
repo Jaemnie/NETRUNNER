@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { FaList, FaEnvelope } from 'react-icons/fa';
 import styles from './Quest.module.css';
 
-const Quest = ({ userId, show, onClose, questData }) => {
+const Quest = ({ userId, show, onClose, questData, fetchMission }) => {
   const [activeTab, setActiveTab] = useState('list'); // 'list' or 'message'
   const [displayedMessages, setDisplayedMessages] = useState([]);
   const [isTyping, setIsTyping] = useState(false);
@@ -100,6 +100,7 @@ const Quest = ({ userId, show, onClose, questData }) => {
         <li><strong>포인트:</strong> {questData.reward[0].point[0]}</li>
         <li><strong>도구 파일:</strong> {questData.reward[0].toolFile[0]}</li>
       </ul>
+      <button onClick={completeMission} className={styles.completeButton}>미션 완료</button>
     </div>
   );
 
@@ -107,6 +108,32 @@ const Quest = ({ userId, show, onClose, questData }) => {
     setActiveTab(tab);
     if (tab === 'message' && !messagesLoaded.current) {
       messagesLoaded.current = false; // 메시지를 다시 로드하지 않도록 설정
+    }
+  };
+
+  const completeMission = async () => {
+    const token = localStorage.getItem('accessToken');
+    try {
+      const response = await fetch(`http://netrunner.life:4000/missions/complete`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ userId, missionId: questData.missionId })
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      if (result.success) {
+        // 다음 미션 ID로 업데이트
+        await fetchMission(result.nextMissionId);
+      } else {
+        alert('미션 완료에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('Error completing mission:', error);
     }
   };
 
@@ -147,6 +174,7 @@ Quest.propTypes = {
   show: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   questData: PropTypes.object.isRequired,
+  fetchMission: PropTypes.func.isRequired
 };
 
 export default Quest;

@@ -34,9 +34,29 @@ function Setting({ show, onClose }) {
     return null;
   }
 
-  const handleLogout = () => {
-    localStorage.removeItem('accessToken'); // JWT 토큰 제거
-    navigate('/'); // 초기 화면으로 이동
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('http://netrunner.life:4000/auth/signout', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`로그아웃 실패: ${response.statusText}`);
+      }
+
+      // 로그아웃 성공 시 로컬 저장소에서 JWT 토큰 제거
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('userId'); // userId 삭제
+      localStorage.removeItem('leaveRoom');
+      navigate('/'); // 초기 화면으로 이동
+
+      console.log('로그아웃 되었습니다.');
+    } catch (error) {
+      console.error('로그아웃 에러:', error);
+    }
   };
 
   return (
