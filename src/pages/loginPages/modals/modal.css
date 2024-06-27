@@ -59,7 +59,6 @@
 }
 .inputBx input {
   position: relative;
-  width: 100%;
   padding: 12px 20px;
   background: transparent;
   border: 2px solid #fff;
@@ -103,7 +102,6 @@
 
 .modalContent .inputBx input {
   position: relative;
-  width: 100%;
   padding: 12px 20px;
   background: transparent;
   border: 2px solid #fff;

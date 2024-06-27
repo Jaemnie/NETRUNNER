@@ -3,8 +3,8 @@ import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './pages/loginPages/LoginPage';
 import MainPage from './pages/mainPages/MainPage';
-import { AudioProvider } from './pages/mainPages/AudioContext';
-import BackgroundMusic from './components/BackgroundMusic';
+import { AudioProvider } from './components/Background/AudioContext';
+import BackgroundMusic from './components/Background/BackgroundMusic';
 import bgm from './assets/mainbgm.mp3';
 
 const RequireAuth = ({ children }) => {

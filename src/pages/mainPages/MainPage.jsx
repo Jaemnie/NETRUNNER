@@ -2,14 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { FaHome, FaCalendarCheck, FaShoppingCart, FaCog, FaUserCircle } from 'react-icons/fa';
 import classNames from 'classnames';
 import styles from './MainPage.module.css';
-import MainPageComp from '../../components/mainPage';
-import Quest from '../../components/quest';
-import Shop from '../../components/shop';
-import BackgroundMusic from '../../components/BackgroundMusic';
+import MainPageComp from '../../components/MainPageComp/MainPageComp';
+import Quest from '../../components/Quest/Quest';
+import Shop from '../../components/Shop/shop';
+import BackgroundMusic from '../../components/Background/BackgroundMusic';
 import ProfileCard from '../../components/Profile/ProfileCard';
-import Setting from '../../pages/mainPages/Setting';
+import Setting from './Setting/Setting';
 import bgm from '../../assets/mainbgm.mp3';
-import { SocketResult } from '../../components/socket'; // SocketResult 클래스를 가져옵니다.
+import { SocketResult } from '../../socket/socket'; // SocketResult 클래스를 가져옵니다.
+import { API } from "../../config";
 
 const MenuContent = {
   terminer: <MainPageComp />,
@@ -17,7 +18,6 @@ const MenuContent = {
 };
 
 function MainPage() {
-  const [clickPositions, setClickPositions] = useState([]);
   const [showAnimation, setShowAnimation] = useState(true);
   const [showSplitScreen, setShowSplitScreen] = useState(false);
   const [currentMenu, setCurrentMenu] = useState('terminer');
@@ -27,7 +27,7 @@ function MainPage() {
   const [showQuest, setShowQuest] = useState(false);
   const [questData, setQuestData] = useState(null);
   const [socketResult, setSocketResult] = useState(null);
-  const [currentMissionID, setCurrentMissionID] = useState(1); // 현재 미션 ID 상태 추가
+  const currentMissionID = 1; // 현재 미션 ID 상수로 변경
 
   const userId = localStorage.getItem('userId');
 
@@ -41,14 +41,6 @@ function MainPage() {
       }
     };
   }, []);
-
-  const handleClick = (event) => {
-    const { pageX: x, pageY: y } = event;
-    setClickPositions((prevPositions) => [...prevPositions, { x, y }]);
-    setTimeout(() => {
-      setClickPositions((currentPositions) => currentPositions.slice(1));
-    }, 200);
-  };
 
   const handleKeyDown = (event) => {
     if (event.key === 'Escape') {
@@ -78,7 +70,7 @@ function MainPage() {
     console.log('User ID:', userId);
     console.log('Token:', token);
     try {
-      const response = await fetch(`http://netrunner.life:4000/missions/${missionID}`, {
+      const response = await fetch(`${API.MISSION}${missionID}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json', // JSON으로 요청
@@ -100,7 +92,8 @@ function MainPage() {
     }
   };
 
-  const handleMenuClick = async (menuKey) => {
+  const handleMenuClick = async (menuKey, event) => {
+    event.preventDefault();
     console.log('Menu clicked:', menuKey);
     if (menuKey === 'quest') {
       await fetchMission(currentMissionID); // 현재 미션 ID로 미션 데이터 가져오기
@@ -112,9 +105,10 @@ function MainPage() {
     }
   };
 
-  const openProfileCard = async () => {
+  const openProfileCard = async (event) => {
+    event.preventDefault();
     try {
-      const response = await fetch(`http://netrunner.life:4000/auth/${userId}`, {
+      const response = await fetch(`${API.PROFILECARD}${userId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -154,24 +148,24 @@ function MainPage() {
         </>
       )}
       {!showAnimation && !showSplitScreen && (
-        <main className={styles.main} onClick={handleClick}>
+        <main className={styles.main}>
           <nav className={styles.mainMenu}>
-            <a href="#" onClick={() => handleMenuClick('terminer')} className={classNames({ [styles.active]: currentMenu === 'terminer' })}>
+            <button onClick={(e) => handleMenuClick('terminer', e)} className={classNames(styles.menuButton, { [styles.active]: currentMenu === 'terminer' })}>
               <FaHome />
-            </a>
-            <a href="#" onClick={() => handleMenuClick('quest')} className={classNames({ [styles.active]: currentMenu === 'quest' })}>
+            </button>
+            <button onClick={(e) => handleMenuClick('quest', e)} className={classNames(styles.menuButton, { [styles.active]: currentMenu === 'quest' })}>
               <FaCalendarCheck />
-            </a>
-            <a href="#" onClick={() => handleMenuClick('shop')} className={classNames({ [styles.active]: currentMenu === 'shop' })}>
+            </button>
+            <button onClick={(e) => handleMenuClick('shop', e)} className={classNames(styles.menuButton, { [styles.active]: currentMenu === 'shop' })}>
               <FaShoppingCart />
-            </a>
+            </button>
             <div className={styles.navspacer}></div>
-            <a href="#" onClick={() => setShowSetting(true)}>
+            <button onClick={(e) => { e.preventDefault(); setShowSetting(true); }} className={styles.menuButton}>
               <FaCog />
-            </a>
-            <a href="#" onClick={openProfileCard}>
+            </button>
+            <button onClick={openProfileCard} className={styles.menuButton}>
               <FaUserCircle style={{ fontSize: '1.75rem' }} />
-            </a>
+            </button>
           </nav>
           <section className={styles.content}>
             {MenuContent[currentMenu]}

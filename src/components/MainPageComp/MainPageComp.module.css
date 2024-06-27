@@ -1,0 +1,22 @@
+.mainPageComp {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  
+  .directoryViewerContainer {
+    flex-shrink: 0;
+    border: 2px solid #C471ED;
+    border-radius: 8px;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+  
+  .terminalContainer {
+    flex-grow: 1;
+    border: 2px solid #C471ED;
+    border-radius: 8px;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+  

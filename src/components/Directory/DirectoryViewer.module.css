@@ -1,0 +1,55 @@
+.directoryViewer {
+  position: relative;
+  display: flex;
+  color: white;
+  flex-direction: column;
+  height: 55.5vh;
+}
+
+.directoryViewerHeader {
+  margin-bottom: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.backIcon {
+  margin-right: 5px;
+}
+
+.directoryViewerGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 10px;
+  text-align: center;
+  justify-content: flex-start;
+  flex-grow: 1;
+  color: white;
+  padding: 10px;
+  overflow-y: auto;
+  user-select: none;
+}
+
+.directoryViewerItem {
+  cursor: default;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  color: white;
+  user-select: none;
+}
+
+.directoryViewerIcon {
+  cursor: pointer;
+  user-select: none;
+}
+
+.directoryViewerPathBar {
+  position: absolute;
+  bottom: 0;
+  text-align: left;
+  background-color: #c5e3df9d;
+  color: white;
+  width: 100%;
+  padding: 10px;
+}

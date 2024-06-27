@@ -1,11 +1,9 @@
-class AuthService {
-  constructor() {
-    this.baseUrl = process.env.REACT_APP_API_URL || 'http://netrunner.life:4000';
-  }
+import { API } from '../config';
 
+class AuthService {
   async signup(userId, username, password, email) {
     try {
-      const response = await fetch(`${this.baseUrl}/auth/signup`, {
+      const response = await fetch(`${API.SIGNUP}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId, username, password, email }),
@@ -23,7 +21,7 @@ class AuthService {
 
   async login(userId, password) {
     try {
-      const response = await fetch(`${this.baseUrl}/auth/signin`, {
+      const response = await fetch(`${API.SIGNIN}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId, password }),
@@ -56,7 +54,7 @@ class AuthService {
     window.location.href = '/';
 
     try {
-      const response = await fetch(`${this.baseUrl}/auth/signout`, {
+      const response = await fetch(`${API.SIGNOUT}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
@@ -75,7 +73,7 @@ class AuthService {
 
   async changepass(email, password) {
     try {
-      const response = await fetch(`${this.baseUrl}/auth/changepass`, {
+      const response = await fetch(`${API.CHANGEPASS}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
