@@ -1,0 +1,8 @@
+/* xterm-custom.css */
+.xterm .xterm-rows > div > span {
+    font-family: 'Noto Sans KR', sans-serif !important;
+}
+
+.xterm .xterm-rows > div > .red-text {
+    color: red !important;
+}

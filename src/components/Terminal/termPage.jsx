@@ -1,5 +1,6 @@
 import { Terminal } from "@xterm/xterm";
-import "../../../node_modules/@xterm/xterm/css/xterm.css";
+import "../../../node_modules/xterm/css/xterm.css"; // 기존 xterm.css
+import "./xterm-custom.css"; // 새로운 xterm-custom.css
 import React, { useRef, useEffect, useMemo } from "react";
 import { Termi } from "./termsocket";
 import TerminalInteraction from './TerminalInteraction';

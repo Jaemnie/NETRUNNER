@@ -10,14 +10,20 @@ function Termi(terminal2, elements, socketRoomId) {
     let currentInput = '';
     let commandHistory = [];
     let historyIndex = -1;
+    const userId = localStorage.getItem('userId'); // 로컬 저장소에서 userId 가져오기
+    const prompt = `\x1b[31mroot@${userId}\x1b[0m:~$ `; // 프롬프트 설정 (빨간색 ANSI escape code 사용)
 
     terminal.write('넷러너에 오신걸 환영합니다!\r\n'); // 환영 메시지 출력
+    terminal.write(prompt); // 프롬프트 출력
+
     terminal.onKey(({ key, domEvent }) => {
         const char = key;
         if (domEvent.keyCode === 13) {  // Enter key
             message = currentInput;
             if (message.trim() === 'clear') {
+                terminal.write('\r\n'); // clear 명령어 처리 전 줄바꿈
                 terminal.clear(); // clear 명령어 처리
+                terminal.write(prompt); // 프롬프트 다시 출력
                 currentInput = '';
                 historyIndex = commandHistory.length;  // 히스토리 인덱스 리셋
             } else {
@@ -29,6 +35,7 @@ function Termi(terminal2, elements, socketRoomId) {
                 socket.getMessage((chat) => {
                     terminal.write(chat); // 소켓에서 받은 메시지 출력
                     terminal.writeln('');
+                    terminal.write(prompt); // 프롬프트 다시 출력
                     chat = '';
                 });
                 currentInput = '';
@@ -56,6 +63,7 @@ function Termi(terminal2, elements, socketRoomId) {
             }
         } else if (domEvent.ctrlKey && domEvent.keyCode === 76) {  // Ctrl+L to clear the terminal
             terminal.clear();
+            terminal.write(prompt); // 프롬프트 다시 출력
             currentInput = '';  // 현재 입력도 초기화
         } else {
             currentInput += char;
