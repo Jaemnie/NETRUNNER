@@ -63,3 +63,14 @@ node_modules/.cache/.eslintcache
 node_modules/.cache/.eslintcache
 *.pack
 node_modules
+build/index.html
+build/static/css/main.002ac97d.css
+build/static/css/main.002ac97d.css.map
+build/static/css/main.e129ad92.css
+build/static/css/main.e129ad92.css.map
+build/static/js/main.0618055f.js
+build/static/js/main.0618055f.js.LICENSE.txt
+build/static/js/main.0618055f.js.map
+build/static/js/main.91124efb.js
+build/static/js/main.91124efb.js.LICENSE.txt
+build/static/js/main.91124efb.js.map
