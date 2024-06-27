@@ -37,7 +37,7 @@ function Setting({ show, onClose }) {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch(`'${API.LOGOUT}'`, {
+      const response = await fetch(`${API.LOGOUT}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,

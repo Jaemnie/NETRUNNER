@@ -75,13 +75,16 @@ function LoginPage() {
     };
 
     const handleVerificationCheck = async () => {
+        const code = inputVerificationCode;
+        console.log("Sending verification check request", { inputVerificationCode, email });
         const response = await fetch(`${API.EMAILCHECK}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ inputVerificationCode }),
+            body: JSON.stringify({ code, email }),
         });
-        const isCheck = await response.json();
-        if (isCheck) {
+        const data = await response.json();
+        console.log("Verification check response", data);
+        if (data) {
             setCheckVerification(true);
             alert("인증되었습니다.");
         } else {
@@ -106,8 +109,19 @@ function LoginPage() {
             return;
         }
 
-        authService.signup(userId, username, password, email);
-        console.log("회원가입 성공");
+        const result = await authService.signup(userId, username, password, email);
+        if (result) {
+            // 회원가입 성공 시 모달 닫기 및 상태 초기화
+            closeModal1();
+            setEmail('');
+            setPassword('');
+            setConfirmPassword('');
+            setID('');
+            setUsername('');
+            setInputVerificationCode('');
+            setCheckVerification(false);
+            console.log("회원가입 성공");
+        }
     };
 
     const FindPassSubmit = async (e) => {
@@ -153,67 +167,71 @@ function LoginPage() {
                     <h2>N E T R U N N E R</h2>
                     <form onSubmit={submitHandler}>
                         <div className={styles.inputBx}>
-                            <input type="text" value={userId} onChange={handleIdChange} placeholder="아이디" required />
+                            <input type="text" value={userId} onChange={handleIdChange} placeholder="아이디" required aria-label="아이디 입력란" />
                         </div>
                         <div className={styles.inputBx}>
-                            <input type="password" value={password} onChange={handlePasswordChange} placeholder="비밀번호" required />
+                            <input type="password" value={password} onChange={handlePasswordChange} placeholder="비밀번호" required aria-label="비밀번호 입력란" />
                         </div>
                         <div className={styles.inputBx}>
-                            <input type="submit" value="로그인" />
+                            <input type="submit" value="로그인" aria-label="로그인 버튼" />
                         </div>
                     </form>
                     <div className={styles.links}>
-                        <button onClick={(e) => { e.preventDefault(); openModal(); }}>비밀번호 찾기</button>
+                        <button onClick={(e) => { e.preventDefault(); openModal(); }} aria-label="비밀번호 찾기">비밀번호 찾기</button>
                         <Modal isOpen={isModalOpen} closeModal={closeModal}>
                             <div className="modalContent">
                                 <span className="close" onClick={closeModal}>&times;</span>
                                 <h2>비밀번호 찾기</h2>
                                 <form onSubmit={FindPassSubmit}>
                                     <div className="inputBx">
-                                        <input type="email" value={email} onChange={handleEmailChange} placeholder="이메일" required />
-                                        <input type="button" value="인증" onClick={handleSendVerificationCode} />
+                                        <input type="email" value={email} onChange={handleEmailChange} placeholder="이메일" required aria-label="이메일 입력란" />
+                                        <input type="button" value="인증" onClick={handleSendVerificationCode} aria-label="인증번호 발송 버튼" />
                                     </div>
                                     <div className="inputBx">
-                                        <input type="text" value={inputVerificationCode} onChange={handleVerificationCodeChange} placeholder="인증번호" required />
-                                        <input type="button" value="인증번호 확인" onClick={handleVerificationCheck} />
+                                        <input type="text" value={inputVerificationCode} onChange={handleVerificationCodeChange} placeholder="인증번호" required aria-label="인증번호 입력란" />
+                                        <input type="button" value="인증번호 확인" onClick={handleVerificationCheck} aria-label="인증번호 확인 버튼" />
                                     </div>
-                                    <div className="inputBx" id="newPasswordBox">
-                                        <input type="password" value={password} onChange={handlePasswordChange} placeholder="새 비밀번호" required />
-                                        <input type="password" value={confirmPassword} onChange={handleConfirmPasswordChange} placeholder="새 비밀번호 확인" required />
-                                        <input type="submit" value="비밀번호 재설정" id="resetPasswordButton" />
+                                    <div className="inputBx">
+                                        <input type="password" value={password} onChange={handlePasswordChange} placeholder="새 비밀번호" required aria-label="새 비밀번호 입력란" />
+                                    </div>
+                                    <div className="inputBx">
+                                        <input type="password" value={confirmPassword} onChange={handleConfirmPasswordChange} placeholder="새 비밀번호 확인" required aria-label="새 비밀번호 확인 입력란" />
+                                    </div>
+                                    <div className="inputBx">
+                                        <input type="submit" value="비밀번호 재설정" id="resetPasswordButton" aria-label="비밀번호 재설정 버튼" />
                                     </div>
                                 </form>
                             </div>
                         </Modal>
-                        <button onClick={(e) => { e.preventDefault(); openModal1(); }}>회원가입</button>
+                        <button onClick={(e) => { e.preventDefault(); openModal1(); }} aria-label="회원가입">회원가입</button>
                         <Modal isOpen={isModalOpen1} closeModal={closeModal1}>
                             <div className="modalContent">
                                 <span className="close" onClick={closeModal1}>&times;</span>
                                 <h2>회원가입</h2>
                                 <form onSubmit={AccountSubmit}>
                                     <div className="inputBx">
-                                        <input type="text" value={username} onChange={handleUsernameChange} placeholder="이름" required />
+                                        <input type="text" value={username} onChange={handleUsernameChange} placeholder="이름" required aria-label="이름 입력란" />
                                     </div>
                                     <div className="inputBx">
-                                        <input type="email" value={email} onChange={handleEmailChange} placeholder="이메일 주소" required />
-                                        <input type="button" value="인증번호 받기" onClick={handleSendVerificationCode} />
+                                        <input type="email" value={email} onChange={handleEmailChange} placeholder="이메일 주소" required aria-label="이메일 입력란" />
+                                        <input type="button" value="인증번호 받기" onClick={handleSendVerificationCode} aria-label="인증번호 받기 버튼" />
                                     </div>
                                     <div className="inputBx">
-                                        <input type="text" value={inputVerificationCode} onChange={handleVerificationCodeChange} placeholder="인증번호" required />
-                                        <input type="button" value="인증번호 확인" onClick={handleVerificationCheck} />
+                                        <input type="text" value={inputVerificationCode} onChange={handleVerificationCodeChange} placeholder="인증번호" required aria-label="인증번호 입력란" />
+                                        <input type="button" value="인증번호 확인" onClick={handleVerificationCheck} aria-label="인증번호 확인 버튼" />
                                     </div>
                                     <div className="inputBx">
-                                        <input type="text" value={userId} onChange={handleIdChange} placeholder="아이디" required />
-                                        <input type="button" onClick={handleIdCheck} value="중복확인" />
+                                        <input type="text" value={userId} onChange={handleIdChange} placeholder="아이디" required aria-label="아이디 입력란" />
+                                        <input type="button" onClick={handleIdCheck} value="중복확인" aria-label="아이디 중복 확인 버튼" />
                                     </div>
                                     <div className="inputBx">
-                                        <input type="password" value={password} onChange={handlePasswordChange} placeholder="비밀번호" required />
+                                        <input type="password" value={password} onChange={handlePasswordChange} placeholder="비밀번호" required aria-label="비밀번호 입력란" />
                                     </div>
                                     <div className="inputBx">
-                                        <input type="password" value={confirmPassword} onChange={handleConfirmPasswordChange} placeholder="비밀번호 재입력" required />
+                                        <input type="password" value={confirmPassword} onChange={handleConfirmPasswordChange} placeholder="비밀번호 재입력" required aria-label="비밀번호 재입력 입력란" />
                                     </div>
                                     <div className="inputBx">
-                                        <input type="submit" value="회원가입" />
+                                        <input type="submit" value="회원가입" aria-label="회원가입 버튼" />
                                     </div>
                                 </form>
                             </div>

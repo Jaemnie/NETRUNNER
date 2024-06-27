@@ -147,7 +147,7 @@
 }
 
 .modalContent .inputBx {
-  margin-bottom: 20px;
+  margin-bottom: 10px; /* 간격 줄임 */
 }
 
 .modalContent .inputBx input {

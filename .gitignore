@@ -57,3 +57,8 @@ node_modules/.cache/.eslintcache
 *.pack
 *.old
 node_modules/.cache/.eslintcache
+*.pack
+*.json
+*.old
+*.pack
+node_modules/.cache/.eslintcache

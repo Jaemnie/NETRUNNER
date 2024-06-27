@@ -161,7 +161,8 @@
   flex-direction: column;
   padding: 0.5rem;
   background: var(--background-color);
-  backdrop-filter: blur(2rem);
+  /* backdrop-filter 사용 대체 */
+  background: rgba(34, 34, 34, 0.85);
   gap: 0.5rem;
 }
 
@@ -218,7 +219,9 @@
   flex-grow: 1;
   justify-content: flex-end;
   overflow-y: hidden;
-  scrollbar-width: none;
+  /* scrollbar-width 사용 대체 */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 .content::-webkit-scrollbar {

@@ -9,7 +9,7 @@ export const API = {
   TERM: `${BASE_URL}/term`,
   GUI: `${BASE_URL}/gui`,
   TOOLS: `${BASE_URL}/missions/tools`,
-  POINTS:  `${BASE_URL}/missions/points`,
+  POINTS:  `${BASE_URL}/missions/points/`,
   SIGNIN: `${BASE_URL}/auth/signin`,
   SIGNUP: `${BASE_URL}/auth/signup`,
   SIGNOUT: `${BASE_URL}/auth/signout`,

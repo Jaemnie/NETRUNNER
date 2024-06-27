@@ -14,8 +14,10 @@ class AuthService {
       }
 
       console.log('회원가입이 완료되었습니다.');
+      return true;
     } catch (error) {
       console.error('회원가입 에러:', error);
+      return false;
     }
   }
 
@@ -58,6 +60,7 @@ class AuthService {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+          'Cache-Control': 'no-store', // Cache-Control 헤더 추가
         },
       });
 
