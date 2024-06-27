@@ -10,7 +10,7 @@
 - 다양한 해킹 도구와 기술 사용 가능
 
 ## 스크린샷
-![스크린샷](https://i.imgur.com/tlv0pTY.png))
+![스크린샷](https://i.imgur.com/tlv0pTY.png)
 
 ## 설치 방법
 1. 이 저장소를 클론합니다.

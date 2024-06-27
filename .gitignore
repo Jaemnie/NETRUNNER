@@ -1,4 +1,3 @@
-
 node_modules/.cache/.eslintcache
 node_modules/.cache/babel-loader/0c890d1e607859a44985c0d79e684a1fa0d1163e5c501a62226dc9da70d4cb6d.json
 node_modules/.cache/babel-loader/830ca7fb71a73b55606429091668b8a46069deda32bad069f3fe1726a2ed6d18.json
@@ -63,3 +62,4 @@ node_modules/.cache/.eslintcache
 *.pack
 node_modules/.cache/.eslintcache
 *.pack
+node_modules
