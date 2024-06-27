@@ -54,3 +54,6 @@ node_modules/.cache/default-development/1.pack
 node_modules/.cache/default-development/0.pack
 node_modules/.cache/.eslintcache
 *.old
+*.pack
+*.old
+node_modules/.cache/.eslintcache
