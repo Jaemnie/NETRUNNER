@@ -27,7 +27,7 @@ function MainPage() {
   const [showQuest, setShowQuest] = useState(false);
   const [questData, setQuestData] = useState(null);
   const [socketResult, setSocketResult] = useState(null);
-  const currentMissionID = 1; // 현재 미션 ID 상수로 변경
+  const currentMissionID = localStorage.getItem('missionId'); // 현재 미션 ID 상수로 변경
 
   const userId = localStorage.getItem('userId');
 
@@ -66,6 +66,7 @@ function MainPage() {
   }, []);
 
   const fetchMission = async (missionID) => {
+    console.log(missionID);
     const token = localStorage.getItem('accessToken'); // 올바른 키로 JWT 토큰 가져오기
     console.log('User ID:', userId);
     console.log('Token:', token);
@@ -150,33 +151,33 @@ function MainPage() {
       {!showAnimation && !showSplitScreen && (
         <main className={styles.main}>
           <nav className={styles.mainMenu}>
-            <button 
-              onClick={(e) => handleMenuClick('terminer', e)} 
+            <button
+              onClick={(e) => handleMenuClick('terminer', e)}
               className={classNames(styles.menuButton, { [styles.active]: currentMenu === 'terminer' })}
               aria-label="Home">
               <FaHome />
             </button>
-            <button 
-              onClick={(e) => handleMenuClick('quest', e)} 
+            <button
+              onClick={(e) => handleMenuClick('quest', e)}
               className={classNames(styles.menuButton, { [styles.active]: currentMenu === 'quest' })}
               aria-label="Quest">
               <FaCalendarCheck />
             </button>
-            <button 
-              onClick={(e) => handleMenuClick('shop', e)} 
+            <button
+              onClick={(e) => handleMenuClick('shop', e)}
               className={classNames(styles.menuButton, { [styles.active]: currentMenu === 'shop' })}
               aria-label="Shop">
               <FaShoppingCart />
             </button>
             <div className={styles.navspacer}></div>
-            <button 
-              onClick={(e) => { e.preventDefault(); setShowSetting(true); }} 
+            <button
+              onClick={(e) => { e.preventDefault(); setShowSetting(true); }}
               className={styles.menuButton}
               aria-label="Settings">
               <FaCog />
             </button>
-            <button 
-              onClick={openProfileCard} 
+            <button
+              onClick={openProfileCard}
               className={styles.menuButton}
               aria-label="Profile">
               <FaUserCircle style={{ fontSize: '1.75rem' }} />

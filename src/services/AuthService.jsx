@@ -38,6 +38,7 @@ class AuthService {
       if (data.accessToken) {
         localStorage.setItem('accessToken', data.accessToken);
         localStorage.setItem('userId', userId); // userId 저장
+        localStorage.setItem('missionId', data.missionId);
         return true; // 로그인 성공
       } else {
         console.error('JWT를 받아오지 못했습니다.');

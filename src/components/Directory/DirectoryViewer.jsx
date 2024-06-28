@@ -25,12 +25,12 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
   const [socket, setSocket] = useState(null); // 소켓 연결 상태 관리
   const [pathHistory, setPathHistory] = useState([]); // 경로 히스토리 관리
   TerminalInteraction.setDirectoryViewer(ref.current); // TerminalInteraction에 디렉토리 뷰어 설정
-
+  const currentMissionID = localStorage.getItem('missionId');
   // 컴포넌트가 마운트될 때 디렉토리 데이터와 소켓 설정
   useEffect(() => {
     const fetchDirectoryData = async () => {
       let fdata = null;
-      await fetch(`${API.USERFILE}`, {
+      await fetch(`${API.USERFILE}${currentMissionID}`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
@@ -45,13 +45,10 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
         .catch((error) => console.error('초기화 에러:', error));
       setContents(fdata);
     };
-
     fetchDirectoryData();
-
     const newSocket = new SocketResult();
     newSocket.joinRoom(Math.floor(100000 + Math.random() * 900000).toString());
     setSocket(newSocket);
-
     // 컴포넌트가 언마운트될 때 소켓 연결 해제
     return () => {
       if (newSocket) {
@@ -65,22 +62,27 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
     // 터미널에 텍스트 추가 및 소켓을 통한 메시지 전송
     appendToTerminal: (text) => {
       TerminalInteraction.appendToTerminal(text);
+
       if (socket) {
-        socket.sendMessage(text);
-        socket.getMessage((char) => {
-          console.log(char);
-        });
-        socket.sendMessage('ls -al');
-        socket.getMessage((chat) => {
-          const temp1 = chat;
-          const temp2 = chat;
-          const regex1 = /[^[\]]+(?=\[)/g;
-          const regex2 = /(?<=\[).*?(?=\])/g;
-          const files = temp1.match(regex1);
-          const filestype = temp2.match(regex2);
-          const setDir = { files, filestype };
-          setContents(setDir);
-        });
+        if (text.split(" ")[0] === "cat") {
+
+        } else {
+          socket.sendMessage(text);
+          socket.getMessage((char) => {
+            console.log(char);
+          });
+          socket.sendMessage('ls -al');
+          socket.getMessage((chat) => {
+            const temp1 = chat;
+            const temp2 = chat;
+            const regex1 = /[^[\]]+(?=\[)/g;
+            const regex2 = /(?<=\[).*?(?=\])/g;
+            const files = temp1.match(regex1);
+            const filestype = temp2.match(regex2);
+            const setDir = { files, filestype };
+            setContents(setDir);
+          });
+        }
       }
     },
     // 디렉토리 내용을 업데이트
@@ -135,7 +137,7 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
 
   return (
     <div className={styles.directoryViewer}>
-      <div className={styles.directoryViewerHeader} onClick={handleBackClick} onDragStart={(e) => e.preventDefault()}>
+      <div className={styles.directoryViewerHeader} onClick={() => handleBackClick} onDragStart={(e) => e.preventDefault()}>
         <FontAwesomeIcon icon={faArrowLeft} className={styles.backIcon} />
         뒤로 가기
       </div>
