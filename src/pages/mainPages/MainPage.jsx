@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaHome, FaCalendarCheck, FaShoppingCart, FaCog, FaUserCircle } from 'react-icons/fa';
+import { FaHome, FaCalendarCheck, FaShoppingCart, FaCog, FaUserCircle, FaTrophy } from 'react-icons/fa'; // FaTrophy 추가
 import classNames from 'classnames';
 import styles from './MainPage.module.css';
 import MainPageComp from '../../components/MainPageComp/MainPageComp';
@@ -8,13 +8,15 @@ import Shop from '../../components/Shop/shop';
 import BackgroundMusic from '../../components/Background/BackgroundMusic';
 import ProfileCard from '../../components/Profile/ProfileCard';
 import Setting from './Setting/Setting';
+import Lanking from '../../components/Lank/Lanking'; // 랭킹 컴포넌트 추가
 import bgm from '../../assets/mainbgm.mp3';
-import { SocketResult } from '../../socket/socket'; // SocketResult 클래스를 가져옵니다.
+import { SocketResult } from '../../socket/socket';
 import { API } from "../../config";
 
 const MenuContent = {
   terminer: <MainPageComp />,
-  shop: null
+  shop: null,
+  lanking: <Lanking /> // 랭킹 컴포넌트 추가
 };
 
 function MainPage() {
@@ -27,7 +29,7 @@ function MainPage() {
   const [showQuest, setShowQuest] = useState(false);
   const [questData, setQuestData] = useState(null);
   const [socketResult, setSocketResult] = useState(null);
-  const currentMissionID = localStorage.getItem('missionId'); // 현재 미션 ID 상수로 변경
+  const currentMissionID = localStorage.getItem('missionId');
 
   const userId = localStorage.getItem('userId');
 
@@ -67,22 +69,22 @@ function MainPage() {
 
   const fetchMission = async (missionID) => {
     console.log(missionID);
-    const token = localStorage.getItem('accessToken'); // 올바른 키로 JWT 토큰 가져오기
+    const token = localStorage.getItem('accessToken');
     console.log('User ID:', userId);
     console.log('Token:', token);
     try {
       const response = await fetch(`${API.MISSION}${missionID}`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json', // JSON으로 요청
-          'Authorization': `Bearer ${token}` // JWT를 포함합니다.
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
       });
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      setQuestData(data); // JSON 데이터 처리
+      setQuestData(data);
       setShowQuest(true);
 
       if (socketResult) {
@@ -97,7 +99,7 @@ function MainPage() {
     event.preventDefault();
     console.log('Menu clicked:', menuKey);
     if (menuKey === 'quest') {
-      await fetchMission(currentMissionID); // 현재 미션 ID로 미션 데이터 가져오기
+      await fetchMission(currentMissionID);
     } else if (menuKey === 'shop') {
       MenuContent.shop = <Shop userId={userId} />;
       setCurrentMenu(menuKey);
@@ -113,7 +115,7 @@ function MainPage() {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('accessToken')}` // 올바른 키로 JWT 토큰 가져오기
+          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
         },
       });
       if (!response.ok) {
@@ -168,6 +170,12 @@ function MainPage() {
               className={classNames(styles.menuButton, { [styles.active]: currentMenu === 'shop' })}
               aria-label="Shop">
               <FaShoppingCart />
+            </button>
+            <button
+              onClick={(e) => handleMenuClick('lanking', e)} // 랭킹 버튼 추가
+              className={classNames(styles.menuButton, { [styles.active]: currentMenu === 'lanking' })}
+              aria-label="Ranking">
+              <FaTrophy />
             </button>
             <div className={styles.navspacer}></div>
             <button

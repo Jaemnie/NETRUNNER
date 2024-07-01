@@ -1,4 +1,4 @@
-const BASE_URL = "http://172.16.230.134:4000";
+const BASE_URL = "https://netrunner.life:4000";
 
 export const API = {
   EMAILSEND: `${BASE_URL}/email/send`,
@@ -15,5 +15,6 @@ export const API = {
   SIGNOUT: `${BASE_URL}/auth/signout`,
   CHANGEPASS: `${BASE_URL}/auth/changepass`,
   USERFILE: `${BASE_URL}/filesystem/`,
-  MISSIONCOMPLETE: `${BASE_URL}/missions/complete`
+  MISSIONCOMPLETE: `${BASE_URL}/missions/complete`,
+  RANKING: `${BASE_URL}/rank`
 };
