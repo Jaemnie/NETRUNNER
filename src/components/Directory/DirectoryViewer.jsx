@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle, useState, useEffect, useRef } from 'react';
+import React, { forwardRef, useImperativeHandle, useState, useEffect } from 'react';
 import TerminalInteraction from '../Terminal/TerminalInteraction';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolder, faFile, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
@@ -29,24 +29,26 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
   TerminalInteraction.setDirectoryViewer(ref.current); // TerminalInteraction에 디렉토리 뷰어 설정
   const currentMissionID = localStorage.getItem('missionId');
 
-  const [isMenuVisible, setIsMenuVisible] = useState(false); //우클릭 메뉴 관리
-  const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 }); //메뉴 좌표
-  const [contextClick, setContextClick] = useState(); // 메뉴창 내용
+  const [isMenuVisible, setIsMenuVisible] = useState(false); // 우클릭 메뉴 관리
+  const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 }); // 메뉴 좌표
+  const [contextClick, setContextClick] = useState(''); // 메뉴창 내용
 
-  const [isModalOpen, setIsModalOpen] = useState(false);  //모달창 관리
-  const [modalTitle, setModalTitle] = useState("");  //모달창 타이틀
-  const [isEdit, setIsEdit] = useState(false); //편집여부
-  const [context, setContext] = useState(""); //모달창 내용
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달창 관리
+  const [modalTitle, setModalTitle] = useState(''); // 모달창 타이틀
+  const [isEdit, setIsEdit] = useState(false); // 편집 여부
+  const [context, setContext] = useState(''); // 모달창 내용
   const [isFileName, setIsFileName] = useState(false);
+
   const openModal = (title) => {
     setModalTitle(title);
     setIsModalOpen(true);
   };
+
   const closeModal = () => {
     setIsFileName(false);
-    setModalTitle("");
+    setModalTitle('');
     setIsEdit(false);
-    setContext("");
+    setContext('');
     setIsModalOpen(false);
   };
 
@@ -92,7 +94,7 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
         socket.getMessage((chars) => {
           TerminalInteraction.appendToTerminal(chars);
           setContext(chars);
-        })
+        });
         setTimeout(() => {
           socket.sendMessage('ls -al');
           socket.getMessage((chat) => {
@@ -171,7 +173,6 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
       });
     }
   };
-  
 
   // 뒤로가기 버튼 클릭 핸들러
   const handleBackClick = () => {
@@ -196,18 +197,29 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
       });
     }
   };
-  
-  
 
-  //우클릭 이벤트
-  const handleContextMenu = (event) => {
+  // 우클릭 이벤트
+  const handleContextMenu = (event, id = 'background') => {
     event.preventDefault();
+    event.stopPropagation(); // 추가: 이벤트 전파 중지
+    console.log('Context menu opened for:', id); // 로그 추가
+
+    let contextValue = id;
+
+    // 파일명 또는 디렉토리명을 가져오는 로직
+    if (id === 'file' || id === 'directory') {
+        const target = event.target.closest(`.${styles.directoryViewerItem}`);
+        if (target) {
+            contextValue = target.textContent.trim();
+        }
+    }
+
     setIsMenuVisible(true);
-    setMenuPosition({ x: event.clientX, y: event.clientY });
-    setContextClick(event.target.id);
+    setMenuPosition({ x: event.clientX, y: event.clientY }); // x와 y 값을 그대로 사용
+    setContextClick(contextValue); // contextClick 값을 안전하게 설정
   };
 
-  //밖에 클릭시 꺼짐
+  // 밖에 클릭시 메뉴 닫기
   const handleClickOutside = (event) => {
     if (event.target.closest('.context-menu') === null) {
       setIsMenuVisible(false);
@@ -218,18 +230,38 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
   const handleMenuItemClick = (option) => {
     console.log('Menu item clicked:', option);
     if (option === 'edit') {
-      ref.current.appendToTerminal(`vi ${modalTitle}`);
+      ref.current.appendToTerminal(`vi ${contextClick}`);
       setIsEdit(true);
-      setTimeout(() => openModal(modalTitle), 500);
+      setTimeout(() => openModal(contextClick), 500);
     }
     if (option === 'new_f' || option === 'new_d') {
+      setIsFileName(true);
+      setModalTitle(option === 'new_f' ? '새 파일 생성' : '새 디렉터리 생성');
+      setContext('');
+      openModal(option === 'new_f' ? '새 파일 생성' : '새 디렉터리 생성');
+    }
+    if (option === 'dup_f' || option === 'dup_d') {
+      const newName = contextClick + '(사본)';
+      ref.current.appendToTerminal(`cp -r ${contextClick} ${newName}`);
     }
     setIsMenuVisible(false);
   };
+
   // 저장
   const handleSave = () => {
     console.log(context);
     socket.sendContext(`write ${modalTitle}`, context);
+  };
+
+  const handleCreate = (type) => {
+    if (type === '새 파일 생성') {
+      const newFileName = context ? `${context}.txt` : '새파일.txt';
+      ref.current.appendToTerminal(`touch ${newFileName}`);
+    } else if (type === '새 디렉터리 생성') {
+      const newDirName = context || '새디렉토리';
+      ref.current.appendToTerminal(`mkdir ${newDirName}`);
+    }
+    closeModal();
   };
 
   if (!contents) {
@@ -237,25 +269,49 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
   }
 
   return (
-    <div id={'background'} className={styles.directoryViewer} onContextMenu={handleContextMenu} onClick={handleClickOutside}>
+    <div
+      id={'background'}
+      className={styles.directoryViewer}
+      onContextMenu={(e) => handleContextMenu(e, 'background')}
+      onClick={handleClickOutside}
+    >
       <ContextMenu
         isVisible={isMenuVisible}
         position={menuPosition}
         onMenuItemClick={handleMenuItemClick}
         clickId={contextClick}
       />
-      <div id={'background'} className={styles.directoryViewerHeader} onClick={() => handleBackClick()} onDragStart={(e) => e.preventDefault()}>
+      <div
+        id={'background'}
+        className={styles.directoryViewerHeader}
+        onClick={() => handleBackClick()}
+        onDragStart={(e) => e.preventDefault()}
+      >
         <FontAwesomeIcon icon={faArrowLeft} className={styles.backIcon} />
         뒤로 가기
       </div>
       <div id={'background'} className={styles.directoryViewerGrid}>
         {contents?.files?.map((item, index) => (
-          <div id={'background'} key={index} className={styles.directoryViewerItem} draggable="false">
+          <div
+            id={'background'}
+            key={index}
+            className={styles.directoryViewerItem}
+            draggable="false"
+            onContextMenu={(e) => handleContextMenu(e, contents.filestype[index])}
+          >
             <div id={contents.filestype[index]}>
-              <div id={contents.filestype[index]} className={styles.directoryViewerIcon} onContextMenu={() => setModalTitle(item.trim())} onClick={() => handleItemClick(item, contents.filestype[index])} draggable="false">
+              <div
+                id={contents.filestype[index]}
+                className={styles.directoryViewerIcon}
+                onContextMenu={(e) => handleContextMenu(e, contents.filestype[index])}
+                onClick={() => handleItemClick(item, contents.filestype[index])}
+                draggable="false"
+              >
                 {getIconForType(contents.filestype[index])}
               </div>
-              <div id={contents.filestype[index]} draggable="false">{item.trim()}</div>
+              <div id={contents.filestype[index]} draggable="false">
+                {item.trim()}
+              </div>
             </div>
           </div>
         ))}
@@ -263,19 +319,45 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
       <p className={styles.directoryViewerPathBar}>{path}</p>
       <Modal isOpen={isModalOpen} closeModal={closeModal}>
         <div className="modalContent">
-          <span className="close" onClick={closeModal}>&times;</span>
+          <span className="close" onClick={closeModal}>
+            &times;
+          </span>
           <label htmlFor="content">{modalTitle}</label>
-          {isEdit === true &&
+          {isFileName ? (
             <>
-              <textarea id="content" rows="30" cols="65" value={context}
-                onChange={(e) => setContext(e.target.value)}>
-                {context}
-              </textarea>
-              <button onClick={() => { handleSave(); closeModal(); }}>저장</button>
-            </>}
-          {isEdit === false && <textarea id="content" rows="30" cols="65" readOnly>
-            {context}
-          </textarea>}
+              <input
+                type="text"
+                id="content"
+                value={context}
+                onChange={(e) => setContext(e.target.value)}
+              />
+              <button onClick={() => handleCreate(modalTitle)}>
+                생성
+              </button>
+            </>
+          ) : (
+            <>
+              {isEdit === true && (
+                <>
+                  <textarea
+                    id="content"
+                    rows="30"
+                    cols="65"
+                    value={context}
+                    onChange={(e) => setContext(e.target.value)}
+                  >
+                    {context}
+                  </textarea>
+                  <button onClick={() => { handleSave(); closeModal(); }}>저장</button>
+                </>
+              )}
+              {isEdit === false && (
+                <textarea id="content" rows="30" cols="65" readOnly>
+                  {context}
+                </textarea>
+              )}
+            </>
+          )}
         </div>
       </Modal>
     </div>
