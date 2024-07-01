@@ -46,7 +46,7 @@ const Lanking = () => {
               <td>{index + 1}</td>
               <td>{user.userId}</td>
               <td>{user.level}</td>
-              <td>{user.points}</td>
+              <td>{user.point}</td>
             </tr>
           ))}
         </tbody>

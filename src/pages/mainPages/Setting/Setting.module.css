@@ -5,20 +5,21 @@
   height: 100%;
   margin: 0;
   font-family: "Lexend Deca", sans-serif;
-  background-color: #f0f0f0;
+  background-color: #2e2e2e;
   color: #ffffff;
 }
 
 .header {
-  background-color: rgb(255, 255, 255);
+  background-color: rgba(34, 34, 34, 0.85);
   color: #76b3fa;
   font-size: 24px;
-  font-family: "Lexend Deca", sans-serif;
-  font-weight: 300;
+  font-family: 'Noto Sans KR', sans-serif;
   margin-bottom: 30px;
   padding: 20px 0;
   text-align: center;
   width: 100%;
+  border-radius: 12px;
+  box-shadow: 0px 8px 60px -10px rgba(13, 28, 39, 0.6);
 }
 
 .wrapper {
@@ -29,53 +30,50 @@
 }
 
 .inputContainer {
-  border-radius: 8px;
   display: flex;
   align-items: center;
   flex-direction: column;
   margin: 10px 20px;
-  position: relative;
 }
 
-.controlLabel {
-  background-color: #ffffff;
-  border: 2px solid #575969;
-  border-radius: 4px;
-  display: block;
-  width: 84px;
-  height: 36px;
+.toggleSwitch {
   position: relative;
-  transition: border-color 300ms ease-in-out, box-shadow 300ms ease-in-out;
-  margin-bottom: 15px;
+  width: 60px;
+  height: 34px;
+  background-color: #ccc;
+  border-radius: 34px;
+  transition: background-color 0.3s;
+}
+
+.toggleSwitch::before {
+  content: "";
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: white;
+  top: 4px;
+  left: 4px;
+  transition: transform 0.3s;
 }
 
 input[type="checkbox"] {
-  opacity: 0;
-  position: absolute;
+  display: none;
 }
 
-input[type="checkbox"]:checked + .controlLabel {
-  border-color: #76b3fa;
-  box-shadow: 0 0 20px 0 #0763f7, inset 0px 0px 12px 0px #0763f7;
+input[type="checkbox"]:checked + .toggleSwitch {
+  background-color: #76b3fa;
 }
 
-input[type="checkbox"]:checked + .controlLabel svg rect {
-  fill: #76b3fa;
+input[type="checkbox"]:checked + .toggleSwitch::before {
+  transform: translateX(26px);
 }
 
-input[type="checkbox"]:focus + .controlLabel {
-  border-color: #76b3fa;
-}
-
-svg {
-  rect {
-    fill: #484a57;
-    transition: fill 300ms ease-in-out;
-  }
-
-  .reference rect {
-    opacity: 0;
-  }
+.labelText {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 16px;
+  color: #ffffff;
+  margin-top: 10px;
 }
 
 .modalOverlay {
@@ -92,27 +90,35 @@ svg {
 }
 
 .modalContent {
-  background-color: #494949;
+  background-color: rgba(34, 34, 34, 0.85);
   padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0px 8px 60px -10px rgba(13, 28, 39, 0.6);
   width: 400px;
   text-align: center;
   z-index: 1001;
 }
 
 .settingButton {
-  background-color: #76b3fa;
+  background: linear-gradient(45deg, #1da1f2, #0e71c8);
   color: #fff;
   border: none;
-  border-radius: 4px;
+  border-radius: 50px;
   padding: 10px 20px;
   margin: 10px;
   cursor: pointer;
-  transition: background-color 300ms ease-in-out, box-shadow 300ms ease-in-out;
+  transition: all 0.3s;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  min-width: 150px;
+  backface-visibility: hidden;
 }
 
 .settingButton:hover {
-  background-color: #575969;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  transform: translateY(-5px);
+  box-shadow: 0 7px 30px rgba(19, 127, 212, 0.75);
+}
+
+.settingButton:focus {
+  outline: none !important;
 }

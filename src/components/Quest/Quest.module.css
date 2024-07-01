@@ -253,3 +253,28 @@
   font-size: 1rem;
   text-align: center;
 }
+
+.completeButton {
+  display: block;
+  width: 100%;
+  padding: 10px 0;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.completeButton:hover {
+  background-color: var(--secondary-color);
+}
+
+.completeButton:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+}

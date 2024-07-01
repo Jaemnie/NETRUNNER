@@ -24,7 +24,7 @@ const ProfileCard = ({ profileData, onClose }) => {
                 <FaUserCircle />
               </span>
               <span className={styles.profileCardLocTxt}>
-                Istanbul, Turkey
+                 위치 파악 불가
               </span>
             </div>
 

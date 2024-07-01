@@ -142,27 +142,62 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
   // 디렉토리 항목 클릭 핸들러
   const handleItemClick = (item, type) => {
     const trimmedItem = item.trim();
-    const newPath = path === '/' ? `/${trimmedItem}` : `${path}/${trimmedItem}`;
     if (type === 'directory') {
       setPathHistory([...pathHistory, path]);
-      setPath(newPath);
       ref.current.appendToTerminal(`cd ${trimmedItem}`);
+      socket.getMessage(() => {
+        socket.sendMessage('pwd');
+        socket.getMessage((currentPath) => {
+          setPath(currentPath.trim());
+          socket.sendMessage('ls -al');
+          socket.getMessage((chat) => {
+            const temp1 = chat;
+            const temp2 = chat;
+            const regex1 = /[^[\]]+(?=\[)/g;
+            const regex2 = /(?<=\[).*?(?=\])/g;
+            const files = temp1.match(regex1);
+            const filestype = temp2.match(regex2);
+            const setDir = { files, filestype };
+            setContents(setDir);
+          });
+        });
+      });
     } else {
       setIsEdit(false);
       setTimeout(() => openModal(trimmedItem), 500);
       ref.current.appendToTerminal(`cat ${trimmedItem}`);
+      socket.getMessage((content) => {
+        setContext(content);
+      });
     }
   };
+  
 
   // 뒤로가기 버튼 클릭 핸들러
   const handleBackClick = () => {
-    if (pathHistory.length > 0) {
-      const previousPath = pathHistory.pop();
-      setPathHistory([...pathHistory]);
-      setPath(previousPath);
-      ref.current.appendToTerminal('cd ..');
+    if (socket) {
+      socket.sendMessage('cd ..');
+      socket.getMessage(() => {
+        socket.sendMessage('pwd');
+        socket.getMessage((currentPath) => {
+          setPath(currentPath.trim());
+          socket.sendMessage('ls -al');
+          socket.getMessage((chat) => {
+            const temp1 = chat;
+            const temp2 = chat;
+            const regex1 = /[^[\]]+(?=\[)/g;
+            const regex2 = /(?<=\[).*?(?=\])/g;
+            const files = temp1.match(regex1);
+            const filestype = temp2.match(regex2);
+            const setDir = { files, filestype };
+            setContents(setDir);
+          });
+        });
+      });
     }
   };
+  
+  
 
   //우클릭 이벤트
   const handleContextMenu = (event) => {

@@ -1,11 +1,10 @@
-/* ProfileCard.module.css */
-
 @import url('https://fonts.googleapis.com/css?family=Quicksand:400,500,700&subset=latin-ext');
 
 html {
   position: relative;
   overflow-x: hidden !important;
 }
+
 a,
 a:hover {
   text-decoration: none;
@@ -20,27 +19,16 @@ a:hover {
   fill: currentColor;
 }
 
-.wrapper {
-  width: 100%;
-  height: auto;
-  min-height: 100vh;
-  padding: 50px 20px;
-  padding-top: 100px;
-  display: flex;
-  background-image: linear-gradient(-20deg, #ff2846 0%, #6944ff 100%);
-  justify-content: center;
-  align-items: center;
-}
-
 .profileCard {
   width: 100%;
   min-height: 460px;
   margin: auto;
   box-shadow: 0px 8px 60px -10px rgba(13, 28, 39, 0.6);
-  background: #fff;
+  background: rgba(34, 34, 34, 0.85);
   border-radius: 12px;
   max-width: 700px;
   position: relative;
+  color: white;
 }
 
 .profileCardImg {
@@ -53,7 +41,7 @@ a:hover {
   overflow: hidden;
   position: relative;
   z-index: 4;
-  box-shadow: 0px 5px 50px 0px rgb(108, 68, 252), 0px 0px 0px 7px rgba(107, 74, 255, 0.5);
+  box-shadow: 0px 5px 50px 0px rgba(107, 68, 255, 0.8), 0px 0px 0px 7px rgba(107, 74, 255, 0.5);
 
   @media screen and (max-width: 576px) {
     width: 120px;
@@ -87,7 +75,7 @@ a:hover {
 .profileCardTxt {
   font-size: 18px;
   font-weight: 500;
-  color: #324e63;
+  color: #c9c9c9;
   margin-bottom: 15px;
 
   strong {
@@ -101,12 +89,21 @@ a:hover {
   align-items: center;
   font-size: 18px;
   font-weight: 600;
+}
 
-  &__icon {
-    display: inline-flex;
-    font-size: 27px;
-    margin-right: 10px;
-  }
+.profileCardLocIcon {
+  display: inline-flex;
+  font-size: 27px;
+  margin-right: 10px;
+}
+
+.profileCardLocTxt {
+  margin-left: 0px; /* 아이콘과 텍스트 사이에 간격 추가 */
+  filter: blur(10px); /* 모자이크 효과를 위한 블러 처리 */
+  background-color: rgba(253, 110, 110, 0.5); /* 배경색 추가 */
+  padding: 2px 5px; /* 텍스트 주위에 패딩 추가 */
+  border-radius: 4px; /* 모서리를 둥글게 처리 */
+  color: transparent; /* 텍스트 색상을 투명하게 처리 */
 }
 
 .profileCardInf {
@@ -130,12 +127,13 @@ a:hover {
 .profileCardInfTitle {
   font-weight: 700;
   font-size: 27px;
-  color: #324e63;
+  color: #c9c9c9;
 }
 
 .profileCardInfTxt {
   font-weight: 500;
   margin-top: 7px;
+  color: #c9c9c9;
 }
 
 .profileCardCtr {
@@ -160,7 +158,7 @@ a:hover {
   min-width: 201px;
   border-radius: 50px;
   min-height: 55px;
-  color: #fff;
+  color: white;
   cursor: pointer;
   backface-visibility: hidden;
   transition: all 0.3s;
@@ -217,23 +215,25 @@ a:hover {
 }
 
 .modalOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-  }
-  
-  .modalContent {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    max-width: 500px;
-    width: 100%;
-  }
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background: transparent;
+  padding: 0;
+  border: none;
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1001;
+}

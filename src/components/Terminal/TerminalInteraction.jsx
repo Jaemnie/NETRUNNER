@@ -11,12 +11,15 @@ class TerminalInteraction {
   }
 
   static handleTerminalInput(data) {
-    TerminalInteraction.directoryViewer.updateDirectoryContent(data); // 터미널 입력 처리 시 디렉토리 내용 업데이트
+    // 'cat' 명령어를 실행할 때는 경로 업데이트를 하지 않음
+    if (!data.trim().startsWith('cat')) {
+      TerminalInteraction.directoryViewer.updateDirectoryContent(data); // 터미널 입력 처리 시 디렉토리 내용 업데이트
+    }
   }
 
   static appendToTerminal(text) {
     const userId = localStorage.getItem('userId'); // 로컬 저장소에서 userId 가져오기
-    const prompt = `\x1b[31mroot@${userId}\x1b[0m:~$ `; // 프롬프트 설정 (빨간색 ANSI escape code 사용
+    const prompt = `\x1b[31mroot@${userId}\x1b[0m:~$ `; // 프롬프트 설정 (빨간색 ANSI escape code 사용)
     TerminalInteraction.terminal.write('\r\n'); // 줄바꿈 추가
     TerminalInteraction.terminal.write(prompt);
     TerminalInteraction.terminal.write(text); // 터미널에 텍스트 작성
