@@ -1,4 +1,4 @@
-const BASE_URL = "https://172.16.230.134:4000";
+const BASE_URL = "http://172.16.230.134:4000";
 
 export const API = {
   EMAILSEND: `${BASE_URL}/email/send`,

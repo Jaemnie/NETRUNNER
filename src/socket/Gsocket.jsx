@@ -31,7 +31,9 @@ class SocketResult {
     sendMessage(message) {
         this.socket.emit('message', { roomId: `${this.roomId}roomId`, payload: `${message}` });
     }
-
+    sendContext(message, content) {
+        this.socket.emit('content', { roomId: `${this.roomId}roomId`, payload: `${message}`, context: `${content}` });
+    }
     leaveRoom() {
         this.socket.emit('leave', { roomId: `${this.roomId}roomId` });
     }

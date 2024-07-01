@@ -36,6 +36,7 @@ function Termi(terminal2, elements, socketRoomId) {
                     terminal.write(chat); // 소켓에서 받은 메시지 출력
                     terminal.writeln('');
                     terminal.write(prompt); // 프롬프트 다시 출력
+                    TerminalInteraction.handleTerminalInput(chat);
                     chat = '';
                 });
                 currentInput = '';
