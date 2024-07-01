@@ -64,7 +64,9 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
         .then((data) => {
           const files = data.files;
           const filestype = data.filestype;
-          fdata = { files, filestype };
+          const currentPath = data.currentpath;
+          fdata = { files, filestype, currentPath };
+          setPath(currentPath);
         })
         .catch((error) => console.error('초기화 에러:', error));
       setContents(fdata);
@@ -119,19 +121,19 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
         }
         setContext(newContent);
         socket.sendMessage('pwd');
-        // socket.getMessage((chat) => {
-        //   socket.sendMessage(`cd ${chat}`);
-        // });
-        socket.sendMessage('ls -al');
-        socket.getMessage((chat) => {
-          const temp1 = chat;
-          const temp2 = chat;
-          const regex1 = /[^[\]]+(?=\[)/g;
-          const regex2 = /(?<=\[).*?(?=\])/g;
-          const files = temp1.match(regex1);
-          const filestype = temp2.match(regex2);
-          const setDir = { files, filestype };
-          setContents(setDir);
+        socket.getMessage((currentPath) => {
+          setPath(currentPath.trim());
+          socket.sendMessage('ls -al');
+          socket.getMessage((chat) => {
+            const temp1 = chat;
+            const temp2 = chat;
+            const regex1 = /[^[\]]+(?=\[)/g;
+            const regex2 = /(?<=\[).*?(?=\])/g;
+            const files = temp1.match(regex1);
+            const filestype = temp2.match(regex2);
+            const setDir = { files, filestype };
+            setContents(setDir);
+          });
         });
       }
     },
@@ -195,7 +197,6 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
     socket.sendContext(`write ${modalTitle}`, context);
   };
 
-
   if (!contents) {
     return <div>Loading...</div>;
   }
@@ -229,7 +230,7 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
         <div className="modalContent">
           <span className="close" onClick={closeModal}>&times;</span>
           <label htmlFor="content">{modalTitle}</label>
-          {isEdit == true &&
+          {isEdit === true &&
             <>
               <textarea id="content" rows="30" cols="65" value={context}
                 onChange={(e) => setContext(e.target.value)}>
@@ -237,11 +238,10 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
               </textarea>
               <button onClick={() => { handleSave(); closeModal(); }}>저장</button>
             </>}
-          {isEdit == false && <textarea id="content" rows="30" cols="65" readOnly>
+          {isEdit === false && <textarea id="content" rows="30" cols="65" readOnly>
             {context}
           </textarea>}
         </div>
-
       </Modal>
     </div>
   );

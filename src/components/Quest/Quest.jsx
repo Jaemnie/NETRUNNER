@@ -122,8 +122,9 @@ const Quest = ({ userId, show, onClose, questData, fetchMission }) => {
   // 미션 완료 함수
   const completeMission = async () => {
     const token = localStorage.getItem('accessToken');
+    const missionid = localStorage.getItem('missionId');
     try {
-      const response = await fetch(`${API.MISSIONCOMPLETE}`, {
+      const response = await fetch(`${API.MISSIONCOMPLETE}/${missionid}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
