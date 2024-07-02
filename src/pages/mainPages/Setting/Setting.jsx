@@ -1,3 +1,5 @@
+// Setting.js
+
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAudio } from '../../../components/Background/AudioContext';
@@ -12,37 +14,24 @@ function Setting({ show, onClose }) {
     if (!show) return;
 
     const slideToggle = document.getElementById("slide-toggle-control");
-
     if (!slideToggle) return;
 
-    const initEffect = () => {
-      if (slideToggle.checked) {
-        slideToggle.nextElementSibling.classList.add(styles.checked);
-      } else {
-        slideToggle.nextElementSibling.classList.remove(styles.checked);
-      }
-    };
-
     const applyEffect = () => {
-      if (slideToggle.checked) {
-        slideToggle.nextElementSibling.classList.add(styles.checked);
-      } else {
-        slideToggle.nextElementSibling.classList.remove(styles.checked);
-      }
+      slideToggle.nextElementSibling.classList.toggle(styles.checked, slideToggle.checked);
     };
 
     slideToggle.addEventListener('change', applyEffect);
 
-    initEffect();
+    // Initialize effect on mount
+    applyEffect();
 
+    // Clean up event listener on unmount
     return () => {
       slideToggle.removeEventListener('change', applyEffect);
     };
   }, [show]);
 
-  if (!show) {
-    return null;
-  }
+  if (!show) return null;
 
   const handleLogout = async () => {
     try {
@@ -54,7 +43,7 @@ function Setting({ show, onClose }) {
       });
 
       if (!response.ok) {
-        throw new Error(`로그아웃 실패: ${response.statusText}`);
+        throw new Error(`Logout failed: ${response.statusText}`);
       }
 
       localStorage.removeItem('accessToken');
@@ -62,16 +51,16 @@ function Setting({ show, onClose }) {
       localStorage.removeItem('leaveRoom');
       navigate('/');
 
-      console.log('로그아웃 되었습니다.');
+      console.log('Logged out successfully.');
     } catch (error) {
-      console.error('로그아웃 에러:', error);
+      console.error('Logout error:', error);
     }
   };
 
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-        <h2 className={styles.header}>옵션</h2>
+        <h2 className={styles.header}>Options</h2>
         <div className={styles.inputContainer}>
           <input
             type="checkbox"

@@ -124,6 +124,9 @@ const Quest = ({ userId, show, onClose, questData, fetchMission }) => {
   const completeMission = async () => {
     const token = localStorage.getItem('accessToken');
     const missionid = localStorage.getItem('missionId');
+    console.log('completeMission 함수 시작'); // 함수 시작 로그
+    console.log(`사용자 ID: ${userId}, 미션 ID: ${missionid}`); // 사용자 ID와 미션 ID 로그
+  
     try {
       const response = await fetch(`${API.MISSIONCOMPLETE}/${missionid}`, {
         method: 'POST',
@@ -133,19 +136,31 @@ const Quest = ({ userId, show, onClose, questData, fetchMission }) => {
         },
         body: JSON.stringify({ userId, missionId: questData.missionId })
       });
+  
+      console.log('fetch 요청 완료'); // fetch 요청 완료 로그
+      console.log('응답 상태 코드:', response.status); // 응답 상태 코드 로그
+  
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
+  
       const result = await response.json();
+      console.log('응답 데이터:', result); // 응답 데이터 로그
+  
       if (result.success) {
+        console.log('미션 완료 성공, 다음 미션 ID:', result.nextMissionId); // 미션 완료 성공 로그
         await fetchMission(result.nextMissionId);
       } else {
         alert('미션 완료에 실패했습니다.');
+        console.error('미션 완료 실패: 서버에서 성공 응답을 받지 못했습니다.'); // 미션 완료 실패 로그
       }
     } catch (error) {
-      console.error('Error completing mission:', error);
+      console.error('미션 완료 중 오류 발생:', error); // 미션 완료 오류 로그
+    } finally {
+      console.log('completeMission 함수 종료'); // 함수 종료 로그
     }
   };
+  
 
   return (
     // 모달 오버레이 클릭 시 onClose 함수 호출

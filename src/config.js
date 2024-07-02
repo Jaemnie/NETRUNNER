@@ -16,5 +16,6 @@ export const API = {
   CHANGEPASS: `${BASE_URL}/auth/changepass`,
   USERFILE: `${BASE_URL}/filesystem/`,
   MISSIONCOMPLETE: `${BASE_URL}/missions/complete`,
-  RANKING: `${BASE_URL}/auth/ranking/rank`
+  RANKING: `${BASE_URL}/auth/ranking/rank`,
+  IDCHECK: `${BASE_URL}/auth/check`
 };

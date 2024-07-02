@@ -92,6 +92,34 @@ class AuthService {
       console.error('비밀번호 변경 에러:', error);
     }
   }
-}
 
+  async checkId(userId) {
+    console.log('checkId 함수 시작'); // 함수 시작 로그
+    console.log(`체크할 아이디: ${userId}`); // 입력된 userId 로그
+  
+    try {
+      const response = await fetch(`${API.IDCHECK}/${userId}`, { // userId를 쿼리 파라미터로 포함
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
+  
+      console.log('fetch 요청 완료'); // fetch 요청 완료 로그
+  
+      if (!response.ok) {
+        throw new Error(`아이디 중복 확인 실패: ${response.statusText}`);
+      }
+  
+      const data = await response.json();
+      console.log('응답 데이터:', data); // 응답 데이터 로그
+  
+      return data; // 응답 데이터가 true/false일 것으로 가정
+    } catch (error) {
+      console.error('아이디 중복 확인 에러:', error);
+      return false;
+    } finally {
+      console.log('checkId 함수 종료'); // 함수 종료 로그
+    }
+  }
+}
+  
 export default AuthService;
