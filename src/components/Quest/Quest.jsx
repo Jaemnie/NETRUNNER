@@ -111,7 +111,6 @@ const Quest = ({ userId, show, onClose, questData, fetchMission }) => {
     </div>
   );
 
-
   // 탭 클릭 핸들러
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -124,8 +123,6 @@ const Quest = ({ userId, show, onClose, questData, fetchMission }) => {
   const completeMission = async () => {
     const token = localStorage.getItem('accessToken');
     const missionid = localStorage.getItem('missionId');
-    console.log('completeMission 함수 시작'); // 함수 시작 로그
-    console.log(`사용자 ID: ${userId}, 미션 ID: ${missionid}`); // 사용자 ID와 미션 ID 로그
   
     try {
       const response = await fetch(`${API.MISSIONCOMPLETE}/${missionid}`, {
@@ -137,39 +134,41 @@ const Quest = ({ userId, show, onClose, questData, fetchMission }) => {
         body: JSON.stringify({ userId, missionId: questData.missionId })
       });
   
-      console.log('fetch 요청 완료'); // fetch 요청 완료 로그
-      console.log('응답 상태 코드:', response.status); // 응답 상태 코드 로그
+      console.log('Response status:', response.status);
+  
+      const text = await response.text();
+      console.log('Response body:', text);
   
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
   
-      const result = await response.json();
-      console.log('응답 데이터:', result); // 응답 데이터 로그
+      if (!text) {
+        throw new Error('Response body is empty');
+      }
+  
+      const result = JSON.parse(text);
+      console.log('Parsed result:', result);
   
       if (result.success) {
-        console.log('미션 완료 성공, 다음 미션 ID:', result.nextMissionId); // 미션 완료 성공 로그
-        await fetchMission(result.nextMissionId);
+        console.log('Next Mission ID:', result.nextMissionId);
+        localStorage.setItem('missionId', result.nextMissionId); // 다음 미션 ID를 저장
+        await fetchMission(result.nextMissionId); // 새로운 미션 ID로 fetchMission 호출
+        alert('미션 완료, 다음 미션을 확인하세요.')
+        onClose();
       } else {
         alert('미션 완료에 실패했습니다.');
-        console.error('미션 완료 실패: 서버에서 성공 응답을 받지 못했습니다.'); // 미션 완료 실패 로그
       }
     } catch (error) {
-      console.error('미션 완료 중 오류 발생:', error); // 미션 완료 오류 로그
-    } finally {
-      console.log('completeMission 함수 종료'); // 함수 종료 로그
+      console.error('미션 완료 중 오류 발생:', error);
     }
   };
   
-
   return (
-    // 모달 오버레이 클릭 시 onClose 함수 호출
     <div className={styles.modalOverlay} onClick={onClose}>
-      {/* 모달 콘텐츠 클릭 시 이벤트 전파 중단 */}
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
         <div className={styles.ipad}>
           <div className={styles.screen}>
-            {/* 탭 컨테이너 */}
             <div className={styles.tabContainer}>
               <div className={styles.tab} onClick={() => handleTabClick('list')}>
                 <FaList size={24} />
@@ -178,7 +177,6 @@ const Quest = ({ userId, show, onClose, questData, fetchMission }) => {
                 <FaEnvelope size={24} />
               </div>
             </div>
-            {/* 퀘스트 컨테이너 */}
             <div className={styles.questContainer} ref={questContainerRef}>
               {activeTab === 'list' && questData && renderMissionDetails()}
               {activeTab === 'message' && questData && renderMessageList()}

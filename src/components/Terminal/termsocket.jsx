@@ -1,3 +1,5 @@
+// Termi.js
+
 import TerminalInteraction from './TerminalInteraction';
 import { SocketResult } from '../../socket/socket';
 
@@ -13,9 +15,11 @@ function Termi(terminal2, elements, socketRoomId) {
     const userId = localStorage.getItem('userId'); // 로컬 저장소에서 userId 가져오기
     const prompt = `\x1b[31mroot@${userId}\x1b[0m:~$ `; // 프롬프트 설정 (빨간색 ANSI escape code 사용)
 
-    terminal.write('넷러너에 오신걸 환영합니다!\r\n'); // 환영 메시지 출력
-    terminal.write(prompt); // 프롬프트 출력
+    // 터미널 초기 메시지 출력
+    terminal.write('넷러너에 오신걸 환영합니다!\r\n');
+    terminal.write(prompt);
 
+    // 터미널 입력 이벤트 처리
     terminal.onKey(({ key, domEvent }) => {
         const char = key;
         if (domEvent.keyCode === 13) {  // Enter key

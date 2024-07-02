@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types'; // PropTypes 임포트 추가
 import { FaUserCircle } from 'react-icons/fa';
 import styles from './ProfileCard.module.css';
 
@@ -24,7 +25,7 @@ const ProfileCard = ({ profileData, onClose }) => {
                 <FaUserCircle />
               </span>
               <span className={styles.profileCardLocTxt}>
-                 위치 파악 불가
+                위치 파악 불가
               </span>
             </div>
 
@@ -42,13 +43,28 @@ const ProfileCard = ({ profileData, onClose }) => {
 
             {/* 닫기 버튼 */}
             <div className={styles.profileCardCtr}>
-              <button className={`${styles.profileCardButton} ${styles.buttonBlue}`} onClick={onClose}>Close</button>
+              <button
+                className={`${styles.profileCardButton} ${styles.buttonBlue}`}
+                onClick={onClose}
+              >
+                Close
+              </button>
             </div>
           </div>
         </div>
       </div>
     </div>
   );
+};
+
+// PropTypes 정의
+ProfileCard.propTypes = {
+  profileData: PropTypes.shape({
+    userId: PropTypes.string.isRequired,
+    level: PropTypes.number.isRequired,
+    point: PropTypes.number.isRequired,
+  }).isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 export default ProfileCard;

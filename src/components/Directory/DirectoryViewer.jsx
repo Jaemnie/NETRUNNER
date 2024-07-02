@@ -83,7 +83,7 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
         newSocket.leaveRoom();
       }
     };
-  }, []);
+  }, [currentMissionID]); // 여기에 currentMissionID를 추가
 
   // 부모 컴포넌트에서 사용할 수 있는 메서드 정의
   useImperativeHandle(ref, () => ({
@@ -242,7 +242,7 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
     }
     if (option === 'dup_f' || option === 'dup_d') {
       const newName = contextClick + '(사본)';
-      ref.current.appendToTerminal(`cp -r ${contextClick} ${newName}`);
+      ref.current.appendToTerminal(`cp ${contextClick} ${newName}`);
     }
     setIsMenuVisible(false);
   };

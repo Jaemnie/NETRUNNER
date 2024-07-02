@@ -1,3 +1,5 @@
+// TerminalInteraction.js
+
 class TerminalInteraction {
   static terminal = null; // 터미널 객체를 저장하는 정적 변수
   static directoryViewer = null; // 디렉토리 뷰어 객체를 저장하는 정적 변수

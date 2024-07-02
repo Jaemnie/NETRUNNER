@@ -1,3 +1,5 @@
+// TermPage.js
+
 import { Terminal } from "@xterm/xterm";
 import "../../../node_modules/xterm/css/xterm.css"; // 기존 xterm.css
 import "./xterm-custom.css"; // 새로운 xterm-custom.css
@@ -9,6 +11,7 @@ import { SocketResult } from "../../socket/socket";
 const TermPage = () => {
   const termRef = useRef(null);
   const socketRoomId = useMemo(() => Math.floor(100000 + Math.random() * 900000).toString(), []); // 소켓 방 ID를 메모이제이션
+
   const socket = useMemo(() => {
     const newSocket = new SocketResult();
     newSocket.joinRoom(socketRoomId);
@@ -27,9 +30,7 @@ const TermPage = () => {
   }, [socket]);
 
   return (
-    <>
-      <div ref={termRef} className="terminal-container" />
-    </>
+    <div ref={termRef} className="terminal-container" />
   );
 }
 

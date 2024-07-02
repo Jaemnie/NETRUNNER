@@ -66,6 +66,7 @@ a:hover {
 }
 
 .profileCardName {
+  font-family: 'Noto Sans KR', sans-serif;
   font-weight: 700;
   font-size: 24px;
   color: #6944ff;
@@ -74,6 +75,7 @@ a:hover {
 
 .profileCardTxt {
   font-size: 18px;
+  font-family: 'Noto Sans KR', sans-serif;
   font-weight: 500;
   color: #c9c9c9;
   margin-bottom: 15px;
@@ -88,6 +90,7 @@ a:hover {
   justify-content: center;
   align-items: center;
   font-size: 18px;
+  font-family: 'Noto Sans KR', sans-serif;
   font-weight: 600;
 }
 
@@ -127,6 +130,7 @@ a:hover {
 .profileCardInfTitle {
   font-weight: 700;
   font-size: 27px;
+  font-family: 'Noto Sans KR', sans-serif;
   color: #c9c9c9;
 }
 
@@ -150,7 +154,7 @@ a:hover {
 .profileCardButton {
   background: none;
   border: none;
-  font-family: 'Quicksand', sans-serif;
+  font-family: 'Noto Sans KR', sans-serif;
   font-weight: 700;
   font-size: 19px;
   margin: 15px 35px;

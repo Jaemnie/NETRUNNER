@@ -36,7 +36,7 @@ const Shop = ({ userId }) => {
       const token = localStorage.getItem('accessToken'); // JWT 토큰 가져오기
       try {
         const response = await fetch(`${API.TOOLS}`, {
-          method: 'GET',
+          method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}` // JWT 포함
@@ -57,10 +57,26 @@ const Shop = ({ userId }) => {
   }, [userId]);
 
   // 도구를 구매하는 함수
-  const handlePurchase = (tool) => {
+  const handlePurchase = async (tool) => {
     if (availablePoints >= tool.cost) {
-      setAvailablePoints(availablePoints - tool.cost); // 포인트 차감
-      setPurchasedTools([...purchasedTools, tool]); // 구매한 도구 목록에 추가
+      const token = localStorage.getItem('accessToken'); // JWT 토큰 가져오기
+      try {
+        const response = await fetch(`${API.PURCHASE}/${tool.id}`, { // 여기에서 toolId를 tool.id로 수정
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` // JWT 포함
+          },
+          body: JSON.stringify({ userId, toolId: tool.id }) // 여기에서도 toolId를 tool.id로 수정
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        setAvailablePoints(availablePoints - tool.cost); // 포인트 차감
+        setPurchasedTools([...purchasedTools, tool]); // 구매한 도구 목록에 추가
+      } catch (error) {
+        console.error('도구 구매 오류:', error);
+      }
     }
   };
 

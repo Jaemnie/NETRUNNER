@@ -17,5 +17,6 @@ export const API = {
   USERFILE: `${BASE_URL}/filesystem/`,
   MISSIONCOMPLETE: `${BASE_URL}/missions/complete`,
   RANKING: `${BASE_URL}/auth/ranking/rank`,
+  PURCHASE: `${BASE_URL}/missions/tools/`,
   IDCHECK: `${BASE_URL}/auth/check`
 };

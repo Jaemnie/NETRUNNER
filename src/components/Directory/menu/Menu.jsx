@@ -4,7 +4,7 @@ import './menu.css';
 const ContextMenu = ({ isVisible, position, onMenuItemClick, clickId }) => {
     if (!clickId) return null;
 
-    console.log('Rendering context menu for:', clickId); // 로그 추가
+    console.log('Rendering context menu for:', clickId);
 
     const isFile = !clickId.includes('/') && clickId.includes('.');
     const isDirectory = !clickId.includes('.') && !clickId.includes('background');
@@ -14,8 +14,8 @@ const ContextMenu = ({ isVisible, position, onMenuItemClick, clickId }) => {
             className="context-menu"
             style={{
                 display: isVisible ? 'block' : 'none',
-                left: `${position.x}px`,  // 마우스 커서의 x 위치
-                top: `${position.y}px`,   // 마우스 커서의 y 위치
+                left: `${position.x}px`,
+                top: `${position.y}px`,
             }}
         >
             <ul>

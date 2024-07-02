@@ -1,6 +1,7 @@
 /* xterm-custom.css */
 .xterm .xterm-rows > div > span {
     font-family: 'Noto Sans KR', sans-serif !important;
+    font-weight: bold;
 }
 
 .xterm .xterm-rows > div > .red-text {

@@ -10,29 +10,36 @@ function Setting({ show, onClose }) {
   const navigate = useNavigate();
   const { isMuted, toggleMute } = useAudio();
 
+  // 설정 창이 열릴 때 효과를 적용하는 함수
+  const applyEffect = () => {
+    const slideToggle = document.getElementById("slide-toggle-control");
+    if (slideToggle) {
+      slideToggle.nextElementSibling.classList.toggle(styles.checked, slideToggle.checked);
+    }
+  };
+
+  // 설정 창이 열릴 때 이벤트 리스너를 추가하고 닫힐 때 제거
   useEffect(() => {
     if (!show) return;
 
     const slideToggle = document.getElementById("slide-toggle-control");
     if (!slideToggle) return;
 
-    const applyEffect = () => {
-      slideToggle.nextElementSibling.classList.toggle(styles.checked, slideToggle.checked);
-    };
-
     slideToggle.addEventListener('change', applyEffect);
 
-    // Initialize effect on mount
+    // 마운트 시 효과 초기화
     applyEffect();
 
-    // Clean up event listener on unmount
+    // 언마운트 시 이벤트 리스너 제거
     return () => {
       slideToggle.removeEventListener('change', applyEffect);
     };
   }, [show]);
 
+  // 설정 창이 보이지 않을 때는 null 반환
   if (!show) return null;
 
+  // 로그아웃 핸들러 함수
   const handleLogout = async () => {
     try {
       const response = await fetch(`${API.LOGOUT}`, {
@@ -51,7 +58,6 @@ function Setting({ show, onClose }) {
       localStorage.removeItem('leaveRoom');
       navigate('/');
 
-      console.log('Logged out successfully.');
     } catch (error) {
       console.error('Logout error:', error);
     }

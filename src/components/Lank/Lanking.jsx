@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import styles from './Lanking.module.css';
 import { API } from '../../config';
 
+// Lanking 컴포넌트 정의
 const Lanking = () => {
-  const [rankingData, setRankingData] = useState([]);
+  const [rankingData, setRankingData] = useState([]); // 랭킹 데이터를 저장할 상태
 
+  // 컴포넌트 마운트 시 랭킹 데이터를 가져오는 useEffect
   useEffect(() => {
     const fetchRankingData = async () => {
       try {
@@ -19,13 +21,13 @@ const Lanking = () => {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        setRankingData(data);
+        setRankingData(data); // 랭킹 데이터 상태 업데이트
       } catch (error) {
-        console.error('Error fetching ranking data:', error);
+        console.error('Error fetching ranking data:', error); // 에러 로그 출력
       }
     };
 
-    fetchRankingData();
+    fetchRankingData(); // 랭킹 데이터 가져오기 함수 호출
   }, []);
 
   return (

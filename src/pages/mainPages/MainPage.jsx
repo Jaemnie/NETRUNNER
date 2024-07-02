@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaHome, FaCalendarCheck, FaShoppingCart, FaCog, FaUserCircle, FaTrophy } from 'react-icons/fa'; // FaTrophy 추가
+import { FaHome, FaCalendarCheck, FaShoppingCart, FaCog, FaUserCircle, FaTrophy } from 'react-icons/fa';
 import classNames from 'classnames';
 import styles from './MainPage.module.css';
 import MainPageComp from '../../components/MainPageComp/MainPageComp';
@@ -8,7 +8,7 @@ import Shop from '../../components/Shop/shop';
 import BackgroundMusic from '../../components/Background/BackgroundMusic';
 import ProfileCard from '../../components/Profile/ProfileCard';
 import Setting from './Setting/Setting';
-import Lanking from '../../components/Lank/Lanking'; // 랭킹 컴포넌트 추가
+import Lanking from '../../components/Lank/Lanking';
 import bgm from '../../assets/mainbgm.mp3';
 import { SocketResult } from '../../socket/socket';
 import { API } from "../../config";
@@ -16,7 +16,7 @@ import { API } from "../../config";
 const MenuContent = {
   terminer: <MainPageComp />,
   shop: null,
-  lanking: <Lanking /> // 랭킹 컴포넌트 추가
+  lanking: <Lanking />
 };
 
 function MainPage() {
@@ -30,7 +30,6 @@ function MainPage() {
   const [questData, setQuestData] = useState(null);
   const [socketResult, setSocketResult] = useState(null);
   const currentMissionID = localStorage.getItem('missionId');
-
   const userId = localStorage.getItem('userId');
 
   useEffect(() => {
@@ -44,13 +43,13 @@ function MainPage() {
     };
   }, []);
 
-  const handleKeyDown = (event) => {
-    if (event.key === 'Escape') {
-      setShowSetting((prev) => !prev);
-    }
-  };
-
   useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setShowSetting((prev) => !prev);
+      }
+    };
+
     const timer = setTimeout(() => {
       setShowAnimation(false);
       setShowSplitScreen(true);
@@ -68,10 +67,9 @@ function MainPage() {
   }, []);
 
   const fetchMission = async (missionID) => {
-    console.log(missionID);
     const token = localStorage.getItem('accessToken');
-    console.log('User ID:', userId);
-    console.log('Token:', token);
+    console.log('Fetching mission with ID:', missionID); // 현재 미션 아이디 로그 추가
+  
     try {
       const response = await fetch(`${API.MISSION}${missionID}`, {
         method: 'POST',
@@ -84,20 +82,20 @@ function MainPage() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
+      console.log('Fetched mission data:', data); // 응답 데이터 로그 추가
       setQuestData(data);
       setShowQuest(true);
-
+  
       if (socketResult) {
         socketResult.joinRoom(userId);
       }
     } catch (error) {
       console.error('Error fetching quest data:', error);
     }
-  };
+  };  
 
   const handleMenuClick = async (menuKey, event) => {
     event.preventDefault();
-    console.log('Menu clicked:', menuKey);
     if (menuKey === 'quest') {
       await fetchMission(currentMissionID);
     } else if (menuKey === 'shop') {
@@ -172,7 +170,7 @@ function MainPage() {
               <FaShoppingCart />
             </button>
             <button
-              onClick={(e) => handleMenuClick('lanking', e)} // 랭킹 버튼 추가
+              onClick={(e) => handleMenuClick('lanking', e)}
               className={classNames(styles.menuButton, { [styles.active]: currentMenu === 'lanking' })}
               aria-label="Ranking">
               <FaTrophy />

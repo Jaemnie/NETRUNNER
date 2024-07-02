@@ -5,11 +5,11 @@ import './modal.css';
 const Modal = ({ isOpen, closeModal, children }) => {
     const modalRef = useRef();
     const modalRoot = document.getElementById('modal-root');
-    
+
     const handle = useCallback(() => {
         closeModal();
     }, [closeModal]);
-    
+
     useEffect(() => {
         if (!isOpen) return;
         const handler = (event) => {
@@ -22,7 +22,7 @@ const Modal = ({ isOpen, closeModal, children }) => {
             document.removeEventListener('mousedown', handler);
         };
     }, [handle, isOpen]);
-    
+
     if (!isOpen) return null;
 
     return ReactDOM.createPortal(
