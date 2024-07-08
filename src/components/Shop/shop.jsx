@@ -25,7 +25,7 @@ const Shop = ({ userId }) => {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        setAvailablePoints(data); // 포인트 상태 업데이트
+        setAvailablePoints(data); // 포인트 상태 업데이트 (데이터 형식에 따라 조정 필요)
       } catch (error) {
         console.error('포인트 가져오기 오류:', error);
       }
@@ -61,13 +61,13 @@ const Shop = ({ userId }) => {
     if (availablePoints >= tool.cost) {
       const token = localStorage.getItem('accessToken'); // JWT 토큰 가져오기
       try {
-        const response = await fetch(`${API.PURCHASE}/${tool.id}`, { // 여기에서 toolId를 tool.id로 수정
+        const response = await fetch(`${API.PURCHASE}${tool.id}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}` // JWT 포함
           },
-          body: JSON.stringify({ userId, toolId: tool.id, }) // 여기에서도 toolId를 tool.id로 수정
+          body: JSON.stringify({ userId }) // toolId는 URL에서 전달
         });
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
