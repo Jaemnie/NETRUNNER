@@ -61,6 +61,7 @@
   height: 100%;
   display: flex;
   justify-content: center;
+  font-family: 'Noto Sans KR', sans-serif;
   align-items: center;
   flex-direction: column;
   gap: 20px;
@@ -89,7 +90,8 @@
   background: transparent;
   border: 2px solid #fff;
   border-radius: 40px;
-  font-size: 1.2em;
+  font-size: 1.2rem;
+  font-family: 'Noto Sans KR', sans-serif;
   color: #fff;
   box-shadow: none;
   outline: none;
@@ -99,6 +101,7 @@
   width: 100%;
   background: #0078ff;
   background: linear-gradient(45deg, #ff357a, #fff172);
+  font-family: 'Noto Sans KR', sans-serif;
   border: none;
   cursor: pointer;
 }
@@ -126,6 +129,7 @@
   background: transparent;
   border: 2px solid #fff;
   color: #fff;
+  font-family: 'Noto Sans KR', sans-serif;
   padding: 10px 20px;
   border-radius: 20px;
   cursor: pointer;

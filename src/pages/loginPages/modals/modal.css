@@ -31,6 +31,7 @@
 
 .inputBx input {
   position: relative;
+  font-family: 'Noto Sans KR', sans-serif;
   padding: 12px 20px;
   background: transparent;
   border: 2px solid #fff;
@@ -55,12 +56,14 @@
 .modalContent h2 {
   font-size: 2em;
   color: #fff;
+  font-family: 'Noto Sans KR', sans-serif;
   margin-bottom: 20px;
 }
 
 .modalContent .inputBx input[type="button"] {
   width: auto;
   padding: 10px 20px;
+  font-family: 'Noto Sans KR', sans-serif;
   background-color: transparent;
   border: 2px solid #ffffff;
   color: #ffffff;
@@ -77,6 +80,7 @@
 
 .modalContent .inputBx input[type="submit"] {
   width: 100%;
+  font-family: 'Noto Sans KR', sans-serif;
   background-color: transparent;
   border: 2px solid #ffffff;
   color: #ffffff;
