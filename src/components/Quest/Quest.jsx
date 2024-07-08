@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { FaList, FaEnvelope } from 'react-icons/fa';
 import styles from './Quest.module.css';
 import { API } from '../../config';
+import Swal from 'sweetalert2';
 
 // Quest 컴포넌트 정의
 const Quest = ({ userId, show, onClose, questData, fetchMission }) => {
@@ -134,10 +135,7 @@ const Quest = ({ userId, show, onClose, questData, fetchMission }) => {
         body: JSON.stringify({ userId, missionId: questData.missionId })
       });
   
-      console.log('Response status:', response.status);
-  
       const text = await response.text();
-      console.log('Response body:', text);
   
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -148,21 +146,76 @@ const Quest = ({ userId, show, onClose, questData, fetchMission }) => {
       }
   
       const result = JSON.parse(text);
-      console.log('Parsed result:', result);
   
       if (result.success) {
         console.log('Next Mission ID:', result.nextMissionId);
         localStorage.setItem('missionId', result.nextMissionId); // 다음 미션 ID를 저장
         await fetchMission(result.nextMissionId); // 새로운 미션 ID로 fetchMission 호출
-        alert('미션 완료, 다음 미션을 확인하세요.')
+        Swal.fire({
+          icon: "success",
+          text: "미션 완료, 다음 미션을 확인해주세요.",
+          background: '#1e1e1e', // 다크 배경 색상
+          color: '#ffffff', // 글자 색상
+          iconColor: '#4CAF50', // 아이콘 색상
+          customClass: {
+            popup: 'swal-popup-dark',
+            confirmButton: 'swal-button-dark',
+            title: 'swal-title-dark',
+            content: 'swal-content-dark',
+          },
+          didOpen: () => {
+            const swalPopup = document.querySelector('.swal2-popup');
+            if (swalPopup) {
+              swalPopup.style.fontFamily = "'Noto Sans KR', sans-serif";
+            }
+          }
+        });
         onClose();
       } else {
-        alert('미션 완료에 실패했습니다.');
+        Swal.fire({
+          icon: "error",
+          text: "미션 완료에 실패했습니다.",
+          background: '#1e1e1e', // 다크 배경 색상
+          color: '#ffffff', // 글자 색상
+          iconColor: '#E74C3C', // 아이콘 색상
+          customClass: {
+            popup: 'swal-popup-dark',
+            confirmButton: 'swal-button-dark',
+            title: 'swal-title-dark',
+            content: 'swal-content-dark',
+          },
+          didOpen: () => {
+            const swalPopup = document.querySelector('.swal2-popup');
+            if (swalPopup) {
+              swalPopup.style.fontFamily = "'Noto Sans KR', sans-serif";
+            }
+          }
+        });
       }
     } catch (error) {
       console.error('미션 완료 중 오류 발생:', error);
+      Swal.fire({
+        icon: "error",
+        text: "미션 완료 중 오류가 발생했습니다.",
+        background: '#1e1e1e', // 다크 배경 색상
+        color: '#ffffff', // 글자 색상
+        iconColor: '#E74C3C', // 아이콘 색상
+        customClass: {
+          popup: 'swal-popup-dark',
+          confirmButton: 'swal-button-dark',
+          title: 'swal-title-dark',
+          content: 'swal-content-dark',
+        },
+        didOpen: () => {
+          const swalPopup = document.querySelector('.swal2-popup');
+          if (swalPopup) {
+            swalPopup.style.fontFamily = "'Noto Sans KR', sans-serif";
+          }
+        }
+      });
     }
   };
+  
   
   return (
     <div className={styles.modalOverlay} onClick={onClose}>

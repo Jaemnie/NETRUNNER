@@ -36,7 +36,7 @@ const Shop = ({ userId }) => {
       const token = localStorage.getItem('accessToken'); // JWT 토큰 가져오기
       try {
         const response = await fetch(`${API.TOOLS}`, {
-          method: 'POST',
+          method: 'GET',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}` // JWT 포함
@@ -67,7 +67,7 @@ const Shop = ({ userId }) => {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}` // JWT 포함
           },
-          body: JSON.stringify({ userId, toolId: tool.id }) // 여기에서도 toolId를 tool.id로 수정
+          body: JSON.stringify({ userId, toolId: tool.id, }) // 여기에서도 toolId를 tool.id로 수정
         });
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

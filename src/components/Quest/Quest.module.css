@@ -1,3 +1,4 @@
+/* 기존 스타일 */
 .modalOverlay {
   position: fixed;
   top: 0;
@@ -281,4 +282,39 @@
 .completeButton:disabled {
   background-color: #555;
   cursor: not-allowed;
+}
+
+/* Noto Sans KR 폰트 불러오기 */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+
+/* SweetAlert2 다크 모드 스타일 */
+.swal-popup-dark {
+  background: #1e1e1e;
+  color: #ffffff;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.swal-button-dark {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.swal-title-dark {
+  color: #ffffff;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.swal-content-dark {
+  color: #ffffff;
+  font-family: 'Noto Sans KR', sans-serif;
 }
