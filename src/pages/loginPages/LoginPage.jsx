@@ -141,11 +141,25 @@ function LoginPage() {
     closeModal();
   };
 
+  // 풀스크린
+  function toggleFullScreen() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+  }
+  
   // 로그인 제출 함수
   const submitHandler = async (event) => {
     event.preventDefault();
     const isLoginSuccessful = await authService.login(userId, password);
     if (isLoginSuccessful) {
+      document.addEventListener("MoustEvent",
+        toggleFullScreen()
+      );
       navigate('/main');
     } else {
       alert("로그인에 실패했습니다.");
