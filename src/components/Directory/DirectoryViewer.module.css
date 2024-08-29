@@ -48,8 +48,10 @@
   position: absolute;
   bottom: 0;
   text-align: left;
-  background-color: #c5e3df9d;
-  color: white;
+  background-color: #333333; /* 어두운 배경색 사용 */
+  color: white; /* 텍스트는 하얀색으로 */
   width: 100%;
-  padding: 10px;
+  padding: 8px 15px; /* 리눅스 경로 바 스타일을 위해 조금 좁은 패딩 */
+  border-top: 2px solid #555555; /* 위쪽에 경계선을 추가 */
+  box-shadow: none; /* 그림자 제거 */
 }

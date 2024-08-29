@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaHome, FaCalendarCheck, FaShoppingCart, FaCog, FaUserCircle, FaTrophy } from 'react-icons/fa';
+import { FaHome, FaCalendarCheck, FaShoppingCart, FaCog, FaUserCircle, FaTrophy, FaMegaport } from 'react-icons/fa';
 import classNames from 'classnames';
 import styles from './MainPage.module.css';
 import MainPageComp from '../../components/MainPageComp/MainPageComp';
@@ -10,8 +10,9 @@ import ProfileCard from '../../components/Profile/ProfileCard';
 import Setting from './Setting/Setting';
 import Lanking from '../../components/Lank/Lanking';
 import bgm from '../../assets/mainbgm.mp3';
+import PortHackModal from './HackTool/PortHack';  // PortHackModal 컴포넌트 가져오기
 import { SocketResult } from '../../socket/socket';
-import { API } from "../../config";
+import { fetchMissionData, fetchProfileData } from "../../config";  // API 함수 가져오기
 
 const MenuContent = {
   terminer: <MainPageComp />,
@@ -29,6 +30,9 @@ function MainPage() {
   const [showQuest, setShowQuest] = useState(false);
   const [questData, setQuestData] = useState(null);
   const [socketResult, setSocketResult] = useState(null);
+  const [showPortHackModal, setShowPortHackModal] = useState(false);  // PortHackModal 표시 상태
+  const [ports, setPorts] = useState([]);  // PortHackModal의 포트 데이터 상태
+
   const currentMissionID = localStorage.getItem('missionId');
   const userId = localStorage.getItem('userId');
 
@@ -69,30 +73,19 @@ function MainPage() {
   const fetchMission = async (missionID) => {
     const token = localStorage.getItem('accessToken');
     console.log('Fetching mission with ID:', missionID); // 현재 미션 아이디 로그 추가
-  
+
     try {
-      const response = await fetch(`${API.MISSION}${missionID}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      console.log('Fetched mission data:', data); // 응답 데이터 로그 추가
+      const data = await fetchMissionData(missionID, token);
       setQuestData(data);
       setShowQuest(true);
-  
+
       if (socketResult) {
         socketResult.joinRoom(userId);
       }
     } catch (error) {
       console.error('Error fetching quest data:', error);
     }
-  };  
+  };
 
   const handleMenuClick = async (menuKey, event) => {
     event.preventDefault();
@@ -101,6 +94,8 @@ function MainPage() {
     } else if (menuKey === 'shop') {
       MenuContent.shop = <Shop userId={userId} />;
       setCurrentMenu(menuKey);
+    } else if (menuKey === 'porthack') {
+      setShowPortHackModal(true);  // PortHackModal 표시
     } else {
       setCurrentMenu(menuKey);
     }
@@ -108,18 +103,9 @@ function MainPage() {
 
   const openProfileCard = async (event) => {
     event.preventDefault();
+    const token = localStorage.getItem('accessToken');
     try {
-      const response = await fetch(`${API.PROFILECARD}${userId}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
-        },
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
+      const data = await fetchProfileData(userId, token);
       setProfileData(data);
       setShowProfileCard(true);
     } catch (error) {
@@ -129,6 +115,21 @@ function MainPage() {
 
   const closeProfileCard = () => {
     setShowProfileCard(false);
+  };
+
+  const closePortHackModal = () => {
+    setShowPortHackModal(false);
+  };
+
+  const handleHackPort = (portId) => {
+    // Port hack handling logic here (test purpose or backend integration)
+    console.log(`Attempting to hack port: ${portId}`);
+    // Update port status to open after hacking
+    setPorts((prevPorts) =>
+      prevPorts.map(port =>
+        port.id === portId ? { ...port, status: 'open' } : port
+      )
+    );
   };
 
   return (
@@ -175,6 +176,12 @@ function MainPage() {
               aria-label="Ranking">
               <FaTrophy />
             </button>
+            <button
+              onClick={(e) => handleMenuClick('porthack', e)}
+              className={classNames(styles.menuButton, { [styles.active]: currentMenu === 'porthack' })}
+              aria-label="PortHack">
+              <FaMegaport style={{ fontSize: '1.75rem' }} />
+            </button>
             <div className={styles.navspacer}></div>
             <button
               onClick={(e) => { e.preventDefault(); setShowSetting(true); }}
@@ -197,6 +204,15 @@ function MainPage() {
       {showProfileCard && profileData && <ProfileCard profileData={profileData} onClose={closeProfileCard} />}
       {showSetting && <Setting show={showSetting} onClose={() => setShowSetting(false)} />}
       {showQuest && questData && <Quest show={showQuest} onClose={() => setShowQuest(false)} userId={userId} questData={questData} fetchMission={fetchMission} />}
+      {showPortHackModal && (
+        <PortHackModal
+          show={showPortHackModal}
+          onClose={closePortHackModal}
+          onHack={handleHackPort}
+          ports={ports}
+          setPorts={setPorts}
+        />
+      )}
     </div>
   );
 }

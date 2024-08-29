@@ -203,6 +203,46 @@
   box-shadow: var(--tertiary-color) 0 0 7px 1px;
 }
 
+/* hack tool */
+
+.hackTool {
+  display: grid;
+  place-content: center;
+  color: white;
+  height: 3.5rem;
+  border-radius: 0.75rem;
+  font-size: 1.5rem;
+  text-decoration: none;
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  visibility: hidden;
+}
+
+.hackTool:after {
+  position: absolute;
+  content: "";
+  left: 0.125rem;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 0rem;
+  width: 0.3125rem;
+  border-radius: 1rem;
+  background: var(--tertiary-color);
+  transition: height 200ms ease, box-shadow 200ms ease;
+}
+
+.hackTool:hover {
+  background: #ffffff15;
+}
+
+.hackTool:hover:after,
+.hackTool.active:after {
+  height: 2.5rem;
+  box-shadow: var(--tertiary-color) 0 0 7px 1px;
+}
+
 .navspacer {
   flex-grow: 1;
 }

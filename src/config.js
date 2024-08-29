@@ -20,3 +20,63 @@ export const API = {
   PURCHASE: `${BASE_URL}/missions/tool/`,
   IDCHECK: `${BASE_URL}/auth/check`
 };
+
+/**
+ * Fetch mission data by mission ID
+ * @param {string} missionID - The ID of the mission to fetch
+ * @param {string} token - The user's access token
+ * @returns {Promise<Object>} The mission data
+ */
+export const fetchMissionData = async (missionID, token) => {
+  try {
+    const response = await fetch(`${API.MISSION}${missionID}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log('Fetched mission data:', data);
+    return data;
+  } catch (error) {
+    console.error('Error fetching mission data:', error);
+    throw error;
+  }
+};
+
+/**
+ * Fetch profile data by user ID
+ * @param {string} userId - The ID of the user
+ * @param {string} token - The user's access token
+ * @returns {Promise<Object>} The profile data
+ */
+export const fetchProfileData = async (userId, token) => {
+  try {
+    const response = await fetch(`${API.PROFILECARD}${userId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log('Fetched profile data:', data);
+    return data;
+  } catch (error) {
+    console.error('Error fetching profile data:', error);
+    throw error;
+  }
+};
+
+// 필요한 다른 API 호출 함수들도 여기에 추가할 수 있습니다.
