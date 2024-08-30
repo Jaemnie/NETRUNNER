@@ -121,17 +121,6 @@ function MainPage() {
     setShowPortHackModal(false);
   };
 
-  const handleHackPort = (portId) => {
-    // Port hack handling logic here (test purpose or backend integration)
-    console.log(`Attempting to hack port: ${portId}`);
-    // Update port status to open after hacking
-    setPorts((prevPorts) =>
-      prevPorts.map(port =>
-        port.id === portId ? { ...port, status: 'open' } : port
-      )
-    );
-  };
-
   return (
     <div className={styles.mainContainer}>
       <BackgroundMusic src={bgm} />
@@ -208,9 +197,8 @@ function MainPage() {
         <PortHackModal
           show={showPortHackModal}
           onClose={closePortHackModal}
-          onHack={handleHackPort}
-          ports={ports}
-          setPorts={setPorts}
+          ports={ports}  // 포트 데이터 전달
+          setPorts={setPorts}  // 포트 데이터 상태 관리
         />
       )}
     </div>

@@ -3,13 +3,14 @@
 import { Terminal } from "@xterm/xterm";
 import "../../../node_modules/xterm/css/xterm.css"; // 기존 xterm.css
 import "./xterm-custom.css"; // 새로운 xterm-custom.css
-import React, { useRef, useEffect, useMemo } from "react";
+import React, { useRef, useEffect, useMemo, useState } from "react";  // useState 추가
 import { Termi } from "./termsocket";
 import TerminalInteraction from './TerminalInteraction';
 import { SocketResult } from "../../socket/socket";
 
 const TermPage = () => {
   const termRef = useRef(null);
+  const [ports, setPorts] = useState([]);  // ports 상태 추가
   const socketRoomId = useMemo(() => Math.floor(100000 + Math.random() * 900000).toString(), []); // 소켓 방 ID를 메모이제이션
 
   const socket = useMemo(() => {
@@ -21,7 +22,7 @@ const TermPage = () => {
   useEffect(() => {
     if (termRef.current) {
       const term = new Terminal();
-      Termi(term, termRef.current, socket.getRoomId());
+      Termi(term, termRef.current, socket.getRoomId(), setPorts);  // setPorts 전달
       TerminalInteraction.setTerminal(term);
       return () => {
         term.dispose();
