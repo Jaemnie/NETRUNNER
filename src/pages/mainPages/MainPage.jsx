@@ -12,7 +12,7 @@ import Lanking from '../../components/Lank/Lanking';
 import bgm from '../../assets/mainbgm.mp3';
 import PortHackModal from './HackTool/PortHack';  // PortHackModal 컴포넌트 가져오기
 import { SocketResult } from '../../socket/socket';
-import { fetchMissionData, fetchProfileData } from "../../config";  // API 함수 가져오기
+import { fetchMissionData, fetchProfileData, API } from "../../config";  // API 함수 가져오기
 
 const MenuContent = {
   terminer: <MainPageComp />,
@@ -32,6 +32,7 @@ function MainPage() {
   const [socketResult, setSocketResult] = useState(null);
   const [showPortHackModal, setShowPortHackModal] = useState(false);  // PortHackModal 표시 상태
   const [ports, setPorts] = useState([]);  // PortHackModal의 포트 데이터 상태
+  const [hasPurchasedPortHack, setHasPurchasedPortHack] = useState(false);  // PortHack 도구 구매 여부 상태
 
   const currentMissionID = localStorage.getItem('missionId');
   const userId = localStorage.getItem('userId');
@@ -68,6 +69,34 @@ function MainPage() {
       clearTimeout(timer);
       window.removeEventListener('keydown', handleKeyDown);
     };
+  }, []);
+
+  // PortHack 도구 구매 여부 확인
+  useEffect(() => {
+    const checkPortHackPurchase = async () => {
+      const token = localStorage.getItem('accessToken');
+      try {
+        const response = await fetch(`${API.TOOLS}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` // JWT 포함
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const purchasedToolNames = data.map(tool => tool.name);
+        setHasPurchasedPortHack(purchasedToolNames.includes('porthack'));
+      } catch (error) {
+        console.error('Error checking porthack purchase:', error);
+      }
+    };
+
+    checkPortHackPurchase(); // PortHack 도구 구매 여부 확인 호출
   }, []);
 
   const fetchMission = async (missionID) => {
@@ -165,12 +194,14 @@ function MainPage() {
               aria-label="Ranking">
               <FaTrophy />
             </button>
-            <button
-              onClick={(e) => handleMenuClick('porthack', e)}
-              className={classNames(styles.menuButton, { [styles.active]: currentMenu === 'porthack' })}
-              aria-label="PortHack">
-              <FaMegaport style={{ fontSize: '1.75rem' }} />
-            </button>
+            {hasPurchasedPortHack && (
+              <button
+                onClick={(e) => handleMenuClick('porthack', e)}
+                className={classNames(styles.menuButton, { [styles.active]: currentMenu === 'porthack' })}
+                aria-label="PortHack">
+                <FaMegaport style={{ fontSize: '1.75rem' }} />
+              </button>
+            )}
             <div className={styles.navspacer}></div>
             <button
               onClick={(e) => { e.preventDefault(); setShowSetting(true); }}

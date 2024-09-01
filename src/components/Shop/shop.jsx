@@ -25,7 +25,7 @@ const Shop = ({ userId }) => {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        setAvailablePoints(data); // 포인트 상태 업데이트 (데이터 형식에 따라 조정 필요)
+        setAvailablePoints(data); // 포인트 상태 업데이트
       } catch (error) {
         console.error('포인트 가져오기 오류:', error);
       }
@@ -72,6 +72,12 @@ const Shop = ({ userId }) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
+
+        // "porthack" 도구가 구매되었을 경우
+        if (tool.name === 'porthack') {
+          // 추가적인 로직이 필요할 경우 여기에서 처리할 수 있습니다.
+        }
+
         setAvailablePoints(availablePoints - tool.cost); // 포인트 차감
         setPurchasedTools([...purchasedTools, tool]); // 구매한 도구 목록에 추가
       } catch (error) {

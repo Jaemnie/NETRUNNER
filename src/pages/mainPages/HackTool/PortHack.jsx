@@ -1,13 +1,24 @@
-// PortHackModal.js
-
 import React, { useState, useEffect } from 'react';
 import styles from './PortHack.module.css';
 import JigsawHackingGame from '../MiniGames/JigsawHackingGame'; // Jigsaw Hacking Game 컴포넌트 불러오기
+import { SocketResult } from '../../../socket/Gsocket'; // SocketResult 클래스를 불러오기
 
 function PortHackModal({ show, onClose }) {
   const [showHackingGame, setShowHackingGame] = useState(false); // 해킹 게임 표시 상태
   const [currentPort, setCurrentPort] = useState(null); // 현재 해킹 중인 포트
   const [ports, setPorts] = useState([]); // 포트 데이터 상태 추가
+  const [socket, setSocket] = useState(null); // 소켓 인스턴스 상태 추가
+
+  useEffect(() => {
+    // 소켓 초기화 및 연결
+    const socketInstance = new SocketResult();
+    setSocket(socketInstance);
+
+    return () => {
+      // 컴포넌트가 언마운트될 때 소켓 연결 해제
+      socketInstance.leaveRoom();
+    };
+  }, []);
 
   useEffect(() => {
     // 모달이 열릴 때 localStorage에서 포트 데이터를 불러옴
@@ -37,31 +48,42 @@ function PortHackModal({ show, onClose }) {
       );
       setPorts(updatedPorts);
       localStorage.setItem('portData', JSON.stringify(updatedPorts)); // 업데이트된 포트 데이터를 localStorage에 저장
+
+      // 해킹 성공 시 소켓을 통해 서버에 메시지 전송
+      if (socket) {
+        const message = `porthack ${currentPort.ip} ${currentPort.number} open`;
+        socket.sendMessage(message);
+
+        // 서버에 메시지를 전송한 후 localStorage에서 portData 삭제
+        localStorage.removeItem('portData');
+        console.log("Port data removed from localStorage after successful hack.");
+      }
     }
   };
 
   return (
     show && (
-      <div className={styles.PortHackModal}>
-        <div className={styles.PortHackModalContent}>
-          {/* 닫기 버튼 추가 */}
-          <button className={styles.PortHackCloseButton} onClick={onClose}>X</button>
-          <h2>IP Scan</h2>
-          <ul>
-            {ports.length === 0 ? (
-              <p>데이터를 받아오지 못했습니다. scan 명령어로 IP를 검색하세요.</p> // 포트 데이터가 없을 때 예외 메시지 표시
-            ) : (
-              ports.map(port => (
-                <li key={port.id}>
-                  {port.number} - {port.status.toUpperCase()} {/* 상태를 대문자로 표시 */}
-                  {port.status === 'closed' && (
-                    <button onClick={() => handleHackClick(port)} className={styles.PortHackButton}>HACK</button>
-                  )}
-                </li>
-              ))
-            )}
-          </ul>
-          {showHackingGame && <JigsawHackingGame onClose={(success) => closeHackingGame(success)} />} {/* 성공 여부를 콜백으로 전달 */}
+      <div className={styles.modalOverlay} onClick={onClose}>
+        <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+          <div className={styles.portHackContainer}>
+            <h2 className={styles.modalTitle}>IP Scan</h2>
+            <ul className={styles.portList}>
+              {ports.length === 0 ? (
+                <p>데이터를 받아오지 못했습니다. scan 명령어로 IP를 검색하세요.</p> // 포트 데이터가 없을 때 예외 메시지 표시
+              ) : (
+                ports.map(port => (
+                  <li key={port.id} className={styles.portItem}>
+                    {port.number} - {port.status.toUpperCase()} {/* 상태를 대문자로 표시 */}
+                    {port.status === 'closed' && (
+                      <button onClick={() => handleHackClick(port)} className={styles.hackButton}>HACK</button>
+                    )}
+                  </li>
+                ))
+              )}
+            </ul>
+            {showHackingGame && <JigsawHackingGame onClose={(success) => closeHackingGame(success)} />} {/* 성공 여부를 콜백으로 전달 */}
+          </div>
+          <button className={styles.closeButton} onClick={onClose}>X</button>
         </div>
       </div>
     )
