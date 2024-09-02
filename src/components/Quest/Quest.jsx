@@ -18,7 +18,7 @@ const Quest = ({ userId, show, onClose, questData, fetchMission }) => {
     if (activeTab === 'message' && !messagesLoaded.current) {
       setDisplayedMessages([]);
       setIsTyping(true);
-      const messages = questData.scenario[0].split(' ,');
+      const messages = questData.scenario[0].replace(/\n|\r|\t|"*/g, '').trim().split(",");;
       messages.forEach((message, index) => {
         setTimeout(() => {
           setDisplayedMessages(prevMessages => [...prevMessages, message.trim()]);
