@@ -13,15 +13,32 @@ const Quest = ({ userId, show, onClose, questData, fetchMission }) => {
   const messagesLoaded = useRef(false); // 메시지가 로드되었는지 여부를 추적하는 ref
   const questContainerRef = useRef(null); // 퀘스트 컨테이너를 참조하기 위한 ref
 
+  // 모달이 열릴 때 localStorage에서 메시지 불러오기
+  useEffect(() => {
+    if (show) {
+      const savedMessages = localStorage.getItem('questMessages');
+      if (savedMessages) {
+        setDisplayedMessages(JSON.parse(savedMessages));
+        messagesLoaded.current = true;
+      } else {
+        messagesLoaded.current = false;
+      }
+    }
+  }, [show]);
+
   // 활성화된 탭이 'message'일 때 메시지를 로드하는 useEffect
   useEffect(() => {
     if (activeTab === 'message' && !messagesLoaded.current) {
       setDisplayedMessages([]);
       setIsTyping(true);
-      const messages = questData.scenario[0].replace(/\n|\r|\t|"*/g, '').trim().split(",");;
+      const messages = questData.scenario[0].replace(/\n|\r|\t|"*/g, '').trim().split(",");
       messages.forEach((message, index) => {
         setTimeout(() => {
-          setDisplayedMessages(prevMessages => [...prevMessages, message.trim()]);
+          setDisplayedMessages((prevMessages) => {
+            const updatedMessages = [...prevMessages, message.trim()]; // prevMessages를 올바르게 사용하여 업데이트
+            localStorage.setItem('questMessages', JSON.stringify(updatedMessages)); // 메시지를 localStorage에 저장
+            return updatedMessages;
+          });
           if (index === messages.length - 1) {
             setIsTyping(false);
             messagesLoaded.current = true;
@@ -150,6 +167,7 @@ const Quest = ({ userId, show, onClose, questData, fetchMission }) => {
       if (result.success) {
         console.log('Next Mission ID:', result.nextMissionId);
         localStorage.setItem('missionId', result.nextMissionId); // 다음 미션 ID를 저장
+        localStorage.removeItem('questMessages'); // questMessages 초기화
         await fetchMission(result.nextMissionId); // 새로운 미션 ID로 fetchMission 호출
         Swal.fire({
           icon: "success",
@@ -215,8 +233,7 @@ const Quest = ({ userId, show, onClose, questData, fetchMission }) => {
       });
     }
   };
-  
-  
+
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>

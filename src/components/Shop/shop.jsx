@@ -4,10 +4,9 @@ import styles from './shop.module.css';
 import { API } from '../../config';
 
 // Shop 컴포넌트 정의
-const Shop = ({ userId }) => {
+const Shop = ({ userId, onPortHackPurchase }) => {
   const [availablePoints, setAvailablePoints] = useState(0); // 사용자의 포인트 상태 관리
   const [tools, setTools] = useState([]); // 사용할 수 있는 도구 목록 상태 관리
-  const [purchasedTools, setPurchasedTools] = useState([]); // 구매한 도구 목록 상태 관리
 
   useEffect(() => {
     // 사용자의 포인트를 가져오는 함수
@@ -58,7 +57,7 @@ const Shop = ({ userId }) => {
 
   // 도구를 구매하는 함수
   const handlePurchase = async (tool) => {
-    if (availablePoints >= tool.cost) {
+    if (availablePoints >= tool.cost && !tool.isBuy) { // 이미 구매한 도구가 아닌 경우에만 구매 가능
       const token = localStorage.getItem('accessToken'); // JWT 토큰 가져오기
       try {
         const response = await fetch(`${API.PURCHASE}${tool.id}`, {
@@ -75,11 +74,11 @@ const Shop = ({ userId }) => {
 
         // "porthack" 도구가 구매되었을 경우
         if (tool.name === 'porthack') {
-          // 추가적인 로직이 필요할 경우 여기에서 처리할 수 있습니다.
+          onPortHackPurchase(); // 부모 컴포넌트에 구매 사실 알림
         }
 
         setAvailablePoints(availablePoints - tool.cost); // 포인트 차감
-        setPurchasedTools([...purchasedTools, tool]); // 구매한 도구 목록에 추가
+        setTools(tools.map(t => t.id === tool.id ? { ...t, isBuy: true } : t)); // 도구의 isBuy 상태 업데이트
       } catch (error) {
         console.error('도구 구매 오류:', error);
       }
@@ -99,8 +98,8 @@ const Shop = ({ userId }) => {
             <p>가격: {tool.cost} 포인트</p>
             <button 
               onClick={() => handlePurchase(tool)} 
-              disabled={availablePoints < tool.cost || purchasedTools.includes(tool)}>
-              {availablePoints >= tool.cost ? '구매하기' : '포인트 부족'}
+              disabled={availablePoints < tool.cost || tool.isBuy}>
+              {tool.isBuy ? '이미 구매한 도구' : availablePoints >= tool.cost ? '구매하기' : '포인트 부족'}
             </button>
           </div>
         ))}
@@ -111,7 +110,8 @@ const Shop = ({ userId }) => {
 
 // PropTypes를 사용하여 props의 타입을 정의
 Shop.propTypes = {
-  userId: PropTypes.string.isRequired
+  userId: PropTypes.string.isRequired,
+  onPortHackPurchase: PropTypes.func.isRequired,
 };
 
 export default Shop;

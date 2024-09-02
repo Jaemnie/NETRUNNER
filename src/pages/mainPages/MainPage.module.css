@@ -203,11 +203,10 @@
   box-shadow: var(--tertiary-color) 0 0 7px 1px;
 }
 
-/* hack tool */
+/* 기존 hackTool 클래스를 porthack으로 변경 */
+/* MainPage.module.css */
 
-.hackTool {
-  display: grid;
-  place-content: center;
+.porthack {
   color: white;
   height: 3.5rem;
   border-radius: 0.75rem;
@@ -217,10 +216,11 @@
   background: none;
   border: none;
   cursor: pointer;
-  visibility: hidden;
+  display: grid;
+  place-content: center;
 }
 
-.hackTool:after {
+.porthack:after {
   position: absolute;
   content: "";
   left: 0.125rem;
@@ -233,12 +233,12 @@
   transition: height 200ms ease, box-shadow 200ms ease;
 }
 
-.hackTool:hover {
+.porthack:hover {
   background: #ffffff15;
 }
 
-.hackTool:hover:after,
-.hackTool.active:after {
+.porthack:hover:after,
+.porthack.active:after {
   height: 2.5rem;
   box-shadow: var(--tertiary-color) 0 0 7px 1px;
 }

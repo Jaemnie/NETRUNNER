@@ -10,15 +10,9 @@ import ProfileCard from '../../components/Profile/ProfileCard';
 import Setting from './Setting/Setting';
 import Lanking from '../../components/Lank/Lanking';
 import bgm from '../../assets/mainbgm.mp3';
-import PortHackModal from './HackTool/PortHack';  // PortHackModal 컴포넌트 가져오기
+import PortHackModal from './HackTool/PortHack';
 import { SocketResult } from '../../socket/socket';
-import { fetchMissionData, fetchProfileData, API } from "../../config";  // API 함수 가져오기
-
-const MenuContent = {
-  terminer: <MainPageComp />,
-  shop: null,
-  lanking: <Lanking />
-};
+import { fetchMissionData, fetchProfileData, API } from "../../config";
 
 function MainPage() {
   const [showAnimation, setShowAnimation] = useState(true);
@@ -30,9 +24,15 @@ function MainPage() {
   const [showQuest, setShowQuest] = useState(false);
   const [questData, setQuestData] = useState(null);
   const [socketResult, setSocketResult] = useState(null);
-  const [showPortHackModal, setShowPortHackModal] = useState(false);  // PortHackModal 표시 상태
-  const [ports, setPorts] = useState([]);  // PortHackModal의 포트 데이터 상태
-  const [hasPurchasedPortHack, setHasPurchasedPortHack] = useState(false);  // PortHack 도구 구매 여부 상태
+  const [showPortHackModal, setShowPortHackModal] = useState(false);
+  const [ports, setPorts] = useState([]);
+  const [hasPurchasedPortHack, setHasPurchasedPortHack] = useState(false);
+
+  const [menuContent, setMenuContent] = useState({
+    terminer: <MainPageComp />,
+    shop: null,
+    lanking: <Lanking />
+  });
 
   const currentMissionID = localStorage.getItem('missionId');
   const userId = localStorage.getItem('userId');
@@ -80,7 +80,7 @@ function MainPage() {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}` // JWT 포함
+            'Authorization': `Bearer ${token}`
           },
         });
 
@@ -96,12 +96,12 @@ function MainPage() {
       }
     };
 
-    checkPortHackPurchase(); // PortHack 도구 구매 여부 확인 호출
+    checkPortHackPurchase();
   }, []);
 
   const fetchMission = async (missionID) => {
     const token = localStorage.getItem('accessToken');
-    console.log('Fetching mission with ID:', missionID); // 현재 미션 아이디 로그 추가
+    console.log('Fetching mission with ID:', missionID);
 
     try {
       const data = await fetchMissionData(missionID, token);
@@ -121,10 +121,18 @@ function MainPage() {
     if (menuKey === 'quest') {
       await fetchMission(currentMissionID);
     } else if (menuKey === 'shop') {
-      MenuContent.shop = <Shop userId={userId} />;
+      setMenuContent(prevContent => ({
+        ...prevContent,
+        shop: (
+          <Shop
+            userId={userId}
+            onPortHackPurchase={() => setHasPurchasedPortHack(true)}
+          />
+        )
+      }));
       setCurrentMenu(menuKey);
     } else if (menuKey === 'porthack') {
-      setShowPortHackModal(true);  // PortHackModal 표시
+      setShowPortHackModal(true);
     } else {
       setCurrentMenu(menuKey);
     }
@@ -197,7 +205,7 @@ function MainPage() {
             {hasPurchasedPortHack && (
               <button
                 onClick={(e) => handleMenuClick('porthack', e)}
-                className={classNames(styles.menuButton, { [styles.active]: currentMenu === 'porthack' })}
+                className={classNames(styles.menuButton, styles.porthack, { [styles.active]: currentMenu === 'porthack' })}
                 aria-label="PortHack">
                 <FaMegaport style={{ fontSize: '1.75rem' }} />
               </button>
@@ -205,7 +213,7 @@ function MainPage() {
             <div className={styles.navspacer}></div>
             <button
               onClick={(e) => { e.preventDefault(); setShowSetting(true); }}
-              className={styles.menuButton}
+              className={classNames(styles.menuButton, { [styles.active]: currentMenu === 'setting' })}
               aria-label="Settings">
               <FaCog />
             </button>
@@ -217,7 +225,7 @@ function MainPage() {
             </button>
           </nav>
           <section className={styles.content}>
-            {MenuContent[currentMenu]}
+            {menuContent[currentMenu]}
           </section>
         </main>
       )}
@@ -228,8 +236,8 @@ function MainPage() {
         <PortHackModal
           show={showPortHackModal}
           onClose={closePortHackModal}
-          ports={ports}  // 포트 데이터 전달
-          setPorts={setPorts}  // 포트 데이터 상태 관리
+          ports={ports}
+          setPorts={setPorts}
         />
       )}
     </div>
