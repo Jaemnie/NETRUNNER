@@ -208,10 +208,10 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
 
     // 파일명 또는 디렉토리명을 가져오는 로직
     if (id === 'file' || id === 'directory') {
-        const target = event.target.closest(`.${styles.directoryViewerItem}`);
-        if (target) {
-            contextValue = target.textContent.trim();
-        }
+      const target = event.target.closest(`.${styles.directoryViewerItem}`);
+      if (target) {
+        contextValue = target.textContent.trim();
+      }
     }
 
     setIsMenuVisible(true);
@@ -243,6 +243,14 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
     if (option === 'dup_f' || option === 'dup_d') {
       const newName = contextClick + '(사본)';
       ref.current.appendToTerminal(`cp ${contextClick} ${newName}`);
+    }
+    if (option === 'del_f' || option === 'del_d') {
+      if (option === 'del_f') {
+        ref.current.appendToTerminal(`rm ${contextClick}`);
+      } else {
+        ref.current.appendToTerminal(`rmdir ${contextClick}`);
+      }
+
     }
     setIsMenuVisible(false);
   };

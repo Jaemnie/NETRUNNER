@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+
+.tutoMain {
+    position: relative;
+    width: 90vw;
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.wrap,
+.box {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.box {
+    background-image: url('/src/assets/tutorial.png');
+    background-size: 80vw 70vh;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    overflow: hidden;
+}
+
+.box:nth-child(1) {
+    filter: blur(8px);
+}
+
+.box:nth-child(2) {
+    /* clip-path: inset(calc(var(--y) - var(--height)/2) calc(100% - var(--x) - var(--width)) calc(100% - var(--y) - var(--height)) calc(var(--x) - var(--width))); */
+    clip-path: inset(calc(var(--y) - var(--height) / 2) calc(100% - var(--x) - var(--width) / 2) calc(100% - var(--y) - var(--height) / 2) calc(var(--x) - var(--width) / 2));
+}
+
+.circle {
+    position: absolute;
+    border: 2px solid #fff;
+    box-shadow: 0 5px 23px rgba(0, 0, 0, 0.5);
+    top: -25px;
+    left: -25px;
+    transform: translate(var(--x), var(--y));
+}
+
+.pop {
+    position: absolute;
+    background-color: #fff;
+    border: 2px solid #fff;
+    border-radius: 10% 10%;
+    top: -15px;
+    left: -15px;
+    transform: translate(var(--x), var(--y));
+}
+
+.tutoBtn {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    bottom: 30px;
+}

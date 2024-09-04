@@ -1,0 +1,67 @@
+.popover-bottom {
+    position: relative;
+}
+
+.popover-bottom::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 100%;
+    /* 위쪽에 위치 */
+    transform: translateX(-50%);
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent transparent white transparent;
+    /* 아래쪽 화살표 */
+}
+
+.popover-top {
+    position: relative;
+}
+
+.popover-top::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    /* 아래쪽에 위치 */
+    transform: translateX(-50%);
+    border-width: 10px;
+    border-style: solid;
+    border-color: white transparent transparent transparent;
+    /* 위쪽 화살표 */
+}
+
+.popover-left {
+    position: relative;
+}
+
+.popover-left::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 100%;
+    /* 왼쪽에 위치 */
+    transform: translateY(-50%);
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent white transparent transparent;
+    /* 왼쪽 화살표 */
+}
+
+.popover-right {
+    position: relative;
+}
+
+.popover-right::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    /* 오른쪽에 위치 */
+    transform: translateY(-50%);
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent transparent transparent white;
+    /* 오른쪽 화살표 */
+}
