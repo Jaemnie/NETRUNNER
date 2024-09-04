@@ -7,15 +7,15 @@ const Tutorial = () => {
 
     // 좌표 및 크기 설정
     const coordinates = useMemo(() => [
-        { x: 100, y: 30, width: 50, height: 50, arrow: "left", bx: 150, by: 30, descript: "qwdd" },
-        { x: 100, y: 70, width: 50, height: 50, arrow: "left", bx: 150, by: 70, descript: "wedeeeq" },
-        { x: 100, y: 110, width: 50, height: 50, arrow: "left", bx: 150, by: 110, descript: "dsdss" },
-        { x: 100, y: 150, width: 50, height: 50, arrow: "left", bx: 150, by: 150, descript: "ddds" },
-        { x: 100, y: 190, width: 50, height: 50, arrow: "left", bx: 150, by: 190, descript: "dsdsss" },
-        { x: 100, y: 620, width: 50, height: 50, arrow: "left", bx: 150, by: 620, descript: "dqqddddd" },
-        { x: 100, y: 660, width: 50, height: 50, arrow: "left", bx: 150, by: 660, descript: "dsdsdddss" },
-        { x: 150, y: 30, width: 1150, height: 400, arrow: "bottom", bx: 650, by: 450, descript: "dsdsddss" },
-        { x: 150, y: 400, width: 1150, height: 300, arrow: "top", bx: 650, by: 350, descript: "dsdsdddss" },
+        { x: 6.4, y: 1.9, width: 2.5, height: 2.5, arrow: "left", bx: 8.9, by: 1.5, descript: "1" },
+        { x: 6.4, y: 4.5, width: 2.5, height: 2.5, arrow: "left", bx: 8.9, by: 4.5, descript: "2" },
+        { x: 6.4, y: 6.8, width: 2.5, height: 2.5, arrow: "left", bx: 8.9, by: 7, descript: "3" },
+        { x: 6.4, y: 9.3, width: 2.5, height: 2.5, arrow: "left", bx: 8.9, by: 9, descript: "4" },
+        { x: 6.4, y: 11.8, width: 2.5, height: 2.5, arrow: "left", bx: 8.9, by: 12, descript: "5" },
+        { x: 6.4, y: 38.7, width: 2.5, height: 2.5, arrow: "left", bx: 8.9, by: 38, descript: "6" },
+        { x: 6.4, y: 41.3, width: 2.5, height: 2.5, arrow: "left", bx: 8.9, by: 41, descript: "7" },
+        { x: 9, y: 1.9, width: 72, height: 25, arrow: "bottom", bx: 41, by: 27, descript: "8" },
+        { x: 9, y: 25, width: 72, height: 20, arrow: "top", bx: 41, by: 22, descript: "9" },
     ], []);
 
     const wrap = useRef();
@@ -30,14 +30,14 @@ const Tutorial = () => {
 
     const updatePosition = ({ x, y, width, height, bx, by }) => {
         if (wrap.current) {
-            wrap.current.style.setProperty('--x', `${x}px`);
-            wrap.current.style.setProperty('--y', `${y}px`);
-            clipmask.current.style.setProperty('--width', `${width}px`);
-            clipmask.current.style.setProperty('--height', `${height}px`);
-            cursor.current.style.width = `${width}px`;
-            cursor.current.style.height = `${height}px`;
-            buble.current.style.setProperty('--x', `${bx}px`);
-            buble.current.style.setProperty('--y', `${by}px`);
+            wrap.current.style.setProperty('--x', `${x}em`);
+            wrap.current.style.setProperty('--y', `${y}em`);
+            clipmask.current.style.setProperty('--width', `${width}em`);
+            clipmask.current.style.setProperty('--height', `${height}em`);
+            cursor.current.style.width = `${width}em`;
+            cursor.current.style.height = `${height}em`;
+            buble.current.style.setProperty('--x', `${bx}em`);
+            buble.current.style.setProperty('--y', `${by}em`);
         }
     };
 
