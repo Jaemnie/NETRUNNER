@@ -11,11 +11,14 @@ const HighlightDescription = ({ direction, content }) => {
                         : 'flex justify-center items-center z-[200] max-w-[250px] popover-right relative'
                     : direction === 'bottom'
                         ? 'flex flex-col justify-center items-center z-[200] max-w-[320px] popover-bottom relative'
-                        : 'flex flex-col justify-center items-center z-[200] max-w-[320px] popover-top relative'
+                        : direction === 'top' ? 'flex flex-col justify-center items-center z-[200] max-w-[320px] popover-top relative' : 'none'
             }
         >
             <div className='z-[200] flex items-center px-3 py-2 text-xl rounded-xl bg-bgColor-100 relative'>
-                {content}
+                <div className="disc">
+                    {content}
+                </div>
+
             </div>
         </div>
     );

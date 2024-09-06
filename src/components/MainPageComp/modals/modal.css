@@ -17,15 +17,15 @@
   background-color: #292929;
   padding: 20px;
   border-radius: 10px;
-  /* max-width: 600px; */
+  max-width: 1200px;
   /* max-height: 550px; */
-  max-width: 90vw;
-  max-height: 80vh;
+  /* max-width: 90vw; */
+  /* max-height: 675px; */
   width: auto;
   height: auto;
 }
 
-.modalContent button {
+/* .modalContent button {
   appearance: none;
   margin: 0;
   padding: 0.5rem 1rem;
@@ -39,12 +39,40 @@
   border-radius: 4px;
   color: #aaa;
   background-color: #292929;
+
 }
 
 .modalContent button:hover {
   color: black;
   text-decoration: none;
   cursor: pointer;
+} */
+.modalContent button {
+  --primary-color: #12c2e9;
+  --secondary-color: #f64f59;
+  display: block;
+  width: 10%;
+  padding: 10px 0;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: bold;
+  font-family: 'Noto Sans KR', sans-serif;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.modalContent button:hover {
+  background-color: var(--secondary-color);
+}
+
+.modalContent button:disabled {
+  background-color: var(--primary-color);
+  cursor: not-allowed;
 }
 
 .close {

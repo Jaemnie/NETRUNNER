@@ -65,3 +65,9 @@
     border-color: transparent transparent transparent white;
     /* 오른쪽 화살표 */
 }
+
+.disc {
+    min-width: 150px;
+    max-width: 500px;
+    padding: 10px 20px;
+}
