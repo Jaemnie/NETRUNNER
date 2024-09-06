@@ -85,7 +85,10 @@ function LoginPage() {
   // 회원가입 제출 함수
   const AccountSubmit = async (e) => {
     e.preventDefault();
-
+    if (!checkVerification) {
+      alert("인증번호가 일치하지 않습니다.");
+      return;
+    }
     if (!emailRegex.test(email)) {
       alert("유효한 이메일 주소를 입력해주세요.");
       return;
@@ -151,7 +154,7 @@ function LoginPage() {
       }
     }
   }
-  
+
   // 로그인 제출 함수
   const submitHandler = async (event) => {
     event.preventDefault();
