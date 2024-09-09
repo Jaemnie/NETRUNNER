@@ -12,18 +12,18 @@ class SocketResult {
 
         // 메시지 리스너를 여기서 한번만 등록합니다.
         this.socket.on('message', (data) => {
-            if(this.onMessageReceived) {
+            if (this.onMessageReceived) {
                 this.onMessageReceived(data);
             }
         });
     }
 
-    joinRoom(id){
+    joinRoom(id) {
         this.roomId = id;
-        this.socket.emit('join',{roomId:`${id}roomId`});
+        this.socket.emit('join', { roomId: `${id}roomId` });
     }
 
-    getRoomId(){
+    getRoomId() {
         return this.roomId;
     }
 
@@ -34,11 +34,11 @@ class SocketResult {
 
     // 메시지를 보내는 메소드
     sendMessage(message) {
-        this.socket.emit('message', {roomId:`${this.roomId}roomId`, payload: message});
+        this.socket.emit('message', { roomId: `${this.roomId}roomId`, payload: message, savepoint: localStorage.getItem("missionId") });
     }
 
-    leaveRoom(){
-        this.socket.emit('leave',{roomId:`${this.roomId}`});
+    leaveRoom() {
+        this.socket.emit('leave', { roomId: `${this.roomId}` });
     }
 }
 

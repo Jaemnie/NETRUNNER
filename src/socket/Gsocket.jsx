@@ -29,7 +29,7 @@ class SocketResult {
     }
 
     sendMessage(message) {
-        this.socket.emit('message', { roomId: `${this.roomId}roomId`, payload: `${message}` });
+        this.socket.emit('message', { roomId: `${this.roomId}roomId`, payload: `${message}`, savepoint: localStorage.getItem("missionId") });
     }
     sendContext(message, content) {
         this.socket.emit('content', { roomId: `${this.roomId}roomId`, payload: `${message}`, context: `${content}` });
