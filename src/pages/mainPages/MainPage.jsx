@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaHome, FaCalendarCheck, FaShoppingCart, FaCog, FaUserCircle, FaTrophy, FaMegaport } from 'react-icons/fa';
+import { FaHome, FaCalendarCheck, FaShoppingCart, FaCog, FaUserCircle, FaTrophy, FaMegaport, FaTheaterMasks, FaKeycdn, FaBacon, FaMix, FaMoneyCheck } from 'react-icons/fa';
 import classNames from 'classnames';
 import styles from './MainPage.module.css';
 import MainPageComp from '../../components/MainPageComp/MainPageComp';
@@ -26,7 +26,14 @@ function MainPage() {
   const [socketResult, setSocketResult] = useState(null);
   const [showPortHackModal, setShowPortHackModal] = useState(false);
   const [ports, setPorts] = useState([]);
+
   const [hasPurchasedPortHack, setHasPurchasedPortHack] = useState(false);
+  const [hasPurchasedSSHcrack, setHasPurchasedSSHcrack] = useState(false);
+  const [hasPurchasedSMTPoverflow, setHasPurchasedSMTPoverflow] = useState(false);
+  const [hasPurchasedWebServerWorm, setHasPurchasedWebServerWorm] = useState(false);
+  const [hasPurchasedDecypher, setHasPurchasedDecypher] = useState(false);
+  const [hasPurchasedDECHead, setHasPurchasedDECHead] = useState(false);
+  const [toolList, setToolList] = useState([]);
 
   const [menuContent, setMenuContent] = useState({
     terminer: <MainPageComp />,
@@ -89,15 +96,48 @@ function MainPage() {
         }
 
         const data = await response.json();
-        const purchasedToolNames = data.map(tool => tool.name);
-        setHasPurchasedPortHack(purchasedToolNames.includes('porthack'));
+        setToolList(data);
       } catch (error) {
         console.error('Error checking porthack purchase:', error);
       }
     };
+    const drawIcon = () => {
+      if (Array.isArray(toolList)) {
+        toolList.forEach((value, key) => {
+          if (value.isBuy) {
+            switch (value.name) {
+              case 'porthack':
+                setHasPurchasedPortHack(true);
+                break;
+              case 'SSHcrack':
+                setHasPurchasedSSHcrack(true);
+                break;
+              case 'SMTPoverflow':
+                setHasPurchasedSMTPoverflow(true);
+                break;
+              case 'WebServerWorm':
+                setHasPurchasedWebServerWorm(true);
+                break;
+              case 'Decypher':
+                setHasPurchasedDecypher(true);
+                break;
+              case 'DECHead':
+                setHasPurchasedDECHead(true);
+                break;
+              default:
+                break;
+            }
+          }
+        });
+      } else {
+        console.log('toolList는 배열이 아닙니다:', toolList);
+      }
 
+    }
     checkPortHackPurchase();
-  }, []);
+    drawIcon();
+
+  }, [toolList]);
 
   const fetchMission = async (missionID) => {
     const token = localStorage.getItem('accessToken');
@@ -126,7 +166,7 @@ function MainPage() {
         shop: (
           <Shop
             userId={userId}
-            onPortHackPurchase={() => setHasPurchasedPortHack(true)}
+            setToolList={() => setToolList()}
           />
         )
       }));
@@ -176,7 +216,7 @@ function MainPage() {
         </>
       )}
       {!showAnimation && !showSplitScreen && (
-        <main className={styles.main}>
+        <main className={styles.main} >
           <nav className={styles.mainMenu}>
             <button
               onClick={(e) => handleMenuClick('terminer', e)}
@@ -208,6 +248,46 @@ function MainPage() {
                 className={classNames(styles.menuButton, styles.porthack, { [styles.active]: currentMenu === 'porthack' })}
                 aria-label="PortHack">
                 <FaMegaport style={{ fontSize: '1.75rem' }} />
+              </button>
+            )}
+            {hasPurchasedSSHcrack && (
+              <button
+                onClick={(e) => handleMenuClick('SSHcrack', e)}
+                className={classNames(styles.menuButton, styles.porthack, { [styles.active]: currentMenu === 'SSHcrack' })}
+                aria-label="SSHcrack">
+                <FaTheaterMasks style={{ fontSize: '1.75rem' }} />
+              </button>
+            )}
+            {hasPurchasedSMTPoverflow && (
+              <button
+                onClick={(e) => handleMenuClick('SMTPoverflow', e)}
+                className={classNames(styles.menuButton, styles.porthack, { [styles.active]: currentMenu === 'SMTPoverflow' })}
+                aria-label="SMTPoverflow">
+                <FaMix style={{ fontSize: '1.75rem' }} />
+              </button>
+            )}
+            {hasPurchasedWebServerWorm && (
+              <button
+                onClick={(e) => handleMenuClick('WebServerWorm', e)}
+                className={classNames(styles.menuButton, styles.porthack, { [styles.active]: currentMenu === 'WebServerWorm' })}
+                aria-label="WebServerWorm">
+                <FaBacon style={{ fontSize: '1.75rem' }} />
+              </button>
+            )}
+            {hasPurchasedDecypher && (
+              <button
+                onClick={(e) => handleMenuClick('Decypher', e)}
+                className={classNames(styles.menuButton, styles.porthack, { [styles.active]: currentMenu === 'Decypher' })}
+                aria-label="Decypher">
+                <FaKeycdn style={{ fontSize: '1.75rem' }} />
+              </button>
+            )}
+            {hasPurchasedDECHead && (
+              <button
+                onClick={(e) => handleMenuClick('DECHead', e)}
+                className={classNames(styles.menuButton, styles.porthack, { [styles.active]: currentMenu === 'DECHead' })}
+                aria-label="DECHead">
+                <FaMoneyCheck style={{ fontSize: '1.75rem' }} />
               </button>
             )}
             <div className={styles.navspacer}></div>

@@ -41,7 +41,8 @@ const Tutorial = () => {
         }
     };
 
-    const moveToNextCoordinate = () => {
+    const moveToNextCoordinate = (event) => {
+        event.stopPropagation(); // 이벤트 전파 방지
         const nextIndex = (currentIndex + 1) % coordinates.length; // 다음 인덱스 계산
         setCurrentIndex(nextIndex);
         updatePosition(coordinates[nextIndex]); // 위치 업데이트

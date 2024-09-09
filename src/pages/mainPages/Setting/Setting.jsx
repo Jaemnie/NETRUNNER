@@ -1,14 +1,26 @@
 // Setting.js
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAudio } from '../../../components/Background/AudioContext';
 import styles from './Setting.module.css';
 import { API } from "../../../config";
+import Modal from '../../../components/MainPageComp/modals/Modal';
+import Tutorial from '../../../components/Tutorial/tutorialPage';
+import '../../../components/Tutorial/tutorialPage';
 
 function Setting({ show, onClose }) {
   const navigate = useNavigate();
   const { isMuted, toggleMute } = useAudio();
+
+  const [tuto, setTuto] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const closeModal = () => {
+    localStorage.setItem('tutorial', 'false');
+    onClose();
+    setIsModalOpen(false);
+  };
 
   // 설정 창이 열릴 때 효과를 적용하는 함수
   const applyEffect = () => {
@@ -56,6 +68,13 @@ function Setting({ show, onClose }) {
       localStorage.removeItem('accessToken');
       localStorage.removeItem('userId');
       localStorage.removeItem('leaveRoom');
+      localStorage.removeItem('questMessages');
+      localStorage.removeItem('questMessageSize');
+      localStorage.removeItem('countingSave');
+      localStorage.removeItem("tutorial");
+      document.addEventListener("MoustEvent",
+        toggleFullScreen()
+      );
       navigate('/');
 
     } catch (error) {
@@ -63,23 +82,52 @@ function Setting({ show, onClose }) {
     }
   };
 
+  function toggleFullScreen() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+  }
+
+  const handleTutorial = () => {
+    localStorage.setItem('tutorial', 'true');
+    setTuto(true);
+    // onClose();
+    setIsModalOpen(true);
+  }
+
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
-      <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-        <h2 className={styles.header}>Options</h2>
-        <div className={styles.inputContainer}>
-          <input
-            type="checkbox"
-            id="slide-toggle-control"
-            checked={isMuted}
-            onChange={toggleMute}
-          />
-          <label htmlFor="slide-toggle-control" className={styles.toggleSwitch}></label>
-          <span className={styles.labelText}>BGM</span>
+      {
+        tuto && isModalOpen &&
+        < Modal isOpen={isModalOpen} closeModal={closeModal}>
+          <span className="close" onClick={closeModal}>
+            &times;
+          </span>
+          <Tutorial />
+        </Modal>
+      }
+      {!tuto &&
+        <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+          <h2 className={styles.header}>Options</h2>
+          <div className={styles.inputContainer}>
+            <input
+              type="checkbox"
+              id="slide-toggle-control"
+              checked={isMuted}
+              onChange={toggleMute}
+            />
+            <label htmlFor="slide-toggle-control" className={styles.toggleSwitch}></label>
+            <span className={styles.labelText}>BGM</span>
+          </div>
+          <button className={styles.settingButton} onClick={handleLogout}>Logout</button>
+          <button className={styles.settingButton} onClick={onClose}>Close</button>
+          <button className={styles.settingButton} onClick={handleTutorial}>Tutorial</button>
         </div>
-        <button className={styles.settingButton} onClick={handleLogout}>Logout</button>
-        <button className={styles.settingButton} onClick={onClose}>Close</button>
-      </div>
+      }
     </div>
   );
 }

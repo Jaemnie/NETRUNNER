@@ -17,7 +17,9 @@ const Quest = ({ userId, show, onClose, questData, fetchMission }) => {
   useEffect(() => {
     if (show) {
       const savedMessages = localStorage.getItem('questMessages');
-      if (savedMessages) {
+      const M_size = JSON.parse(localStorage.getItem('questMessageSize'));
+      const count_M = JSON.parse(localStorage.getItem('countingSave'));
+      if (savedMessages && (M_size === count_M)) {
         setDisplayedMessages(JSON.parse(savedMessages));
         messagesLoaded.current = true;
       } else {
@@ -37,14 +39,18 @@ const Quest = ({ userId, show, onClose, questData, fetchMission }) => {
           setDisplayedMessages((prevMessages) => {
             const updatedMessages = [...prevMessages, message.trim()]; // prevMessages를 올바르게 사용하여 업데이트
             localStorage.setItem('questMessages', JSON.stringify(updatedMessages)); // 메시지를 localStorage에 저장
+            localStorage.setItem('questMessageSize', JSON.stringify(index));
             return updatedMessages;
           });
           if (index === messages.length - 1) {
             setIsTyping(false);
             messagesLoaded.current = true;
           }
-        }, (index + 1) * 2000);
+        }, (index + 1) * 1500);
+        localStorage.setItem('countingSave', JSON.stringify(messages.length - 1));
       });
+    } else {
+
     }
   }, [activeTab, questData]);
 
@@ -132,6 +138,7 @@ const Quest = ({ userId, show, onClose, questData, fetchMission }) => {
   // 탭 클릭 핸들러
   const handleTabClick = (tab) => {
     setActiveTab(tab);
+    console.log(messagesLoaded.current);
     if (tab === 'message' && !messagesLoaded.current) {
       messagesLoaded.current = false;
     }
@@ -141,7 +148,7 @@ const Quest = ({ userId, show, onClose, questData, fetchMission }) => {
   const completeMission = async () => {
     const token = localStorage.getItem('accessToken');
     const missionid = localStorage.getItem('missionId');
-  
+
     try {
       const response = await fetch(`${API.MISSIONCOMPLETE}/${missionid}`, {
         method: 'POST',
@@ -151,23 +158,25 @@ const Quest = ({ userId, show, onClose, questData, fetchMission }) => {
         },
         body: JSON.stringify({ userId, missionId: questData.missionId })
       });
-  
+
       const text = await response.text();
-  
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-  
+
       if (!text) {
         throw new Error('Response body is empty');
       }
-  
+
       const result = JSON.parse(text);
-  
+
       if (result.success) {
         console.log('Next Mission ID:', result.nextMissionId);
         localStorage.setItem('missionId', result.nextMissionId); // 다음 미션 ID를 저장
         localStorage.removeItem('questMessages'); // questMessages 초기화
+        localStorage.removeItem('questMessageSize');
+        localStorage.removeItem('countingSave');
         await fetchMission(result.nextMissionId); // 새로운 미션 ID로 fetchMission 호출
         Swal.fire({
           icon: "success",
