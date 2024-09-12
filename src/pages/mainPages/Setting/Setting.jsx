@@ -83,13 +83,14 @@ function Setting({ show, onClose }) {
   };
 
   function toggleFullScreen() {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen();
-    } else {
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
-      }
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
     }
+    // else {
+    //   if (document.exitFullscreen) {
+    //     document.exitFullscreen();
+    //   }
+    // }
   }
 
   const handleTutorial = () => {

@@ -20,7 +20,7 @@ class SocketResult {
 
     joinRoom(id) {
         this.roomId = id;
-        this.socket.emit('join', { roomId: `${id}roomId` });
+        this.socket.emit('join', { roomId: `${this.roomId}roomId` });
     }
 
     getRoomId() {
