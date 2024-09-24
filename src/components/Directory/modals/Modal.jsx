@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
-import './modal.css';
+import style from './modal.module.css';
+// import './window.css';
 
 const Modal = ({ isOpen, closeModal, children }) => {
     const modalRef = useRef();
@@ -26,8 +27,8 @@ const Modal = ({ isOpen, closeModal, children }) => {
     if (!isOpen) return null;
 
     return ReactDOM.createPortal(
-        <div className="modalOverlay">
-            <div className="modalContent" ref={modalRef}>
+        <div className={style.modalOverlay}>
+            <div className={`${style.modalContent} ${style.augsModal}`} ref={modalRef} data-augmented-ui>
                 {children}
             </div>
         </div>,

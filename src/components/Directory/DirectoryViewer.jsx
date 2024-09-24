@@ -7,6 +7,7 @@ import styles from './DirectoryViewer.module.css'; // Import CSS module
 import { API } from '../../config';
 import ContextMenu from './menu/Menu';
 import Modal from './modals/Modal';
+import modalStyle from './modals/modal.module.css';
 
 // 파일 유형에 따라 적절한 아이콘을 반환하는 함수
 function getIconForType(type) {
@@ -326,49 +327,53 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
       </div>
       <p className={styles.directoryViewerPathBar}>{path}</p>
       <Modal isOpen={isModalOpen} closeModal={closeModal}>
-        <div className="modalContent">
-          <span className="close" onClick={closeModal}>
-            &times;
-          </span>
-          <label htmlFor="content">{modalTitle}</label>
-          {isFileName ? (
-            <>
-              <input
-                type="text"
-                id="content"
-                value={context}
-                onChange={(e) => setContext(e.target.value)}
-              />
-              <button onClick={() => handleCreate(modalTitle)}>
-                생성
-              </button>
-            </>
-          ) : (
-            <>
-              {isEdit === true && (
+        <button className={modalStyle.close} onClick={closeModal}>
+        </button>
+        <div>
+          <label className={modalStyle.title} htmlFor="content">{modalTitle}</label>
+          <div className={modalStyle.contextBox}>
+            <div>
+              {isFileName ? (
                 <>
-                  <textarea
+                  <input
+                    type="text"
                     id="content"
-                    rows="30"
-                    cols="65"
                     value={context}
                     onChange={(e) => setContext(e.target.value)}
-                  >
-                    {context}
-                  </textarea>
-                  <button onClick={() => { handleSave(); closeModal(); }}>저장</button>
+                    className={modalStyle.code}
+                  />
+                  <button className={modalStyle.normalButton} onClick={() => handleCreate(modalTitle)}>
+                    생성
+                  </button>
+                </>
+              ) : (
+                <>
+                  {isEdit ? (
+                    <>
+                      <textarea
+                        id="content"
+                        rows="30"
+                        cols="65"
+                        value={context}
+                        onChange={(e) => setContext(e.target.value)}
+                        className={modalStyle.code}
+                      >
+                        {context}
+                      </textarea>
+                      <button className={modalStyle.normalButton} onClick={() => { handleSave(); closeModal(); }}>저장</button>
+                    </>
+                  ) : (
+                    <textarea id="content" rows="30" cols="65" className={modalStyle.code} readOnly>
+                      {context}
+                    </textarea>
+                  )}
                 </>
               )}
-              {isEdit === false && (
-                <textarea id="content" rows="30" cols="65" readOnly>
-                  {context}
-                </textarea>
-              )}
-            </>
-          )}
-        </div>
-      </Modal>
-    </div>
+            </div>
+          </div>
+        </div >
+      </Modal >
+    </div >
   );
 });
 

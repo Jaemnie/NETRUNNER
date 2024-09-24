@@ -4,6 +4,7 @@ import { DirectoryViewer } from '../Directory/DirectoryViewer';
 import TerminalInteraction from '../Terminal/TerminalInteraction';
 import TermPage from '../Terminal/termPage';
 import styles from './MainPageComp.module.css'; // CSS 모듈을 가져옴
+import ModalStyles from './modals/modal.module.css';
 import Modal from './modals/Modal';
 import Tutorial from '../Tutorial/tutorialPage';
 
@@ -34,10 +35,8 @@ const MainPageComp = () => {
     <div className={styles.mainPageComp}>
       {
         < Modal isOpen={isModalOpen} closeModal={closeModal}>
-          <span className="close" onClick={closeModal}>
-            &times;
-          </span>
-          <Tutorial></Tutorial>
+          <button className={`${ModalStyles.close}`} onClick={closeModal}></button>
+          <Tutorial />
         </Modal>
       }
 

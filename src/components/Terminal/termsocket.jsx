@@ -1,7 +1,7 @@
 import TerminalInteraction from './TerminalInteraction';
 import { SocketResult } from '../../socket/socket';
 
-function Termi(terminal2, elements, socketRoomId, setPorts) {
+function Termi(terminal2, elements, socketRoomId, setPorts, setIP) {
   let message = '';
   const socket = new SocketResult('TERM');
   socket.joinRoom(socketRoomId);
@@ -35,11 +35,12 @@ function Termi(terminal2, elements, socketRoomId, setPorts) {
         console.log("Parsed IP and port data:", ip, ports); // 파싱된 IP와 포트 데이터 로그
 
         if (ports.length > 0 && ip) {  // IP와 포트 데이터가 모두 있을 경우에만 저장
-          localStorage.setItem('ipData', ip); // IP 데이터를 localStorage에 저장
+          localStorage.setItem('ipData', JSON.stringify(ip)); // IP 데이터를 localStorage에 저장
           localStorage.setItem('portData', JSON.stringify(ports)); // 포트 데이터를 localStorage에 저장
           console.log("IP saved to localStorage:", localStorage.getItem('ipData')); // IP 저장 로그
           console.log("Port data saved to localStorage:", localStorage.getItem('portData')); // 포트 데이터 저장 로그
           setPorts(ports);  // 포트 데이터를 상태로 업데이트
+          setIP(ip);
         } else {
           console.log("No valid port data found or IP missing.");
         }

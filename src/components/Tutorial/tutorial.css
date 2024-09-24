@@ -2,8 +2,10 @@
 
 .tutoMain {
     position: relative;
-    width: 1150px;
-    height: 750px;
+    /* width: 1150px;
+    height: 750px; */
+    width: 100%;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -50,8 +52,8 @@
     /* box-shadow: 0 5px 23px rgba(0, 0, 0, 0.5); */
     border-radius: 15px 15px;
     /* box-shadow: #050505 0px, 0px, 0px, 3px; */
-    top: -25px;
-    left: -25px;
+    top: 2px;
+    left: -15px;
     transform: translate(var(--x), var(--y));
 }
 
@@ -63,17 +65,14 @@
     font-family: 'Noto Sans KR', sans-serif !important;
     font-size: 20px;
     font-weight: 500;
-    top: -15px;
-    left: -15px;
+    top: 12px;
+    left: -5px;
     transform: translate(var(--x), var(--y));
 }
 
 
 .tutoBtn {
     position: absolute;
-    width: 50px;
-    height: 50px;
-    bottom: 0px;
+    bottom: 30px;
     font-family: 'Noto Sans KR', sans-serif !important;
-
 }

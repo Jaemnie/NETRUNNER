@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState, useMemo } from "react";
 import "./tutorial.css";
 import HighlightDescription from "./PopOver/popOverProp";
 import { FaCog } from 'react-icons/fa';
+import style from '../MainPageComp/modals/modal.module.css';
 
 const Tutorial = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -58,6 +59,7 @@ const Tutorial = () => {
 
     return (
         <div className="tutoMain">
+            <input className={style.title} value={"Tutorial Page"}></input>
             <section className="wrap" ref={wrap}>
                 <div className="box"></div>
                 <div className="box" ref={clipmask}></div>
@@ -76,7 +78,7 @@ const Tutorial = () => {
                     )}
                 </div>
             </section>
-            <button className="tutoBtn" onClick={moveToNextCoordinate}>다음</button>
+            <button className={`tutoBtn ${style.normalButton}`} onClick={moveToNextCoordinate}>다음</button>
         </div>
     );
 }

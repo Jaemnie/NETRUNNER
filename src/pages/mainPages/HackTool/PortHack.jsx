@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from './PortHack.module.css';
+import styles2 from './ToolLayout.module.css';
 import JigsawHackingGame from '../MiniGames/JigsawHackingGame'; // Jigsaw Hacking Game 컴포넌트 불러오기
 import { SocketResult } from '../../../socket/Gsocket'; // SocketResult 클래스를 불러오기
 
@@ -81,10 +82,10 @@ function PortHackModal({ show, onClose }) {
 
   return (
     show && (
-      <div className={styles.modalOverlay} onClick={onClose}>
-        <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+      <div className={styles2.modalOverlay} onClick={onClose}>
+        <div className={`${styles2.modalContent} ${styles2.augsTools}`} onClick={(e) => e.stopPropagation()} data-augmented-ui>
           <div className={styles.portHackContainer}>
-            <h2 className={styles.modalTitle}>IP Scan</h2>
+            <h2 className={styles2.modalTitle}>IP Scan</h2>
             <ul className={styles.portList}>
               {ports.length === 0 ? (
                 <p>데이터를 받아오지 못했습니다. scan 명령어로 IP를 검색하세요.</p> // 포트 데이터가 없을 때 예외 메시지 표시
@@ -101,7 +102,7 @@ function PortHackModal({ show, onClose }) {
             </ul>
             {showHackingGame && <JigsawHackingGame onClose={(success) => closeHackingGame(success)} />} {/* 성공 여부를 콜백으로 전달 */}
           </div>
-          <button className={styles.closeButton} onClick={onClose}>X</button>
+          <button className={styles2.closeButton} onClick={onClose}></button>
         </div>
       </div>
     )

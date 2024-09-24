@@ -1,0 +1,209 @@
+@import url('/node_modules/augmented-ui/augmented-ui.min.css');
+
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modalContent {
+    z-index: 1;
+    background-color: #292929;
+    padding: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: auto;
+
+    /* max-width: 1200px; */
+    padding-top: 60px;
+
+    min-width: 400px;
+    min-height: 200px;
+    width: auto;
+    height: auto;
+    max-width: 600px;
+    max-height: 850px;
+
+    position: relative;
+    --glow-margin: 70px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    filter: drop-shadow(0 0 75px rgb(128 0 255 / 0.25));
+}
+
+.modalContent::after {
+    content: "";
+    position: absolute;
+    top: 55px;
+    height: 4px;
+    display: block;
+    z-index: 90;
+    opacity: 0.5;
+}
+
+.normalButton {
+    /* --primary-color: #12c2e9;
+    --secondary-color: #f64f59; */
+    --primary-color: #590e97;
+    --secondary-color: #234992;
+
+    display: block;
+    width: 10%;
+    padding: 10px 0;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: bold;
+    font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+    min-width: 50px;
+}
+
+.normalButton:hover {
+    background-color: var(--secondary-color);
+}
+
+.normalButton:disabled {
+    background-color: var(--primary-color);
+    cursor: not-allowed;
+}
+
+.augsModal {
+    --aug-rect-l1: initial;
+    /* --aug-l1-width: 110px; */
+    --aug-l1-width: 0px;
+    --aug-l1-height: 4px;
+    --aug-l-center: 57px;
+    --aug-rect-r1: initial;
+    /* --aug-r1-width: (100% - 125px - 50px); */
+    --aug-r1-width: 0px;
+    --aug-r1-height: 4px;
+    --aug-r-center: 57px;
+    --aug-clip-tr1: initial;
+    --aug-tr1-alt-join-out: initial;
+    --aug-tr1: 17px;
+    --aug-clip-tr2: initial;
+    --aug-tr2: 17px;
+    --aug-tr-extend1: 50px;
+    --aug-round-tl1: initial;
+    --aug-tl1: 8px;
+    --aug-round-br1: initial;
+    --aug-br1: 8px;
+    margin: auto;
+
+    min-width: 400px;
+    min-height: 200px;
+    width: auto;
+    height: auto;
+    max-width: 600px;
+    max-height: 850px;
+
+    /* position: absolute; */
+    inset: 0;
+    margin: auto;
+    --aug-inlay: initial;
+    --aug-inlay-all: 2px;
+    --aug-inlay-opacity: 0.25;
+
+    --aug-border: initial;
+    --aug-border-all: 2px;
+    --aug-border-bg: #1d1c1c;
+}
+
+button.close {
+    position: absolute;
+    top: -15px;
+    left: 2px;
+    width: 110px;
+    height: 50px;
+    --red: #fc199a;
+    --yellow: #ffcc00;
+    --green: #61e2ff;
+    --close: radial-gradient(circle, var(--red), var(--red) 7px, transparent 8px);
+    --min: radial-gradient(circle, var(--yellow), var(--yellow) 7px, transparent 8px);
+    --max: radial-gradient(circle, var(--green), var(--green) 7px, transparent 8px);
+    background: var(--close) -28px no-repeat,
+        var(--min) -2px no-repeat,
+        var(--max) 24px no-repeat;
+    filter: brightness(0.5);
+    opacity: 0.75;
+    cursor: pointer;
+    border: none;
+
+    display: block;
+    padding: 10px 0;
+    border-radius: 4px;
+
+    margin-top: 20px;
+}
+
+label.title {
+    position: absolute;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: bold;
+    top: 15px;
+    left: 120px;
+    width: calc(100% - 240px);
+    font-size: 15px;
+    background: transparent;
+    color: rgba(181, 135, 255, 0.745);
+    text-shadow: 0 0 12px rebeccapurple;
+    border: none;
+    text-align: center;
+    letter-spacing: 0.1em;
+}
+
+label,
+textarea {
+    letter-spacing: 1px;
+    color: #fff;
+}
+
+.code {
+    inset: 0;
+    position: relative;
+    font-size: 0.8rem;
+    background-color: #292929;
+    padding: 10px;
+    font-family: 'Noto Sans KR', sans-serif;
+    max-width: 100%;
+    height: auto;
+    line-height: 1.5;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-shadow: 1px 1px 1px #999;
+}
+
+.contextBox {
+    position: relative;
+    width: auto;
+    min-height: 200px;
+    min-width: 400px;
+
+    min-width: 400px;
+    min-height: 200px;
+    width: auto;
+    height: auto;
+    max-width: 600px;
+    max-height: 850px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}

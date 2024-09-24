@@ -4,11 +4,11 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAudio } from '../../../components/Background/AudioContext';
 import styles from './Setting.module.css';
+import tutorialStyles from '../../../components/MainPageComp/modals/modal.module.css';
 import { API } from "../../../config";
 import Modal from '../../../components/MainPageComp/modals/Modal';
 import Tutorial from '../../../components/Tutorial/tutorialPage';
 import '../../../components/Tutorial/tutorialPage';
-
 function Setting({ show, onClose }) {
   const navigate = useNavigate();
   const { isMuted, toggleMute } = useAudio();
@@ -105,9 +105,7 @@ function Setting({ show, onClose }) {
       {
         tuto && isModalOpen &&
         < Modal isOpen={isModalOpen} closeModal={closeModal}>
-          <span className="close" onClick={closeModal}>
-            &times;
-          </span>
+          <button className={`${tutorialStyles.close}`} onClick={closeModal}></button>
           <Tutorial />
         </Modal>
       }

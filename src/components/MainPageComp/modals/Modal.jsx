@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
-import './modal.css';
+import style from './modal.module.css';
+
+// import './window.css';
 
 const Modal = ({ isOpen, closeModal, children }) => {
     const modalRef = useRef();
@@ -9,6 +11,38 @@ const Modal = ({ isOpen, closeModal, children }) => {
     const handle = useCallback(() => {
         closeModal();
     }, [closeModal]);
+
+    // const [close, setClose] = useState(false);
+    // console.log("local CLose", close);
+
+    // const handleModalClose = () => {
+    //     setClose(true);
+    // };
+
+    // const handleConfirm = () => {
+    //     onConfirm();
+    //     handleModalClose();
+    // };
+
+    // const handleAnimationEnd = () => {
+    //     if (close) {
+    //         onClose();
+    //     }
+    // };
+    // <StyledMask close={close} onAnimationEnd={handleAnimationEnd}>
+    //     <StyledModalWrapper close={close}>
+    //         <div className="modal-content">
+    //             <div className="modal-title">{title}</div>
+    //             <div className="modal-body">{children}</div>
+    //             <div className="button-group">
+    //                 <Button color="gray" onClick={handleModalClose}>
+    //                     취소
+    //                 </Button>
+    //                 <Button color="skyblue" onClick={handleConfirm}>
+    //                     확인
+    //                 </Button>
+    //             </div>
+    //         </div>
 
     useEffect(() => {
         if (!isOpen) return;
@@ -26,8 +60,8 @@ const Modal = ({ isOpen, closeModal, children }) => {
     if (!isOpen) return null;
 
     return ReactDOM.createPortal(
-        <div className="modalOverlay">
-            <div className="modalContent" ref={modalRef}>
+        <div className={style.modalOverlay}>
+            <div className={`${style.modalContent} ${style.augs}`} ref={modalRef} data-augmented-ui >
                 {children}
             </div>
         </div>,
