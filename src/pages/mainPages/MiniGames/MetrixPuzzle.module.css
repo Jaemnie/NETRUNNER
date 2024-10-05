@@ -1,0 +1,34 @@
+/* Game.module.css */
+
+.matrix {
+    display: grid;
+    grid-template-columns: repeat(5, 60px);
+    gap: 5px;
+}
+
+.cell {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    background-color: white;
+    font-size: 18px;
+    /* 글자 크기 조정 */
+}
+
+.cell.selected {
+    background-color: lightblue;
+    /* 선택된 셀의 배경색 */
+}
+
+.cell:hover {
+    background-color: #f0f0f0;
+    /* 마우스 오버 시 배경색 */
+}
+
+.bufferDisplay {
+    margin-top: 20px;
+}

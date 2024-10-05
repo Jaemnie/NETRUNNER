@@ -3,6 +3,7 @@
 class TerminalInteraction {
   static terminal = null; // 터미널 객체를 저장하는 정적 변수
   static directoryViewer = null; // 디렉토리 뷰어 객체를 저장하는 정적 변수
+  static nodeMap = null;
 
   static setTerminal(term) {
     TerminalInteraction.terminal = term; // 터미널 객체 설정
@@ -12,10 +13,18 @@ class TerminalInteraction {
     TerminalInteraction.directoryViewer = viewer; // 디렉토리 뷰어 객체 설정
   }
 
+  static setNodeMap(viewer) {
+    TerminalInteraction.nodeMap = viewer; //노드맵
+  }
+
   static handleTerminalInput(data) {
     // 'cat' 명령어를 실행할 때는 경로 업데이트를 하지 않음
     if (!data.trim().startsWith('cat')) {
       TerminalInteraction.directoryViewer.updateDirectoryContent(data); // 터미널 입력 처리 시 디렉토리 내용 업데이트
+
+    }
+    if (data.trim().startsWith('scan') || data.trim().startsWith('ssh') || data.trim().startsWith('exit')) {
+      TerminalInteraction.nodeMap.updateMap(data);
     }
   }
 

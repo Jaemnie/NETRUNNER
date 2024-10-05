@@ -11,6 +11,7 @@ import Setting from './Setting/Setting';
 import Lanking from '../../components/Lank/Lanking';
 import bgm from '../../assets/mainbgm.mp3';
 import PortHackModal from './HackTool/PortHack';
+import DecypherModal from './HackTool/Decypher';
 import { SocketResult } from '../../socket/socket';
 import { fetchMissionData, fetchProfileData, API } from "../../config";
 
@@ -25,6 +26,7 @@ function MainPage() {
   const [questData, setQuestData] = useState(null);
   const [socketResult, setSocketResult] = useState(null);
   const [showPortHackModal, setShowPortHackModal] = useState(false);
+  const [showDecypherModal, setShowDecypherModal] = useState(false);
   const [ports, setPorts] = useState([]);
 
   const [hasPurchasedPortHack, setHasPurchasedPortHack] = useState(false);
@@ -173,6 +175,8 @@ function MainPage() {
       setCurrentMenu(menuKey);
     } else if (menuKey === 'porthack') {
       setShowPortHackModal(true);
+    } else if (menuKey === 'Decypher') {
+      setShowDecypherModal(true);
     } else {
       setCurrentMenu(menuKey);
     }
@@ -197,6 +201,10 @@ function MainPage() {
   const closePortHackModal = () => {
     setShowPortHackModal(false);
   };
+
+  const closeDecyoherModal = () => {
+    setShowDecypherModal(false);
+  }
 
   return (
     <div className={styles.mainContainer}>
@@ -318,6 +326,12 @@ function MainPage() {
           onClose={closePortHackModal}
           ports={ports}
           setPorts={setPorts}
+        />
+      )}
+      {showDecypherModal && (
+        <DecypherModal
+          show={showDecypherModal}
+          onClose={closePortHackModal}
         />
       )}
     </div>

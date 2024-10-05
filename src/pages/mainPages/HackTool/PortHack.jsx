@@ -35,7 +35,8 @@ function PortHackModal({ show, onClose }) {
         setPorts([]); // 포트 데이터가 없을 경우 빈 배열로 설정
       }
       if (storedIp) {
-        console.log("Loading IP data from localStorage:", storedIp); // localStorage에서 IP 불러오는지 로그 출력
+        console.log("Loading IP data from localStorage:", storedIp, typeof storedIp); // localStorage에서 IP 불러오는지 로그 출력
+
         setIp(storedIp); // IP 데이터 설정
       } else {
         console.log("No IP data found in localStorage."); // localStorage에 IP 데이터가 없는 경우 로그 출력

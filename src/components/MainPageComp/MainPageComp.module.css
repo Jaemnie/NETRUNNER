@@ -21,3 +21,14 @@
   padding: 10px;
   box-sizing: border-box;
 }
+
+.testview {
+  flex-shrink: 1;
+  border: 2px solid #C471ED;
+  border-radius: 8px;
+  padding: 10px;
+  height: 100px;
+  color: white;
+  box-sizing: border-box;
+  background-color: black;
+}

@@ -72,6 +72,7 @@ function Setting({ show, onClose }) {
       localStorage.removeItem('questMessageSize');
       localStorage.removeItem('countingSave');
       localStorage.removeItem("tutorial");
+      localStorage.removeItem("ipData");
       document.addEventListener("MoustEvent",
         toggleFullScreen()
       );
