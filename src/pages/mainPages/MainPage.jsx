@@ -331,7 +331,7 @@ function MainPage() {
       {showDecypherModal && (
         <DecypherModal
           show={showDecypherModal}
-          onClose={closePortHackModal}
+          onClose={closeDecyoherModal}
         />
       )}
     </div>
