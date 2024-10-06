@@ -20,10 +20,10 @@ const Game = () => {
 
     const generateCorrectSequences = useCallback(() => {
         const sequences = [];
-        const sequenceCount = 3;
+        const sequenceCount = getRandomInt(1, 4); // 랜덤으로 1부터 3까지의 정답 시퀀스 개수
 
         for (let i = 0; i < sequenceCount; i++) {
-            const length = getRandomInt(2, 6);
+            const length = getRandomInt(2, 6); // 각 시퀀스의 길이
             const sequence = [];
 
             while (sequence.length < length) {
@@ -105,10 +105,10 @@ const Game = () => {
     const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min)) + min;
 
     const checkCorrectness = () => {
-        const results = correctSequences.map((sequence) => {
-            return sequence.every((item) => buffer.includes(item));
+        // 각 정답 시퀀스의 항목이 버퍼에 포함되어 있는지 확인
+        return correctSequences.some(sequence => {
+            return sequence.every(item => buffer.includes(item));
         });
-        return results.some(result => result); // 하나라도 정답이면 true 반환
     };
 
     const resetGame = () => {
@@ -124,15 +124,20 @@ const Game = () => {
             <h2>Matrix Game</h2>
             <div className={styles.matrix}>
                 {matrix.map((row, rowIndex) =>
-                    row.map((cell, colIndex) => (
-                        <div
-                            key={`${rowIndex}-${colIndex}`}
-                            className={`${styles.cell} ${buffer.includes(cell) ? styles.selected : ''}`}
-                            onClick={handleCellClick(cell, rowIndex, colIndex)} // 이벤트 핸들러 수정
-                        >
-                            {cell}
-                        </div>
-                    ))
+                    row.map((cell, colIndex) => {
+                        // 현재 선택 가능한 행 또는 열에 대해 배경색 변화
+                        const isHighlighted = (currentSelectionMode === 'row' && rowIndex === currentRow) ||
+                            (currentSelectionMode === 'column' && colIndex === currentColumn);
+                        return (
+                            <div
+                                key={`${rowIndex}-${colIndex}`}
+                                className={`${styles.cell} ${buffer.includes(cell) ? styles.selected : ''} ${isHighlighted ? styles.highlight : ''}`}
+                                onClick={handleCellClick(cell, rowIndex, colIndex)} // 이벤트 핸들러 수정
+                            >
+                                {cell}
+                            </div>
+                        );
+                    })
                 )}
             </div>
             <div className={styles.bufferDisplay}>
