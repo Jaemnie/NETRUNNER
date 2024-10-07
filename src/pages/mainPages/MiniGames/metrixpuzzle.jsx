@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import styles from './MetrixPuzzle.module.css'; // CSS 모듈 임포트
 
-const Game = () => {
+const Game = ({ onClose }) => {
     const [matrix, setMatrix] = useState([]); // 행렬 상태
     const [buffer, setBuffer] = useState([]); // 선택된 셀을 저장할 버퍼 상태
     const [currentSelectionMode, setCurrentSelectionMode] = useState('row'); // 현재 선택 모드 (행/열)
@@ -106,7 +106,7 @@ const Game = () => {
 
     const checkCorrectness = () => {
         // 각 정답 시퀀스의 항목이 버퍼에 포함되어 있는지 확인
-        return correctSequences.some(sequence => {
+        return correctSequences.every(sequence => {
             return sequence.every(item => buffer.includes(item));
         });
     };
@@ -117,6 +117,7 @@ const Game = () => {
         setSelectedCoordinates([]); // 선택된 좌표 초기화
         generateMatrix(); // 새로운 행렬 생성
         generateCorrectSequences(); // 새로운 정답 시퀀스 생성
+        onClose();
     };
 
     return (
@@ -153,7 +154,7 @@ const Game = () => {
                     {isCorrect ? <li>✔️ Correct!</li> : <li>❌ Try Again!</li>}
                 </ul>
             </div>
-            {isCorrect && <button onClick={resetGame}>Restart Game</button>}
+            {isCorrect && <button onClick={resetGame}>close</button>}
         </div>
     );
 };

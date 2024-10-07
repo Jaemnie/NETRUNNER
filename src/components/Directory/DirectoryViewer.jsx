@@ -106,6 +106,7 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
             const files = temp1.match(regex1);
             const filestype = temp2.match(regex2);
             const setDir = { files, filestype };
+            parseFileData(chat);
             setContents(setDir);
           });
         }, 500);
@@ -135,6 +136,7 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
             const files = temp1.match(regex1);
             const filestype = temp2.match(regex2);
             const setDir = { files, filestype };
+            parseFileData(chat);
             setContents(setDir);
           });
         });
@@ -161,6 +163,7 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
             const files = temp1.match(regex1);
             const filestype = temp2.match(regex2);
             const setDir = { files, filestype };
+            parseFileData(chat);
             setContents(setDir);
           });
         });
@@ -192,12 +195,36 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
             const files = temp1.match(regex1);
             const filestype = temp2.match(regex2);
             const setDir = { files, filestype };
+            parseFileData(chat);
             setContents(setDir);
           });
         });
       });
     }
   };
+
+  function parseFileData(data) {
+
+    console.log("Processing file data...");
+    const files = [];
+    const lines = data.trim().split(' ');
+    if (lines.length > 0) {
+      for (const line of lines) {
+        const trimmedLine = line.trim();
+        if (trimmedLine.includes('[file]')) {
+          files.push(trimmedLine);
+        }
+      }
+    } else {
+      console.log('No Files');
+    }
+    if (files.length > 0) {
+      localStorage.setItem('files', JSON.stringify(files));
+    } else {
+      console.log("No valid file data found.");
+      localStorage.removeItem('files');
+    }
+  }
 
   // 우클릭 이벤트
   const handleContextMenu = (event, id = 'background') => {
@@ -264,7 +291,7 @@ const DirectoryViewer = forwardRef((props, ref, initialPath = '/') => {
 
   const handleCreate = (type) => {
     if (type === '새 파일 생성') {
-      const newFileName = context ? `${context}.txt` : '새파일.txt';
+      const newFileName = context ? `${context}` : '새파일.txt';
       ref.current.appendToTerminal(`touch ${newFileName}`);
     } else if (type === '새 디렉터리 생성') {
       const newDirName = context || '새디렉토리';

@@ -73,6 +73,7 @@ function Setting({ show, onClose }) {
       localStorage.removeItem('countingSave');
       localStorage.removeItem("tutorial");
       localStorage.removeItem("ipData");
+      localStorage.removeItem('files');
       document.addEventListener("MoustEvent",
         toggleFullScreen()
       );

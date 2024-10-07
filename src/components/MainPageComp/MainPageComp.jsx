@@ -38,7 +38,7 @@ const MainPageComp = () => {
     <div className={styles.mainPageComp}>
       {
         < Modal isOpen={isModalOpen} closeModal={closeModal}>
-          <button className={`${ModalStyles.close}`} onClick={closeModal}></button>
+          <button className={`${ModalStyles.close}`} onClick={closeModal} />
           <Tutorial />
         </Modal>
       }
