@@ -117,7 +117,7 @@ const Game = ({ onClose }) => {
         setSelectedCoordinates([]); // 선택된 좌표 초기화
         generateMatrix(); // 새로운 행렬 생성
         generateCorrectSequences(); // 새로운 정답 시퀀스 생성
-        onClose();
+        onClose(isCorrect);
     };
 
     return (

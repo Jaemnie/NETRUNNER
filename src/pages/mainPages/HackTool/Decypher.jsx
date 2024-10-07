@@ -45,6 +45,7 @@ function DecypherModal({ show, onClose }) {
     };
 
     const closeHackingGame = (success) => {
+        console.log(success);
         setShowHackingGame(false); // 해킹 게임 닫기
         if (success && currentFile) {
             if (currentFile) { // IP 데이터가 있을 경우에만 메시지 전송
