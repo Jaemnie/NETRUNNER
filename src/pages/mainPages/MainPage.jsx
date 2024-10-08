@@ -12,6 +12,7 @@ import Lanking from '../../components/Lank/Lanking';
 import bgm from '../../assets/mainbgm.mp3';
 import PortHackModal from './HackTool/PortHack';
 import DecypherModal from './HackTool/Decypher';
+import DECHeadModal from './HackTool/DECHead';
 import { SocketResult } from '../../socket/socket';
 import { fetchMissionData, fetchProfileData, API } from "../../config";
 
@@ -27,6 +28,7 @@ function MainPage() {
   const [socketResult, setSocketResult] = useState(null);
   const [showPortHackModal, setShowPortHackModal] = useState(false);
   const [showDecypherModal, setShowDecypherModal] = useState(false);
+  const [showDECHeadModal, setShowDECHeadModal] = useState(false);
   const [ports, setPorts] = useState([]);
 
   const [hasPurchasedPortHack, setHasPurchasedPortHack] = useState(false);
@@ -177,6 +179,8 @@ function MainPage() {
       setShowPortHackModal(true);
     } else if (menuKey === 'Decypher') {
       setShowDecypherModal(true);
+    } else if (menuKey === 'DECHead') {
+      setShowDECHeadModal(true);
     } else {
       setCurrentMenu(menuKey);
     }
@@ -204,6 +208,9 @@ function MainPage() {
 
   const closeDecyoherModal = () => {
     setShowDecypherModal(false);
+  }
+  const closeDECHeadModal = () => {
+    setShowDECHeadModal(false);
   }
 
   return (
@@ -333,6 +340,11 @@ function MainPage() {
           show={showDecypherModal}
           onClose={closeDecyoherModal}
         />
+      )}
+      {showDECHeadModal && (
+        <DECHeadModal
+          show={showDECHeadModal}
+          onClose={closeDECHeadModal} />
       )}
     </div>
   );

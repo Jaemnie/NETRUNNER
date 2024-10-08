@@ -1,0 +1,65 @@
+import React, { useState, useEffect } from 'react';
+import styles from './PortHack.module.css';
+import layoutFrame from './ToolLayout.module.css';
+import Game from '../MiniGames/RotatePuzzle';
+import { SocketResult } from '../../../socket/Gsocket'; // SocketResult 클래스를 불러오기
+
+function DECHeadModal({ show, onClose }) {
+    const [showHackingGame, setShowHackingGame] = useState(false); // 해킹 게임 표시 상태
+    const [currentFile, setCurrentFile] = useState(null); // 현재 해킹 중인 포트
+    const [socket, setSocket] = useState(null); // 소켓 인스턴스 상태 추가
+    const [files, setFiles] = useState([]); // 포트 데이터 상태 추가
+
+
+    useEffect(() => {
+        // 소켓 초기화 및 연결
+        const socketInstance = new SocketResult();
+        setSocket(socketInstance);
+
+        return () => {
+            // 컴포넌트가 언마운트될 때 소켓 연결 해제
+            socketInstance.leaveRoom();
+        };
+    }, []);
+
+    useEffect(() => {
+        // if (show) {
+        //     const storedFiles = localStorage.getItem('files');
+        //     if (storedFiles) {
+        //         const encodeFile = JSON.parse(storedFiles)
+        //             .map(file => file.replace(/\[file\]/g, '').trim()) // '[file]' 제거
+        //             .filter(file => file.includes('.encoded')); // '.encoded' 포함하는 요소만 필터링
+        //         setFiles(encodeFile); // 필터링된 결과를 setFiles에 설정
+        //     } else {
+        //         setFiles([]); // 포트 데이터가 없을 경우 빈 배열로 설정
+        //     }
+        // } else {
+        //     // 모달이 닫힐 때 localStorage 데이터 초기화
+        //     localStorage.removeItem('files');
+        // }
+    }, [show]);
+
+    const handleHackClick = (file) => {
+        // setCurrentFile(file);
+        // setShowHackingGame(true); // 해킹 게임 표시
+    };
+
+    const closeHackingGame = (success) => {
+    };
+
+    return (
+        show && (
+            <div className={layoutFrame.modalOverlay} onClick={onClose}>
+                <div className={`${layoutFrame.modalContent} ${layoutFrame.augsTools}`} onClick={(e) => e.stopPropagation()} data-augmented-ui>
+                    <div className={styles.portHackContainer}>
+                        <h2 className={layoutFrame.modalTitle}>DECHead</h2>
+                        <Game></Game>
+                    </div>
+                    <button className={layoutFrame.closeButton} onClick={onClose}></button>
+                </div>
+            </div>
+        )
+    );
+}
+
+export default DECHeadModal;
