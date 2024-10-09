@@ -1,0 +1,57 @@
+/* src/Game.css */
+.maze {
+    display: grid;
+
+}
+
+.mazeRow {
+    display: flex;
+}
+
+.cell {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.wall {
+    background-color: #333;
+    /* 벽 색상 (어두운 회색) */
+}
+
+.start {
+    background-color: green;
+    /* 시작점 색상 */
+}
+
+.end {
+    background-color: red;
+    /* 종료점 색상 */
+}
+
+.player {
+    background-color: blue;
+    /* 플레이어 색상 */
+}
+
+.hidden {
+    background-color: #333;
+    /* 보이지 않는 타일 색상 */
+}
+
+/* 추가 스타일 */
+.path {
+    background-color: #ffffff;
+    /* 길 색상 (연한 회색) */
+
+}
+
+.cell {
+    transition: background-color 0.3s;
+    /* 배경색 변화를 부드럽게 */
+}
+
+/* 플레이어의 마우스 오버 효과 */
+/* .player:hover {
+    background-color: lightblue;
+} */

@@ -13,6 +13,7 @@ import bgm from '../../assets/mainbgm.mp3';
 import PortHackModal from './HackTool/PortHack';
 import DecypherModal from './HackTool/Decypher';
 import DECHeadModal from './HackTool/DECHead';
+import SSHcrackModal from './HackTool/SSHcrack';
 import { SocketResult } from '../../socket/socket';
 import { fetchMissionData, fetchProfileData, API } from "../../config";
 
@@ -29,6 +30,7 @@ function MainPage() {
   const [showPortHackModal, setShowPortHackModal] = useState(false);
   const [showDecypherModal, setShowDecypherModal] = useState(false);
   const [showDECHeadModal, setShowDECHeadModal] = useState(false);
+  const [showSSHcrackModal, setShowSSHcrackModal] = useState(false);
   const [ports, setPorts] = useState([]);
 
   const [hasPurchasedPortHack, setHasPurchasedPortHack] = useState(false);
@@ -181,6 +183,8 @@ function MainPage() {
       setShowDecypherModal(true);
     } else if (menuKey === 'DECHead') {
       setShowDECHeadModal(true);
+    } else if (menuKey === 'SSHcrack') {
+      setShowSSHcrackModal(true);
     } else {
       setCurrentMenu(menuKey);
     }
@@ -211,6 +215,9 @@ function MainPage() {
   }
   const closeDECHeadModal = () => {
     setShowDECHeadModal(false);
+  }
+  const closeSSHcrackModal = () => {
+    setShowSSHcrackModal(false);
   }
 
   return (
@@ -345,6 +352,13 @@ function MainPage() {
         <DECHeadModal
           show={showDECHeadModal}
           onClose={closeDECHeadModal} />
+      )}
+      {showSSHcrackModal && (
+        <SSHcrackModal
+          show={showSSHcrackModal}
+          onClose={closeSSHcrackModal}
+          ports={ports}
+          setPorts={setPorts} />
       )}
     </div>
   );
