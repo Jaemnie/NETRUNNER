@@ -33,13 +33,20 @@ const Quest = ({ userId, show, onClose, questData, fetchMission }) => {
     if (activeTab === 'message' && !messagesLoaded.current) {
       setDisplayedMessages([]);
       setIsTyping(true);
-      const messages = questData.scenario[0].replace(/\n|\r|\t|"*/g, '').trim().split(",");
+      console.log(questData.scenario[0]);
+      const messages = questData.scenario[0].story[0].replace(/\n|\r|\t|"*/g, '').trim().split(",");
+      const target = questData.scenario[0].target[0].replace(/\n|\r|\t|"*/g, '').trim().split(",");
       messages.forEach((message, index) => {
         setTimeout(() => {
           setDisplayedMessages((prevMessages) => {
-            const updatedMessages = [...prevMessages, message.trim()]; // prevMessages를 올바르게 사용하여 업데이트
+            const processedMessages = message.trim().split('᛭')
+            processedMessages[1] = processedMessages[1].split(/\\n/g);
+            // console.log("메시지 체크", processedMessages);
+            const updatedMessages = [...prevMessages, processedMessages]; // prevMessages를 올바르게 사용하여 업데이트
+            console.log(updatedMessages);
             localStorage.setItem('questMessages', JSON.stringify(updatedMessages)); // 메시지를 localStorage에 저장
             localStorage.setItem('questMessageSize', JSON.stringify(index));
+            localStorage.setItem('questTarget', JSON.stringify(target));
             return updatedMessages;
           });
           if (index === messages.length - 1) {
@@ -108,11 +115,18 @@ const Quest = ({ userId, show, onClose, questData, fetchMission }) => {
         <img src="https://i.imgur.com/FuHIa08.jpeg" alt="Profile" className={styles.profileImage} />
         <h2>010-XXXX-XXXX</h2>
       </div>
-      {displayedMessages.map((message, index) => (
-        <div key={index} className={styles.message}>
-          <p>{message}</p>
-        </div>
-      ))}
+      {
+        displayedMessages.map((message, messageIndex) => (
+          <div key={messageIndex} className={`${message[0] === 'solo' ? styles.solo : message[0] === 'player' ? styles.player : styles.other}`}>
+            {message[0] !== 'solo' && message[0] !== 'player' && <p className={styles.messageSender}>{message[0]}</p>}
+            {message[1].map((ms, messageIndex) => (
+              <div key={messageIndex} className={`${styles.message} ${message[0] === 'solo' ? styles.solotext : message[0] === 'player' ? styles.playertext : styles.othertext}`}>
+                <p>{ms}</p>
+              </div>
+            ))}
+          </div>
+        ))
+      }
       {isTyping && <TypingIndicator />}
     </div>
   );
@@ -132,6 +146,12 @@ const Quest = ({ userId, show, onClose, questData, fetchMission }) => {
         <li><strong>도구 파일:</strong> {questData.reward[0].toolFile[0]}</li>
       </ul>
       <button onClick={completeMission} className={styles.completeButton}>미션 완료</button>
+      {localStorage.getItem('questTarget') && (
+        <ul>
+          <h2> 목표 </h2>
+          <li>{JSON.parse(localStorage.getItem('questTarget'))}</li>
+        </ul>
+      )}
     </div>
   );
 
@@ -176,6 +196,7 @@ const Quest = ({ userId, show, onClose, questData, fetchMission }) => {
         localStorage.setItem('missionId', result.nextMissionId); // 다음 미션 ID를 저장
         localStorage.removeItem('questMessages'); // questMessages 초기화
         localStorage.removeItem('questMessageSize');
+        localStorage.removeItem('questTarget');
         localStorage.removeItem('countingSave');
         await fetchMission(result.nextMissionId); // 새로운 미션 ID로 fetchMission 호출
         Swal.fire({

@@ -74,6 +74,7 @@ function Setting({ show, onClose }) {
       localStorage.removeItem("tutorial");
       localStorage.removeItem("ipData");
       localStorage.removeItem('files');
+      localStorage.removeItem('questTarget');
       document.addEventListener("MoustEvent",
         toggleFullScreen()
       );
