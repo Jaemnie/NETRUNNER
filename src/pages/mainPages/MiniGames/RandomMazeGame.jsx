@@ -53,6 +53,7 @@ const Game = ({ onClose }) => {
         setPlayerPosition(start);
     };
 
+
     useEffect(() => {
         resetGame(); // 초기 게임 설정
     }, []);
@@ -66,8 +67,7 @@ const Game = ({ onClose }) => {
 
             // 종료점에 도착했을 때 게임 리셋
             if (maze[newY][newX] === 3) {
-                resetGame(); // 게임 리셋
-                onClose();
+                onClose(true);
             }
         }
     };

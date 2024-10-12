@@ -1,8 +1,10 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import styles from './RotatePuzzle.module.css';
 const Game = ({ onClose }) => {
     const [arrSize, SetArrSize] = useState();
     const [variable1, setVariable1] = useState([]);
     const [variable2, setVariable2] = useState([]);
+    const [resultText, setResultText] = useState("");
 
     useEffect(() => {
         SetArrSize(16);
@@ -15,6 +17,8 @@ const Game = ({ onClose }) => {
 
         setVariable1(buffer);
         setVariable2(answer);
+        setResultText("");
+
     }, [arrSize]);
 
     const handleRotate = (e) => {
@@ -47,9 +51,10 @@ const Game = ({ onClose }) => {
         const isTrue = variable1.length === variable2.length && variable1.every((v1, index) => v1 === variable2[index]);
 
         if (isTrue) {
-            console.log("정답");
+            setResultText("Success");
+            onClose();
         } else {
-            console.log("오답");
+            setResultText("Failed");
         }
 
     }
@@ -61,15 +66,16 @@ const Game = ({ onClose }) => {
     }, [variable1])
     return (
         <div >
-            <div>
-                v1 : {variable1.map((v1, index) => (<span style={
-                    index === 6 ? { color: 'Green' } :
-                        { color: "white" }
+            <div className={styles.box}>
+                key : {variable1.map((v1, index) => (<span style={
+                    index === 6 ? { color: '#316497' } :
+                        { color: "#5bd5a7" }
                 }>{v1}</span>))}
                 <br />
-                v2 : {variable2.map(v2 => (<span>{v2}</span>))}
+                lock : {variable2.map(v2 => (<span>{v2}</span>))}
             </div>
-            <button onClick={checkCorrect}>Check Correctness</button>
+            <button className={styles.button} onClick={checkCorrect}>Check Correctness</button>
+            <span>{resultText}</span>
         </div>
     );
 }

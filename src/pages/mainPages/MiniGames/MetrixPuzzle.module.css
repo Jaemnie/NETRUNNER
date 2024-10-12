@@ -1,4 +1,9 @@
 /* Game.module.css */
+.gamebox {
+    display: flex;
+    flex-direction: row;
+    width: 600px;
+}
 
 .matrix {
     display: grid;
@@ -12,27 +17,72 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid #ccc;
+    border: 1px solid #d6f06e;
     cursor: pointer;
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0);
     font-size: 18px;
+    color: #d6f06e;
+    filter: drop-shadow(0 0 4px #d6f06eb2);
     /* 글자 크기 조정 */
 }
 
 .cell.selected {
-    background-color: lightblue;
+    background-color: #00000000;
+    color: #00000000;
     /* 선택된 셀의 배경색 */
 }
 
 .cell:hover {
-    background-color: #f0f0f0;
+    background-color: #d6f06e81;
     /* 마우스 오버 시 배경색 */
 }
 
 .bufferDisplay {
-    margin-top: 20px;
+    margin-left: 20px;
+    width: 209px;
+    max-height: 320px;
+    color: #d6f06e;
+    filter: drop-shadow(0 0 2px #d6f06eb2);
+}
+
+.bufferDisplay>h3 {
+    text-align: left;
+    margin: 10px 0;
+}
+
+.bufferDisplay>p {
+    text-align: left;
+    font-weight: bold;
+    height: 70px;
+    margin: 0;
+    color: #fff;
+}
+
+.bufferDisplay li {
+    color: #fff;
+}
+
+.bufferDisplay>ul {
+    font-weight: bold;
+    height: 70px;
+    margin: 0;
 }
 
 .highlight {
-    background-color: rgba(255, 255, 0, 0.5);
+    background-color: rgb(31, 31, 31);
+}
+
+.button {
+    align-self: center;
+    border: 2px solid #d6f06e;
+    background-color: #414141;
+    color: #d6f06e;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+    height: 50px;
+}
+
+.button:hover {
+    background-color: #202020;
 }

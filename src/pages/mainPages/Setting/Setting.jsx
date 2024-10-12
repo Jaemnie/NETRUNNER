@@ -72,7 +72,7 @@ function Setting({ show, onClose }) {
       localStorage.removeItem('questMessageSize');
       localStorage.removeItem('countingSave');
       localStorage.removeItem("tutorial");
-      localStorage.removeItem("ipData");
+      localStorage.removeItem("portData");
       localStorage.removeItem('files');
       localStorage.removeItem('questTarget');
       document.addEventListener("MoustEvent",

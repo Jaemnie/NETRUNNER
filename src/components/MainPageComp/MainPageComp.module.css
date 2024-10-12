@@ -22,7 +22,7 @@
   box-sizing: border-box;
 }
 
-.testview {
+.nodeview {
   flex-shrink: 1;
   border: 2px solid #C471ED;
   border-radius: 8px;
@@ -30,5 +30,5 @@
   height: 100px;
   color: white;
   box-sizing: border-box;
-  background-color: black;
+  background-color: rgba(0, 0, 0, 0.754);
 }

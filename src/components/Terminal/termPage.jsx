@@ -11,7 +11,6 @@ import { SocketResult } from "../../socket/socket";
 const TermPage = () => {
   const termRef = useRef(null);
   const [ports, setPorts] = useState([]);  // ports 상태 추가
-  const [ip, setIP] = useState([]);
   const socketRoomId = useMemo(() => Math.floor(100000 + Math.random() * 900000).toString(), []); // 소켓 방 ID를 메모이제이션
 
   const socket = useMemo(() => {
@@ -23,7 +22,7 @@ const TermPage = () => {
   useEffect(() => {
     if (termRef.current) {
       const term = new Terminal();
-      Termi(term, termRef.current, socket.getRoomId(), setPorts, setIP);  // setPorts 전달
+      Termi(term, termRef.current, socket.getRoomId(), setPorts);  // setPorts 전달
       TerminalInteraction.setTerminal(term);
       return () => {
         term.dispose();

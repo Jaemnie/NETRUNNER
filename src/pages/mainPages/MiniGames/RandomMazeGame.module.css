@@ -9,9 +9,10 @@
 }
 
 .cell {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    border-radius: 40%;
+
 }
 
 .wall {
@@ -20,17 +21,27 @@
 }
 
 .start {
-    background-color: green;
+    background-color: rgb(56, 179, 56);
     /* 시작점 색상 */
+    box-shadow:
+        0 0 7px #14c555,
+        0 0 10px rgb(56, 179, 56),
+        inset 0 0 7px #14c555,
+        inset 0 0 10px rgb(56, 179, 56);
 }
 
 .end {
-    background-color: red;
+    background-color: #1f7a1b;
+    box-shadow:
+        0 0 7px #14c555,
+        0 0 10px rgb(56, 179, 56),
+        inset 0 0 7px #14c555,
+        inset 0 0 10px rgb(56, 179, 56);
     /* 종료점 색상 */
 }
 
 .player {
-    background-color: blue;
+    background-color: rgb(15, 209, 173);
     /* 플레이어 색상 */
 }
 
@@ -41,8 +52,12 @@
 
 /* 추가 스타일 */
 .path {
-    background-color: #ffffff;
-    /* 길 색상 (연한 회색) */
+    background-color: rgb(65, 142, 84);
+    box-shadow:
+        0 0 7px #61e382,
+        0 0 10px #a2e1b2,
+        inset 0 0 7px #61e382,
+        inset 0 0 10px #a2e1b2;
 
 }
 
@@ -50,8 +65,3 @@
     transition: background-color 0.3s;
     /* 배경색 변화를 부드럽게 */
 }
-
-/* 플레이어의 마우스 오버 효과 */
-/* .player:hover {
-    background-color: lightblue;
-} */

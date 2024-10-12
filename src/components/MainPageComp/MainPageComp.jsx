@@ -48,7 +48,7 @@ const MainPageComp = () => {
         <DirectoryViewer ref={dirViewerRef} />
 
       </div>
-      <div className={styles.testview}>
+      <div className={styles.nodeview}>
         <NodeMap ref={miniMap} />
       </div>
       {/* TermPage 컴포넌트 */}

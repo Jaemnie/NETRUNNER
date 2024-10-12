@@ -1,7 +1,7 @@
 import TerminalInteraction from './TerminalInteraction';
 import { SocketResult } from '../../socket/socket';
 
-function Termi(terminal2, elements, socketRoomId, setPorts, setIP) {
+function Termi(terminal2, elements, socketRoomId, setPorts) {
   let message = '';
   const socket = new SocketResult('TERM');
   socket.joinRoom(socketRoomId);
@@ -31,23 +31,19 @@ function Termi(terminal2, elements, socketRoomId, setPorts, setIP) {
     if (lastCommand.includes('scan')) {  // 'scan' 문자열이 포함되어 있는지 확인
       try {
         console.log("Processing scan data..."); // scan 데이터 처리 로그
-        const { ip, ports } = parsePortData(data);  // IP와 포트 데이터를 파싱
-        console.log("Parsed IP and port data:", ip, ports); // 파싱된 IP와 포트 데이터 로그
+        const { nodePortIp } = parsePortData(data);  // IP와 포트 데이터를 파싱
+        console.log("Parsed IP and port data:", nodePortIp); // 파싱된 IP와 포트 데이터 로그
 
-        if (ports.length > 0 && ip) {  // IP와 포트 데이터가 모두 있을 경우에만 저장
-          localStorage.setItem('ipData', JSON.stringify(ip)); // IP 데이터를 localStorage에 저장
-          localStorage.setItem('portData', JSON.stringify(ports)); // 포트 데이터를 localStorage에 저장
-          console.log("IP saved to localStorage:", localStorage.getItem('ipData')); // IP 저장 로그
-          console.log("Port data saved to localStorage:", localStorage.getItem('portData')); // 포트 데이터 저장 로그
-          setPorts(ports);  // 포트 데이터를 상태로 업데이트
-          setIP(ip);
+        if (nodePortIp.length > 0) {  // IP와 포트 데이터가 모두 있을 경우에만 저장
+          localStorage.setItem('portData', JSON.stringify(nodePortIp)); // IP 데이터를 localStorage에 저장
+          // console.log("Port data saved to localStorage:", localStorage.getItem('portData')); // 포트 데이터 저장 로그
+          setPorts(nodePortIp);  // 포트 데이터를 상태로 업데이트
         } else {
           console.log("No valid port data found or IP missing.");
         }
       } catch (error) {
         console.error('Error parsing port data:', error);
         setPorts([]); // 파싱에 실패할 경우 빈 배열로 설정하여 예외 처리
-        localStorage.removeItem('ipData'); // 오류 발생 시 IP 데이터 제거
         localStorage.removeItem('portData'); // 오류 발생 시 포트 데이터 제거
       }
     } else {
@@ -114,30 +110,37 @@ function Termi(terminal2, elements, socketRoomId, setPorts, setIP) {
 
 // 포트 데이터를 파싱하는 함수 (텍스트 형태로 가정)
 function parsePortData(data) {
-  const ports = [];
-  let ip = null;
-  const lines = data.split('\n');
+  const nodePortIp = [];
+  const lines = data.trim().split(/^username\s*{?\s*node\d{2}\s*}?/gm);
 
   for (const line of lines) {
-    const trimmedLine = line.trim();
-    // IP 주소 찾기
-    if (trimmedLine.startsWith('IP{')) {
-      const ipMatch = trimmedLine.match(/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/);
-      if (ipMatch) {
-        ip = ipMatch[0];
-      }
-    }
-    // 특정 포트 정보를 가진 라인을 찾습니다. 예: "Port[ {22 : OPEN} "
-    const portInfo = trimmedLine.match(/\{(\d+)\s*:\s*(OPEN|CLOSED)\}/i);
-    if (portInfo) {
-      const number = portInfo[1];
-      const status = portInfo[2].toLowerCase();
-      ports.push({ id: ports.length + 1, number, status });
-    }
-  }
+    if (line !== '') {
+      const ports = [];
+      let ip = "";
+      const trimmedLine = line.trim().split('\n');
 
-  console.log("Parsed IP and ports array:", ip, ports); // 파싱된 IP와 포트 데이터 확인
-  return { ip, ports };
+      for (const tline of trimmedLine) {
+        // IP 주소 찾기
+        if (tline.startsWith('IP{')) {
+          const ipMatch = tline.match(/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/);
+          if (ipMatch) {
+            ip = ipMatch[0];
+          }
+        }
+        // 특정 포트 정보를 가진 라인을 찾습니다. 예: "Port[ {22 : OPEN} "
+        const portInfo = tline.match(/\{(\d+)\s*:\s*(OPEN|CLOSED)\}/i);
+        if (portInfo) {
+          const number = portInfo[1];
+          const status = portInfo[2].toLowerCase();
+          ports.push({ id: ports.length + 1, number, status });
+        }
+      }
+      nodePortIp.push({ id: nodePortIp.length + 1, ip: ip, ports: ports });
+    }
+
+  }
+  console.log("Parsed IP and ports array:", nodePortIp); // 파싱된 IP와 포트 데이터 확인
+  return { nodePortIp };
 }
 
 

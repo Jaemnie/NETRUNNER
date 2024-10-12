@@ -121,8 +121,8 @@ const Game = ({ onClose }) => {
     };
 
     return (
-        <div>
-            <h2>Matrix Game</h2>
+        <div className={styles.gamebox}>
+            {/* <h2>Matrix Game</h2> */}
             <div className={styles.matrix}>
                 {matrix.map((row, rowIndex) =>
                     row.map((cell, colIndex) => {
@@ -142,19 +142,20 @@ const Game = ({ onClose }) => {
                 )}
             </div>
             <div className={styles.bufferDisplay}>
-                <h3>Selected Items (Buffer): {buffer.join(', ')}</h3>
-                <h4>Correct Sequences:</h4>
+                <h3>Selected Items</h3>
+                <p>{buffer.join(', ')}</p>
+                <h3>Correct Sequences</h3>
                 <ul>
                     {correctSequences.map((sequence, index) => (
                         <li key={index}>{sequence.join(', ')}</li>
                     ))}
                 </ul>
-                <h4>Is Correct:</h4>
+                <h3>Is Correct</h3>
                 <ul>
-                    {isCorrect ? <li>✔️ Correct!</li> : <li>❌ Try Again!</li>}
+                    {isCorrect ? <li>Correct!</li> : <li>Try Again!</li>}
                 </ul>
             </div>
-            {isCorrect && <button onClick={resetGame}>close</button>}
+            {isCorrect && <button className={styles.button} onClick={resetGame}>close</button>}
         </div>
     );
 };

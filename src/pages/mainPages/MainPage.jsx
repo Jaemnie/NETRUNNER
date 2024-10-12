@@ -349,7 +349,7 @@ function MainPage() {
         />
       )}
       {showDECHeadModal && (
-        <DECHeadModal
+        < DECHeadModal
           show={showDECHeadModal}
           onClose={closeDECHeadModal} />
       )}
@@ -358,7 +358,8 @@ function MainPage() {
           show={showSSHcrackModal}
           onClose={closeSSHcrackModal}
           ports={ports}
-          setPorts={setPorts} />
+          setPorts={setPorts}
+        />
       )}
     </div>
   );

@@ -6,7 +6,6 @@ const NodeMap = forwardRef((props, ref) => {
     const container = useRef(null);
     const [nodes, setNodes] = useState([]);
     const [edges, setEdges] = useState([]);
-    const [nextNodeId, setNextNodeId] = useState(2);
     const [currentNodeId, setCurrentNodeId] = useState(1);
     const [history, setHistory] = useState([1]);
     const [, forceUpdate] = useState(0);
@@ -55,12 +54,15 @@ const NodeMap = forwardRef((props, ref) => {
                 return prevNodes; // 기존 상태를 반환
             } else {
                 const newNode = {
-                    id: nextNodeId,
+                    id: prevNodes.length + 1,
                     label: label,
                     fixed: true,
                 };
-                setNextNodeId((prevId) => prevId + 1); // nextNodeId를 먼저 업데이트
-                return [...prevNodes, newNode]; // 새로운 노드를 포함한 상태 반환
+
+                // 새로운 노드를 포함한 상태 반환
+                const updatedNodes = [...prevNodes, newNode];
+
+                return updatedNodes; // 상태 반환
             }
         });
     };
@@ -75,7 +77,6 @@ const NodeMap = forwardRef((props, ref) => {
         TerminalInteraction.setNodeMap(ref.current);
         setNodes(initialNodes);
         setEdges(initialEdges);
-        setNextNodeId(initialNodes.length + 1);
     }, [ref, initialNodes, initialEdges]);
 
     const initializeNetwork = useCallback(() => {
@@ -109,13 +110,25 @@ const NodeMap = forwardRef((props, ref) => {
         updateMap(newContent) {
             const commandParts = newContent.split(' ');
             const command = commandParts[0];
-            if (command.includes('scan')) {
-                console.log("newContent", newContent);
-                const label = JSON.parse(localStorage.getItem('ipData'));
-                if (label) {
-                    addNode(label);
-                }
+            console.log(command);
+            if (newContent.match(/^username\s*{?\s*node\d{2}\s*}?/gm)) {
 
+                let ip = [];
+                const nodes = newContent.trim().split('\n');
+                console.log(nodes);
+                for (const node of nodes) {
+                    if (node.trim().startsWith('IP{')) {
+                        console.log(node);
+                        const ipMatch = node.match(/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/);
+                        if (ipMatch) {
+                            ip.push(ipMatch[0]);
+                        }
+                    }
+                }
+                console.log(ip);
+                if (ip.length > 0) {
+                    ip.map(i => addNode(i));
+                }
             } else if (command.includes('ssh')) {
                 const targetLabel = commandParts[1];
                 setNodes((prevNodes) => {

@@ -23,7 +23,7 @@ class TerminalInteraction {
       TerminalInteraction.directoryViewer.updateDirectoryContent(data); // 터미널 입력 처리 시 디렉토리 내용 업데이트
 
     }
-    if (data.trim().startsWith('scan') || data.trim().startsWith('ssh') || data.trim().startsWith('exit')) {
+    if (data.trim().match(/^username\s*{?\s*node\d{2}\s*}?/gm) || data.trim().startsWith('ssh') || data.trim().startsWith('exit')) {
       TerminalInteraction.nodeMap.updateMap(data);
     }
   }
