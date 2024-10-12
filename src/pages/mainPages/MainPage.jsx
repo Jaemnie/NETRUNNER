@@ -14,6 +14,7 @@ import PortHackModal from './HackTool/PortHack';
 import DecypherModal from './HackTool/Decypher';
 import DECHeadModal from './HackTool/DECHead';
 import SSHcrackModal from './HackTool/SSHcrack';
+import SMTPoverflowModal from './HackTool/SMTPoverflow';
 import { SocketResult } from '../../socket/socket';
 import { fetchMissionData, fetchProfileData, API } from "../../config";
 
@@ -31,6 +32,7 @@ function MainPage() {
   const [showDecypherModal, setShowDecypherModal] = useState(false);
   const [showDECHeadModal, setShowDECHeadModal] = useState(false);
   const [showSSHcrackModal, setShowSSHcrackModal] = useState(false);
+  const [showSMTPoverflowModal, setShowSMTPoverflowModal] = useState(false);
   const [ports, setPorts] = useState([]);
 
   const [hasPurchasedPortHack, setHasPurchasedPortHack] = useState(false);
@@ -185,6 +187,8 @@ function MainPage() {
       setShowDECHeadModal(true);
     } else if (menuKey === 'SSHcrack') {
       setShowSSHcrackModal(true);
+    } else if (menuKey === 'SMTPoverflow') {
+      setShowSMTPoverflowModal(true);
     } else {
       setCurrentMenu(menuKey);
     }
@@ -219,6 +223,10 @@ function MainPage() {
   const closeSSHcrackModal = () => {
     setShowSSHcrackModal(false);
   }
+  const closeSMTPoverflowModal = () => {
+    setShowSMTPoverflowModal(false);
+  }
+
 
   return (
     <div className={styles.mainContainer}>
@@ -360,6 +368,11 @@ function MainPage() {
           ports={ports}
           setPorts={setPorts}
         />
+      )}
+      {SMTPoverflowModal && (
+        <SMTPoverflowModal
+          show={showSMTPoverflowModal}
+          onClose={closeSMTPoverflowModal} />
       )}
     </div>
   );
