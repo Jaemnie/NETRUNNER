@@ -15,6 +15,7 @@ import DecypherModal from './HackTool/Decypher';
 import DECHeadModal from './HackTool/DECHead';
 import SSHcrackModal from './HackTool/SSHcrack';
 import SMTPoverflowModal from './HackTool/SMTPoverflow';
+import WebServerWormModal from './HackTool/WebServerWorm';
 import { SocketResult } from '../../socket/socket';
 import { fetchMissionData, fetchProfileData, API } from "../../config";
 
@@ -33,6 +34,7 @@ function MainPage() {
   const [showDECHeadModal, setShowDECHeadModal] = useState(false);
   const [showSSHcrackModal, setShowSSHcrackModal] = useState(false);
   const [showSMTPoverflowModal, setShowSMTPoverflowModal] = useState(false);
+  const [showWebServerWormModal, setShowWebServerWormModal] = useState(false);
   const [ports, setPorts] = useState([]);
 
   const [hasPurchasedPortHack, setHasPurchasedPortHack] = useState(false);
@@ -189,6 +191,8 @@ function MainPage() {
       setShowSSHcrackModal(true);
     } else if (menuKey === 'SMTPoverflow') {
       setShowSMTPoverflowModal(true);
+    } else if (menuKey === 'WebServerWorm') {
+      setShowWebServerWormModal(true);
     } else {
       setCurrentMenu(menuKey);
     }
@@ -225,6 +229,9 @@ function MainPage() {
   }
   const closeSMTPoverflowModal = () => {
     setShowSMTPoverflowModal(false);
+  }
+  const closeWebServerWormModal = () => {
+    setShowWebServerWormModal(false);
   }
 
 
@@ -369,10 +376,15 @@ function MainPage() {
           setPorts={setPorts}
         />
       )}
-      {SMTPoverflowModal && (
+      {showSMTPoverflowModal && (
         <SMTPoverflowModal
           show={showSMTPoverflowModal}
           onClose={closeSMTPoverflowModal} />
+      )}
+      {showWebServerWormModal && (
+        <WebServerWormModal
+          show={showWebServerWormModal}
+          onclose={closeWebServerWormModal} />
       )}
     </div>
   );

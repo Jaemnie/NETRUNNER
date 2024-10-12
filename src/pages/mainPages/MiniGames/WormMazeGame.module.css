@@ -1,0 +1,94 @@
+/* src/components/MiniGames/WormMazeGame.module.css */
+
+.gameContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Arial, sans-serif; /* Game.module.css와 일관된 폰트 사용 */
+  }
+  
+  .maze {
+    position: relative;
+    width: 600px; /* Game.module.css와 동일 */
+    height: 600px;
+    background-color: #1f1f1f; /* Game.module.css의 .highlight 색상에 맞춤 */
+    border: 3px solid #d6f06e; /* Game.module.css의 .cell border 색상과 일치 */
+    margin: 20px 0;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(214, 240, 110, 0.5); /* 추가적인 그림자 효과 */
+  }
+  
+  .wall {
+    position: absolute;
+    background-color: #d6f06e; /* Game.module.css의 .cell border 색상과 일치 */
+    height: 15px; /* 기존 두께 유지 */
+    /* width은 동적으로 설정됨 */
+  }
+  
+  .exit {
+    position: absolute;
+    background-color: #d6f06e; /* Game.module.css의 주요 색상 사용 */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #1f1f1f; /* 대비를 주기 위해 어두운 색상 사용 */
+    font-size: 14px;
+    box-shadow: 0 0 5px rgba(214, 240, 110, 0.7); /* 추가적인 그림자 효과 */
+  }
+  
+  .worm {
+    position: absolute;
+    width: 30px; /* 기존 크기 유지 */
+    height: 30px;
+    transition: transform 0.1s linear;
+    /* 지렁이의 부드러운 움직임을 위해 트랜스폼을 사용 */
+  }
+  
+  .pathOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none; /* 사용자 입력에 방해되지 않도록 설정 */
+  }
+  
+  .button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #414141; /* Game.module.css의 .button 배경색과 일치 */
+    color: #d6f06e; /* Game.module.css의 .button 텍스트 색상과 일치 */
+    border: 2px solid #d6f06e; /* Game.module.css의 .button border와 일치 */
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    font-weight: bold;
+    height: 50px; /* Game.module.css의 .button 높이와 일치 */
+  }
+  
+  .button:hover {
+    background-color: #202020; /* Game.module.css의 .button:hover 배경색과 일치 */
+    color: #ffffff; /* 호버 시 텍스트 색상 변경 */
+  }
+  
+  /* 반응형 디자인 추가 */
+  @media (max-width: 700px) {
+    .maze {
+      width: 90vw;
+      height: 90vw;
+      border: 2px solid #d6f06e; /* 작은 화면에서의 border 두께 조정 */
+    }
+  
+    .exit {
+      width: 15px;
+      height: 15px;
+      font-size: 12px;
+    }
+  
+    .button {
+      padding: 8px 16px;
+      font-size: 14px;
+      height: 40px;
+    }
+  }
+  

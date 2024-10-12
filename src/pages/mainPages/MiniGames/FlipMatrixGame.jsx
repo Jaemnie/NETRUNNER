@@ -1,3 +1,4 @@
+// src/components/MiniGames/FlipMatrixGame.jsx
 import React, { useState, useEffect } from 'react';
 import styles from './FlipMatrixGame.module.css';
 
@@ -69,11 +70,10 @@ const FlipMatrixGame = ({ onClose }) => {
   const handleCellRightClick = (e, row, col) => {
     e.preventDefault(); // 기본 컨텍스트 메뉴 방지
 
-    // 이미 고정된 셀인 경우 해제
+    // 이미 고정된 셀인 경우 아무 동작도 하지 않음
     const isFixed = fixedCells.some(([r, c]) => r === row && c === col);
     if (isFixed) {
-      setFixedCells((prev) => prev.filter(([r, c]) => r !== row || c !== col));
-      return;
+      return; // 고정된 셀은 더 이상 해제할 수 없음
     }
 
     // 최대 고정 횟수 초과 시 경고
@@ -132,6 +132,9 @@ const FlipMatrixGame = ({ onClose }) => {
       <div className={styles.info}>
         <p>이동 횟수: {moveCount}</p>
         <p>남은 고정 횟수: {remainingFixes}</p>
+        <button onClick={handleRestart} className={styles.button}>
+          다시 시작
+        </button>
         {gameOver && (
           <div className={styles.gameOver}>
             <p>
