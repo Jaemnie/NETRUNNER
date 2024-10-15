@@ -27,7 +27,7 @@
   
   .exit {
     position: absolute;
-    background-color: #d6f06e; /* Game.module.css의 주요 색상 사용 */
+    background-color: #ff9100; /* Game.module.css의 주요 색상 사용 */
     border-radius: 50%;
     display: flex;
     align-items: center;

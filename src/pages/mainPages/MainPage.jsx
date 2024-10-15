@@ -384,7 +384,7 @@ function MainPage() {
       {showWebServerWormModal && (
         <WebServerWormModal
           show={showWebServerWormModal}
-          onclose={closeWebServerWormModal} />
+          onClose={closeWebServerWormModal} />
       )}
     </div>
   );

@@ -4,7 +4,7 @@ import layoutFrame from './ToolLayout.module.css';
 import WormMazeGame from '../MiniGames/WormMazeGame';
 import { SocketResult } from '../../../socket/Gsocket'; // SocketResult 클래스 임포트
 
-function SMTPoverflow({ show, onClose }) {
+function WebServerWorm({ show, onClose }) {
     const [socket, setSocket] = useState(null); // 소켓 인스턴스 상태 추가
 
     useEffect(() => {
@@ -51,4 +51,4 @@ function SMTPoverflow({ show, onClose }) {
     );
 }
 
-export default SMTPoverflow;
+export default WebServerWorm;
