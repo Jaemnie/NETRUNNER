@@ -42,13 +42,13 @@ const generateMaze = (width, height) => {
     return { maze, start: { x: startX, y: startY } };
 };
 
-const Game = ({ onClose }) => {
+const RandomMazeGame = ({ onClose }) => {
     const [maze, setMaze] = useState([]);
     const [playerPosition, setPlayerPosition] = useState({ x: 1, y: 0 });
     const viewRadius = 1; // 플레이어 주변의 시야 반경 (3x3)
 
     const resetGame = () => {
-        const { maze: newMaze, start } = generateMaze(9, 9);
+        const { maze: newMaze, start } = generateMaze(13, 13);
         setMaze(newMaze);
         setPlayerPosition(start);
     };
@@ -134,4 +134,4 @@ const Game = ({ onClose }) => {
     );
 };
 
-export default Game;
+export default RandomMazeGame;

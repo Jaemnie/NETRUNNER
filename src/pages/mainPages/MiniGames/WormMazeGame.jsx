@@ -37,7 +37,7 @@ const CONTROL_KEYS = {
   D: 0,
 }; // 키보드 입력에 따른 목표 각도
 
-const WormMazeGame = () => {
+const WormMazeGame = ({ onClose }) => {
   const [mazeWalls, setMazeWalls] = useState([]); // 동적 미로 벽
   const [gameStarted, setGameStarted] = useState(false);
   const [gameOver, setGameOver] = useState(false);
@@ -228,6 +228,7 @@ const WormMazeGame = () => {
           confirmButtonText: '다시 시작',
         }).then(() => {
           initializeGame();
+          onClose(true);
         });
       }
       return;

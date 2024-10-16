@@ -10,12 +10,10 @@ import ProfileCard from '../../components/Profile/ProfileCard';
 import Setting from './Setting/Setting';
 import Lanking from '../../components/Lank/Lanking';
 import bgm from '../../assets/mainbgm.mp3';
-import PortHackModal from './HackTool/PortHack';
-import DecypherModal from './HackTool/Decypher';
-import DECHeadModal from './HackTool/DECHead';
-import SSHcrackModal from './HackTool/SSHcrack';
-import SMTPoverflowModal from './HackTool/SMTPoverflow';
-import WebServerWormModal from './HackTool/WebServerWorm';
+
+import PortToolModal from './HackTool/PortToolmodal';
+import DecypeToolModal from './HackTool/DecypeToolModal';
+
 import { SocketResult } from '../../socket/socket';
 import { fetchMissionData, fetchProfileData, API } from "../../config";
 
@@ -29,12 +27,12 @@ function MainPage() {
   const [showQuest, setShowQuest] = useState(false);
   const [questData, setQuestData] = useState(null);
   const [socketResult, setSocketResult] = useState(null);
-  const [showPortHackModal, setShowPortHackModal] = useState(false);
-  const [showDecypherModal, setShowDecypherModal] = useState(false);
-  const [showDECHeadModal, setShowDECHeadModal] = useState(false);
-  const [showSSHcrackModal, setShowSSHcrackModal] = useState(false);
-  const [showSMTPoverflowModal, setShowSMTPoverflowModal] = useState(false);
-  const [showWebServerWormModal, setShowWebServerWormModal] = useState(false);
+
+  const [showFileToolModal, setShowFileToolModal] = useState(false);
+  const [showPortToolModal, setShowPortToolModal] = useState(false);
+
+  const [toolname, setToolname] = useState("");
+
   const [ports, setPorts] = useState([]);
 
   const [hasPurchasedPortHack, setHasPurchasedPortHack] = useState(false);
@@ -181,18 +179,12 @@ function MainPage() {
         )
       }));
       setCurrentMenu(menuKey);
-    } else if (menuKey === 'porthack') {
-      setShowPortHackModal(true);
-    } else if (menuKey === 'Decypher') {
-      setShowDecypherModal(true);
-    } else if (menuKey === 'DECHead') {
-      setShowDECHeadModal(true);
-    } else if (menuKey === 'SSHcrack') {
-      setShowSSHcrackModal(true);
-    } else if (menuKey === 'SMTPoverflow') {
-      setShowSMTPoverflowModal(true);
-    } else if (menuKey === 'WebServerWorm') {
-      setShowWebServerWormModal(true);
+    } else if (menuKey === 'porthack' || menuKey === 'SSHcrack' || menuKey === 'SMTPoverflow' || menuKey === 'WebServerWorm') {
+      setShowPortToolModal(true);
+      setToolname(menuKey);
+    } else if (menuKey === 'Decypher' || menuKey === 'DECHead') {
+      setShowFileToolModal(true);
+      setToolname(menuKey);
     } else {
       setCurrentMenu(menuKey);
     }
@@ -214,27 +206,14 @@ function MainPage() {
     setShowProfileCard(false);
   };
 
-  const closePortHackModal = () => {
-    setShowPortHackModal(false);
+  const closeFileToolModal = () => {
+    setShowFileToolModal(false);
+    setToolname("");
   };
-
-  const closeDecyoherModal = () => {
-    setShowDecypherModal(false);
-  }
-  const closeDECHeadModal = () => {
-    setShowDECHeadModal(false);
-  }
-  const closeSSHcrackModal = () => {
-    setShowSSHcrackModal(false);
-  }
-  const closeSMTPoverflowModal = () => {
-    setShowSMTPoverflowModal(false);
-  }
-  const closeWebServerWormModal = () => {
-    setShowWebServerWormModal(false);
-  }
-
-
+  const closePortToolModal = () => {
+    setShowPortToolModal(false);
+    setToolname("");
+  };
   return (
     <div className={styles.mainContainer}>
       <BackgroundMusic src={bgm} />
@@ -349,42 +328,22 @@ function MainPage() {
       {showProfileCard && profileData && <ProfileCard profileData={profileData} onClose={closeProfileCard} />}
       {showSetting && <Setting show={showSetting} onClose={() => setShowSetting(false)} />}
       {showQuest && questData && <Quest show={showQuest} onClose={() => setShowQuest(false)} userId={userId} questData={questData} fetchMission={fetchMission} />}
-      {showPortHackModal && (
-        <PortHackModal
-          show={showPortHackModal}
-          onClose={closePortHackModal}
+      {showPortToolModal && (
+        <PortToolModal
+          show={showPortToolModal}
+          onClose={closePortToolModal}
+          toolname={toolname}
           ports={ports}
           setPorts={setPorts}
         />
       )}
-      {showDecypherModal && (
-        <DecypherModal
-          show={showDecypherModal}
-          onClose={closeDecyoherModal}
+
+      {showFileToolModal && (
+        <DecypeToolModal
+          show={showFileToolModal}
+          onClose={closeFileToolModal}
+          toolname={toolname}
         />
-      )}
-      {showDECHeadModal && (
-        < DECHeadModal
-          show={showDECHeadModal}
-          onClose={closeDECHeadModal} />
-      )}
-      {showSSHcrackModal && (
-        <SSHcrackModal
-          show={showSSHcrackModal}
-          onClose={closeSSHcrackModal}
-          ports={ports}
-          setPorts={setPorts}
-        />
-      )}
-      {showSMTPoverflowModal && (
-        <SMTPoverflowModal
-          show={showSMTPoverflowModal}
-          onClose={closeSMTPoverflowModal} />
-      )}
-      {showWebServerWormModal && (
-        <WebServerWormModal
-          show={showWebServerWormModal}
-          onClose={closeWebServerWormModal} />
       )}
     </div>
   );

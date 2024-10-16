@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import styles from './PortHack.module.css';
 import layoutFrame from './ToolLayout.module.css';
-import Game from '../MiniGames/RandomMazeGame';
+import JigsawHackingGame from '../MiniGames/JigsawHackingGame'; // porthack
+import RandomMazeGame from '../MiniGames/RandomMazeGame';// SSHcrack
+import FlipMatrixGame from '../MiniGames/FlipMatrixGame'; // SMTPoverFlow
+import WormMazeGame from '../MiniGames/WormMazeGame'; //WebServerWorm
+
 import { SocketResult } from '../../../socket/Gsocket'; // SocketResult 클래스를 불러오기
 
-function SSHcrackModal({ show, onClose }) {
+function PortToolModal({ show, onClose, toolname }) {
     const [showHackingGame, setShowHackingGame] = useState(false); // 해킹 게임 표시 상태
     const [isSelectIp, setIsSelectIp] = useState(false);
     const [currentPort, setCurrentPort] = useState(null); // 현재 해킹 중인 포트
@@ -46,6 +50,7 @@ function SSHcrackModal({ show, onClose }) {
         setIsSelectIp(true);
     };
     const handleHackClick = (port) => {
+        console.log(port);
         setCurrentPort(port);
         setShowHackingGame(true); // 해킹 게임 표시
     };
@@ -64,7 +69,7 @@ function SSHcrackModal({ show, onClose }) {
 
             // 해킹 성공 시 소켓을 통해 서버에 메시지 전송
             if (socket && currentIp !== null) { // IP 데이터가 있을 경우에만 메시지 전송
-                const message = `SSHcrack ${currentIp} ${currentPort.number} open`;
+                const message = `${toolname} ${currentIp} ${currentPort.number} open`;
                 console.log("Sending message to server:", message); // 메시지 전�� 로그
                 socket.sendMessage(message);
 
@@ -80,16 +85,21 @@ function SSHcrackModal({ show, onClose }) {
             <div className={layoutFrame.modalOverlay} onClick={onClose}>
                 <div className={`${layoutFrame.modalContent} ${layoutFrame.augsTools}`} onClick={(e) => e.stopPropagation()} data-augmented-ui>
                     <div className={styles.portHackContainer}>
-                        <h2 className={layoutFrame.modalTitle}>IP Scan</h2>
+                        <h2 className={layoutFrame.modalTitle}>{toolname}</h2>
                         <ul className={styles.portList}>
                             {ports.length === 0 ? (
-                                <p>데이터를 받아오지 못했습니다. scan 명령어로 IP를 검색하세요.</p> // 포트 데이터가 없을 때 예외 메시지 표시
+                                <p>데이터를 받아오지 못했습니다. scan 명령어로 IP를 검색하세요.</p>
                             ) : isSelectIp ? (
                                 ports.map(port => (
                                     port.ports.map(p => (
-                                        p.number === '22' && port.ip === currentIp && (
+                                        port.ip === currentIp && (
+                                            (toolname === 'porthack' && p.number !== '22' && p.number !== '80' && p.number !== '25') ||
+                                            (toolname === 'SSHcrack' && p.number === '22') ||
+                                            (toolname === 'SMTPoverFlow' && p.number === '25') ||
+                                            (toolname === 'WebServerWorm' && p.number === '80')
+                                        ) && (
                                             <li key={p.id} className={styles.portItem}>
-                                                {p.number} - {p.status.toUpperCase()} {/* 상태를 대문자로 표시 */}
+                                                {p.number} - {p.status.toUpperCase()}
                                                 {p.status === 'closed' && (
                                                     <button onClick={() => handleHackClick(p)} className={styles.hackButton}>HACK</button>
                                                 )}
@@ -105,7 +115,14 @@ function SSHcrackModal({ show, onClose }) {
                                 ))
                             )}
                         </ul>
-                        {showHackingGame && <Game onClose={(success) => closeHackingGame(success)} />} {/* 성공 여부를 콜백으로 전달 */}
+                        {showHackingGame && (
+                            <>
+                                {toolname === "porthack" && <JigsawHackingGame onClose={(success) => closeHackingGame(success)} />}
+                                {toolname === "SSHcrack" && <RandomMazeGame onClose={(success) => closeHackingGame(success)} />}
+                                {toolname === "SMTPoverFlow" && <FlipMatrixGame onClose={(success) => closeHackingGame(success)} />}
+                                {toolname === "WebServerWorm" && <WormMazeGame onClose={(success) => closeHackingGame(success)} />}
+                            </>
+                        )}
                     </div>
                     <button className={layoutFrame.closeButton} onClick={onClose}></button>
                 </div>
@@ -113,4 +130,5 @@ function SSHcrackModal({ show, onClose }) {
         )
     );
 }
-export default SSHcrackModal;
+
+export default PortToolModal;

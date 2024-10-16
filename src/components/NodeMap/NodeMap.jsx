@@ -6,37 +6,36 @@ const NodeMap = forwardRef((props, ref) => {
     const container = useRef(null);
     const [nodes, setNodes] = useState([]);
     const [edges, setEdges] = useState([]);
-    const [currentNodeId, setCurrentNodeId] = useState(1);
-    const [history, setHistory] = useState([1]);
-    const [, forceUpdate] = useState(0);
-    const [options] = useState({
+    const currentNodeIdRef = useRef(1);
+    const options = useMemo(() => ({
         nodes: {
             shape: 'dot',
             size: 15,
             shadow: true,
             color: {
                 border: 'white',
-                background: 'skyblue'
+                background: 'skyblue',
             },
             font: {
                 color: 'white',
-                size: 15
-            }
+                size: 15,
+            },
         },
         edges: {
             color: 'gray',
         },
         layout: {
             hierarchical: {
-                direction: 'LR', // 원하는 방향 설정
-            }
+                direction: 'LR',
+            },
         },
         interaction: {
-            zoomView: false,
+            zoomView: true,
             dragView: true,
             selectable: false,
         },
-    });
+    }), []);
+
     const initialNodes = useMemo(() => [
         { id: 1, label: 'myNode', size: 15, fixed: true },
     ], []);
@@ -44,35 +43,35 @@ const NodeMap = forwardRef((props, ref) => {
     const initialEdges = useMemo(() => [], []);
 
     const addNode = (label) => {
-        setNodes((prevNodes) => {
-            const nodeExists = prevNodes.some(node => node.label === label);
-            console.log("addNodes check:", prevNodes);
-            console.log("nodeExists : ", nodeExists);
-
-            if (nodeExists) {
-                console.log(`Node with label "${label}" already exists.`);
-                return prevNodes; // 기존 상태를 반환
-            } else {
-                const newNode = {
-                    id: prevNodes.length + 1,
-                    label: label,
-                    fixed: true,
-                };
-
-                // 새로운 노드를 포함한 상태 반환
-                const updatedNodes = [...prevNodes, newNode];
-
-                return updatedNodes; // 상태 반환
-            }
-        });
+        if (label !== "") {
+            setNodes((prevNodes) => {
+                const nodeExists = prevNodes.some(node => node.label === label);
+                if (nodeExists) {
+                    console.log(`Node with label "${label}" already exists.`);
+                    return prevNodes;
+                } else {
+                    const newNode = {
+                        id: prevNodes.length + 1,
+                        label: label,
+                        fixed: true,
+                    };
+                    return [...prevNodes, newNode];
+                }
+            });
+        }
     };
-
 
     const addEdge = (startID, endID) => {
-        const newEdge = { from: startID, to: endID };
-        setEdges((prevEdges) => [...prevEdges, newEdge]);
+        setEdges((prevEdges) => {
+            for (let edge of prevEdges) {
+                if (startID === endID || (edge.from === startID && edge.to === endID)) {
+                    return prevEdges;
+                }
+            }
+            return [...prevEdges, { from: startID, to: endID, id: prevEdges.length + 1 }];
+        });
     };
-
+    useEffect(() => { console.log(edges); }, [edges]);
     useEffect(() => {
         TerminalInteraction.setNodeMap(ref.current);
         setNodes(initialNodes);
@@ -83,15 +82,10 @@ const NodeMap = forwardRef((props, ref) => {
         if (container.current) {
             const network = new Network(container.current, { nodes, edges }, options);
             network.fit();
-            network.setOptions({
-                manipulation: { enabled: false }
-            });
+            network.setOptions({ manipulation: { enabled: false } });
             const zoomLevel = 1.5;
             network.moveTo({ scale: zoomLevel });
-
-            return () => {
-                network.destroy();
-            };
+            return () => network.destroy();
         }
     }, [nodes, edges, options]);
 
@@ -102,58 +96,47 @@ const NodeMap = forwardRef((props, ref) => {
         };
     }, [initializeNetwork]);
 
-    useEffect(() => {
-        console.log("Updated history:", history);
-    }, [history]);
-
     useImperativeHandle(ref, () => ({
         updateMap(newContent) {
             const commandParts = newContent.split(' ');
             const command = commandParts[0];
-            console.log(command);
-            if (newContent.match(/^username\s*{?\s*node\d{2}\s*}?/gm)) {
 
+            if (newContent.match(/^username\s*{?\s*node\d{2}\s*}?/gm)) {
                 let ip = [];
                 const nodes = newContent.trim().split('\n');
-                console.log(nodes);
                 for (const node of nodes) {
                     if (node.trim().startsWith('IP{')) {
-                        console.log(node);
                         const ipMatch = node.match(/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/);
                         if (ipMatch) {
                             ip.push(ipMatch[0]);
                         }
                     }
                 }
-                console.log(ip);
                 if (ip.length > 0) {
-                    ip.map(i => addNode(i));
+                    ip.forEach(i => addNode(i));
                 }
-            } else if (command.includes('ssh')) {
+            } else if (command.startsWith('connected')) {
                 const targetLabel = commandParts[1];
+                if (!nodes.find(node => node.label === targetLabel)) {
+                    addNode(commandParts[1]);
+                }
                 setNodes((prevNodes) => {
-                    const targetNode = prevNodes.find(node => node.label === targetLabel);
+                    let targetNode = prevNodes.find(node => node.label === targetLabel);
                     if (targetNode) {
-                        addEdge(currentNodeId, targetNode.id);
-                        setHistory((prevHistory) => [...prevHistory, targetNode.id]);
-                        setCurrentNodeId(targetNode.id);
-                    } else {
-                        console.log(`Node with label "${targetLabel}" not found.`);
+                        addEdge(currentNodeIdRef.current, targetNode.id);
+                        currentNodeIdRef.current = targetNode.id;
                     }
                     return prevNodes;
                 });
-
-            } else if (command.includes('exit')) {
-                setEdges((prevEdges) => {
+            } else if (command.startsWith('Disconnected')) {
+                setEdges(prevEdges => {
                     if (prevEdges.length > 0) {
                         const updatedEdges = prevEdges.slice(0, -1);
-
-                        if (history.length > 1) {
-                            const lastNodeId = history[history.length - 2];
-                            setHistory((prevHistory) => prevHistory.slice(0, -1));
-                            setCurrentNodeId(lastNodeId);
+                        if (updatedEdges.length > 0) {
+                            const lastEdge = updatedEdges[updatedEdges.length - 1];
+                            currentNodeIdRef.current = lastEdge.to;
                         } else {
-                            setCurrentNodeId(1);
+                            currentNodeIdRef.current = 1;
                         }
                         return updatedEdges;
                     }
@@ -162,9 +145,6 @@ const NodeMap = forwardRef((props, ref) => {
             } else {
                 console.log('Unknown command');
             }
-            console.log("rerender");
-            forceUpdate(n => n + 1);
-
         },
     }));
 

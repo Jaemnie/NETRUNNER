@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import styles from './MetrixPuzzle.module.css'; // CSS 모듈 임포트
 
-const Game = ({ onClose }) => {
+const MetrixPuzzleGame = ({ onClose }) => {
     const [matrix, setMatrix] = useState([]); // 행렬 상태
     const [buffer, setBuffer] = useState([]); // 선택된 셀을 저장할 버퍼 상태
     const [currentSelectionMode, setCurrentSelectionMode] = useState('row'); // 현재 선택 모드 (행/열)
@@ -160,4 +160,4 @@ const Game = ({ onClose }) => {
     );
 };
 
-export default Game;
+export default MetrixPuzzleGame;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from './RotatePuzzle.module.css';
-const Game = ({ onClose }) => {
+const RotatePuzzleGame = ({ onClose }) => {
     const [arrSize, SetArrSize] = useState();
     const [variable1, setVariable1] = useState([]);
     const [variable2, setVariable2] = useState([]);
@@ -52,7 +52,7 @@ const Game = ({ onClose }) => {
 
         if (isTrue) {
             setResultText("Success");
-            onClose();
+            onClose(isTrue);
         } else {
             setResultText("Failed");
         }
@@ -63,7 +63,8 @@ const Game = ({ onClose }) => {
         return () => {
             window.removeEventListener('keydown', handleRotate); // 컴포넌트 언마운트 시 이벤트 리스너 제거
         };
-    }, [variable1])
+    }, [variable1]);
+
     return (
         <div >
             <div className={styles.box}>
@@ -79,7 +80,7 @@ const Game = ({ onClose }) => {
         </div>
     );
 }
-export default Game;
+export default RotatePuzzleGame;
 
 
 
