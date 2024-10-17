@@ -37,6 +37,7 @@ const Lanking = () => {
         <thead>
           <tr>
             <th>순위</th>
+            <th>스코어</th>
             <th>사용자 아이디</th>
             <th>레벨</th>
             <th>포인트</th>
@@ -46,6 +47,7 @@ const Lanking = () => {
           {rankingData.map((user, index) => (
             <tr key={user.userId}>
               <td>{index + 1}</td>
+              <td>{user.score}</td>
               <td>{user.userId}</td>
               <td>{user.level}</td>
               <td>{user.point}</td>

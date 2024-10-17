@@ -109,7 +109,7 @@ function Setting({ show, onClose }) {
         tuto && isModalOpen &&
         < Modal isOpen={isModalOpen} closeModal={closeModal}>
           <button className={`${tutorialStyles.close}`} onClick={closeModal}></button>
-          <Tutorial />
+          <Tutorial closeModal={closeModal} />
         </Modal>
       }
       {!tuto &&

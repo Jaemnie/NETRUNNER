@@ -39,7 +39,7 @@ const MainPageComp = () => {
       {
         < Modal isOpen={isModalOpen} closeModal={closeModal}>
           <button className={`${ModalStyles.close}`} onClick={closeModal} />
-          <Tutorial />
+          <Tutorial closeModal={closeModal} />
         </Modal>
       }
 
