@@ -20,9 +20,9 @@
     padding: 0;
     border-radius: 10px;
     max-width: 1200px;
-    max-height: 850px;
-    width: auto;
-    height: auto;
+    max-height: 805px;
+    /* width: auto;
+    height: auto; */
     resize: both;
     overflow: hidden;
     margin: auto;
