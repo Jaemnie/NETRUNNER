@@ -38,70 +38,110 @@
 
 ## 코드 구조
 ```
-src
-├── assets
-│   ├── mainbgm.mp3
-│   └── wallpaper.jpg
-├── components
-│   ├── Background
-│   │   ├── AudioContext.js
-│   │   └── BackgroundMusic.js
-│   ├── Directory
-│   │   ├── menu
-│   │   │   ├── Menu.jsx
-│   │   │   └── menu.css
-│   │   ├── modals
-│   │   │   ├── Modal.jsx
-│   │   │   └── modal.css
-│   │   ├── DirectoryViewer.jsx
-│   │   └── DirectoryViewer.module.css
-│   ├── Lank
-│   │   ├── Lanking.jsx
-│   │   └── Lanking.module.css
-│   ├── MainPageComp
-│   │   ├── MainPageComp.jsx
-│   │   └── MainPageComp.module.css
-│   ├── Profile
-│   │   ├── ProfileCard.jsx
-│   │   └── ProfileCard.module.css
-│   ├── Quest
-│   │   ├── Quest.jsx
-│   │   └── Quest.module.css
-│   ├── Shop
-│   │   ├── shop.jsx
-│   │   └── shop.module.css
-│   └── Terminal
-│       ├── TerminalInteraction.jsx
-│       ├── termPage.jsx
-│       ├── termsocket.jsx
-│       └── xterm-custom.css
-├── pages
-│   ├── loginPages
-│   │   ├── modals
-│   │   │   ├── Modal.jsx
-│   │   │   └── modal.css
-│   │   ├── LoginPage.jsx
-│   │   └── login.module.css
-│   └── mainPages
-│       ├── Setting
-│       │   ├── Setting.jsx
-│       │   └── Setting.module.css
-│       ├── MainPage.jsx
-│       └── MainPage.module.css
-├── services
-│   ├── AuthService.jsx
-│   └── socket
-│       ├── Gsocket.jsx
-│       └── socket.jsx
-├── App.css
-├── App.js
-├── App.test.js
-├── config.js
-├── index.css
-├── index.js
-├── logo.svg
-├── reportWebVitals.js
-└── setupTests.js
+📦src
+ ┣ 📂assets
+ ┃ ┣ 📜.DS_Store
+ ┃ ┣ 📜mainbgm.mp3
+ ┃ ┣ 📜tuto.png
+ ┃ ┣ 📜tuto2.png
+ ┃ ┣ 📜tuto3.png
+ ┃ ┣ 📜tuto4.png
+ ┃ ┣ 📜tuto5.png
+ ┃ ┣ 📜wallpaper.jpg
+ ┃ ┗ 📜Worm.jsx
+ ┣ 📂components
+ ┃ ┣ 📂Background
+ ┃ ┃ ┣ 📜AudioContext.js
+ ┃ ┃ ┗ 📜BackgroundMusic.js
+ ┃ ┣ 📂Directory
+ ┃ ┃ ┣ 📂menu
+ ┃ ┃ ┃ ┣ 📜menu.css
+ ┃ ┃ ┃ ┗ 📜Menu.jsx
+ ┃ ┃ ┣ 📂modals
+ ┃ ┃ ┃ ┣ 📜Modal.jsx
+ ┃ ┃ ┃ ┗ 📜modal.module.css
+ ┃ ┃ ┣ 📜DirectoryViewer.jsx
+ ┃ ┃ ┗ 📜DirectoryViewer.module.css
+ ┃ ┣ 📂Lank
+ ┃ ┃ ┣ 📜Lanking.jsx
+ ┃ ┃ ┗ 📜Lanking.module.css
+ ┃ ┣ 📂MainPageComp
+ ┃ ┃ ┣ 📂modals
+ ┃ ┃ ┃ ┣ 📜Modal.jsx
+ ┃ ┃ ┃ ┗ 📜modal.module.css
+ ┃ ┃ ┣ 📜MainPageComp.jsx
+ ┃ ┃ ┗ 📜MainPageComp.module.css
+ ┃ ┣ 📂NodeMap
+ ┃ ┃ ┗ 📜NodeMap.jsx
+ ┃ ┣ 📂Profile
+ ┃ ┃ ┣ 📜ProfileCard.jsx
+ ┃ ┃ ┗ 📜ProfileCard.module.css
+ ┃ ┣ 📂Quest
+ ┃ ┃ ┣ 📜Quest.jsx
+ ┃ ┃ ┗ 📜Quest.module.css
+ ┃ ┣ 📂Shop
+ ┃ ┃ ┣ 📜shop.jsx
+ ┃ ┃ ┗ 📜shop.module.css
+ ┃ ┣ 📂Terminal
+ ┃ ┃ ┣ 📜TerminalInteraction.jsx
+ ┃ ┃ ┣ 📜termPage.jsx
+ ┃ ┃ ┣ 📜termsocket.jsx
+ ┃ ┃ ┗ 📜xterm-custom.css
+ ┃ ┗ 📂Tutorial
+ ┃ ┃ ┣ 📂PopOver
+ ┃ ┃ ┃ ┣ 📜popOver.css
+ ┃ ┃ ┃ ┗ 📜popOverProp.jsx
+ ┃ ┃ ┣ 📜tutorial.css
+ ┃ ┃ ┗ 📜tutorialPage.jsx
+ ┣ 📂pages
+ ┃ ┣ 📂loginPages
+ ┃ ┃ ┣ 📂modals
+ ┃ ┃ ┃ ┣ 📜modal.css
+ ┃ ┃ ┃ ┗ 📜Modal.jsx
+ ┃ ┃ ┣ 📜login.module.css
+ ┃ ┃ ┗ 📜LoginPage.jsx
+ ┃ ┗ 📂mainPages
+ ┃ ┃ ┣ 📂HackTool
+ ┃ ┃ ┃ ┣ 📜DecypeToolModal.jsx
+ ┃ ┃ ┃ ┣ 📜PortHack.module.css
+ ┃ ┃ ┃ ┣ 📜PortToolmodal.jsx
+ ┃ ┃ ┃ ┗ 📜ToolLayout.module.css
+ ┃ ┃ ┣ 📂MiniGames
+ ┃ ┃ ┃ ┣ 📂Utils
+ ┃ ┃ ┃ ┃ ┣ 📜mazeConverter.js
+ ┃ ┃ ┃ ┃ ┗ 📜mazeGenerator.js
+ ┃ ┃ ┃ ┣ 📜FlipMatrixGame.jsx
+ ┃ ┃ ┃ ┣ 📜FlipMatrixGame.module.css
+ ┃ ┃ ┃ ┣ 📜JigsawHackingGame.jsx
+ ┃ ┃ ┃ ┣ 📜JigsawHackingGame.module.css
+ ┃ ┃ ┃ ┣ 📜metrixpuzzle.jsx
+ ┃ ┃ ┃ ┣ 📜MetrixPuzzle.module.css
+ ┃ ┃ ┃ ┣ 📜RandomMazeGame.jsx
+ ┃ ┃ ┃ ┣ 📜RandomMazeGame.module.css
+ ┃ ┃ ┃ ┣ 📜RotatePuzzle.jsx
+ ┃ ┃ ┃ ┣ 📜RotatePuzzle.module.css
+ ┃ ┃ ┃ ┣ 📜WormMazeGame.jsx
+ ┃ ┃ ┃ ┗ 📜WormMazeGame.module.css
+ ┃ ┃ ┣ 📂Setting
+ ┃ ┃ ┃ ┣ 📜Setting.jsx
+ ┃ ┃ ┃ ┗ 📜Setting.module.css
+ ┃ ┃ ┣ 📜MainPage.jsx
+ ┃ ┃ ┗ 📜MainPage.module.css
+ ┣ 📂services
+ ┃ ┗ 📜AuthService.jsx
+ ┣ 📂socket
+ ┃ ┣ 📜Gsocket.jsx
+ ┃ ┗ 📜socket.jsx
+ ┣ 📜.DS_Store
+ ┣ 📜App.css
+ ┣ 📜App.js
+ ┣ 📜App.test.js
+ ┣ 📜config.js
+ ┣ 📜index.css
+ ┣ 📜index.js
+ ┣ 📜logo.svg
+ ┣ 📜reportWebVitals.js
+ ┗ 📜setupTests.js
 ```
 
 ## 기여 방법
