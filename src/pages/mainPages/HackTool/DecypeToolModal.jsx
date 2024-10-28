@@ -47,7 +47,7 @@ function DecypeToolModal({ show, onClose, toolname }) {
     const closeHackingGame = (success) => {
         console.log(success);
         setShowHackingGame(false); // 해킹 게임 닫기
-        if (success && currentFile) {
+        if (success) {
             if (currentFile) { // IP 데이터가 있을 경우에만 메시지 전송
                 const message = `${toolname} ${currentFile}`;
                 console.log("Sending message to server:", message); // 메시지 전�� 로그

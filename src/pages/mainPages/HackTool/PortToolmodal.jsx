@@ -57,13 +57,16 @@ function PortToolModal({ show, onClose, toolname }) {
 
     const closeHackingGame = (success) => {
         setShowHackingGame(false); // 해킹 게임 닫기
-        if (success && currentPort) {
+        if (success) {
             // 해킹이 성공하면 포트 상태 업데이트
-            const updatedPorts = ports.map(port => (
-                port.ports.map((p) =>
-                    p.id === currentPort.id ? { ...p, status: 'open' } : p
-                )
-            ));
+            const updatedPorts = ports.map(port => {
+                return {
+                    ...port,
+                    ports: port.ports.map(p =>
+                        p.id === currentPort.id ? { ...p, status: 'open' } : p
+                    )
+                };
+            });
             setPorts(updatedPorts);
             localStorage.setItem('portData', JSON.stringify(updatedPorts)); // 업데이트된 포트 데이터를 localStorage에 저장
 

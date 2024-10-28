@@ -34,14 +34,14 @@ const Quest = ({ userId, show, onClose, questData, fetchMission }) => {
       setDisplayedMessages([]);
       setIsTyping(true);
       console.log(questData.scenario[0]);
-      const messages = questData.scenario[0].story[0].replace(/\n|\r|\t|"*/g, '').trim().split(",");
+      const messages = questData.scenario[0].story[0].replace(/\n|\r|\t|"*/g, '').trim().split("ᛃ");
       const target = questData.scenario[0].target[0].replace(/\n|\r|\t|"*/g, '').trim().split(",");
       messages.forEach((message, index) => {
         setTimeout(() => {
           setDisplayedMessages((prevMessages) => {
             const processedMessages = message.trim().split('᛭')
             processedMessages[1] = processedMessages[1].split(/\\n/g);
-            // console.log("메시지 체크", processedMessages);
+            console.log("메시지 체크", processedMessages);
             const updatedMessages = [...prevMessages, processedMessages]; // prevMessages를 올바르게 사용하여 업데이트
             console.log(updatedMessages);
             localStorage.setItem('questMessages', JSON.stringify(updatedMessages)); // 메시지를 localStorage에 저장
